@@ -1,0 +1,9 @@
+.DS_*
+*~
+*.pdf
+*.toc
+*.aux
+*.log
+*.out
+*.bbl
+*.blg

@@ -1,0 +1,53 @@
+% arara: xelatex
+\documentclass[paper=A4,DIV=calc]{scrbook}
+%% FONTS (fold)
+\usepackage{ifxetex}
+\ifxetex
+	\usepackage{fontspec}
+	\usepackage[onlymath,opticals,italicgreek,minionint]{MinionPro}
+	\defaultfontfeatures{Numbers=OldStyle,Kerning=Uppercase,%
+						 Mapping=tex-text}
+	\setmainfont{Minion Pro}
+	\setsansfont{Cronos Pro}
+	\setmonofont[Scale=MatchLowercase]{Source Code Pro}
+\else
+	\usepackage[utf8]{inputenc}
+	\usepackage[T1]{fontenc}
+	\usepackage[fullfamily,opticals,italicgreek,%
+				minionint,footnotefigures]{MinionPro}
+	\usepackage[medfamily,opticals]{CronosPro}
+	\usepackage[varqu,varl,scaled=0.9]{zi4}
+\fi
+%% (end)
+\usepackage{chs-msc-thesis}
+\usepackage{mathtools}
+\usepackage{hyperref}
+
+\SetupMetadata{
+	% Required metadata
+	title = {?},
+	author = {Simon Sigurdhsson},
+	year = {2014},
+	subject = {Engineering Mathematics},
+	department = {Department of Computer Science and Engineering},
+	keywords = {?},
+	abstract = {?},
+	% Optional metadata
+	%subtitle = {},
+	%publisher = {},
+	series = {2014:?},
+	%cover-caption = {Bildtext till framsidebilden},
+	%cover-image = {\includegraphics{...}}
+}
+
+\begin{document}
+	\frontmatter
+	\makefrontmatter
+
+	\cleardoublepage
+	\tableofcontents
+	
+	\mainmatter
+
+	\backmatter
+\end{document}
