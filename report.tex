@@ -1,4 +1,7 @@
 % arara: xelatex
+% arara: biber
+% arara: xelatex
+% arara: xelatex
 \documentclass[paper=A4,DIV=calc]{scrbook}
 %% FONTS (fold)
 \usepackage{ifxetex}
@@ -10,6 +13,9 @@
 	\setmainfont{Minion Pro}
 	\setsansfont{Cronos Pro}
 	\setmonofont[Scale=MatchLowercase]{Source Code Pro}
+	\usepackage{polyglossia}
+	\setmainlanguage{english}
+	\setotherlanguage{swedish}
 \else
 	\usepackage[utf8]{inputenc}
 	\usepackage[T1]{fontenc}
@@ -17,9 +23,11 @@
 				minionint,footnotefigures]{MinionPro}
 	\usepackage[medfamily,opticals]{CronosPro}
 	\usepackage[varqu,varl,scaled=0.9]{zi4}
+	\usepackage[swedish,english]{babel}
 \fi
 %% (end)
 \usepackage{chs-msc-thesis}
+\usepackage{csquotes}
 \usepackage{mathtools}
 \usepackage{hyperref}
 
