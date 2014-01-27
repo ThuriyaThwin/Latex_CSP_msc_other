@@ -29,6 +29,7 @@
 \usepackage{chs-msc-thesis}
 \usepackage{csquotes}
 \usepackage{mathtools}
+\usepackage[authordate,backend=biber,noibid]{biblatex-chicago}
 \usepackage{hyperref}
 
 \SetupMetadata{
@@ -49,6 +50,8 @@
 	%cover-image = {\includegraphics{...}}
 }
 
+\addbibresource{references.bib}
+
 \begin{document}
 	\frontmatter
 	\makefrontmatter
@@ -58,5 +61,6 @@
 	
 	\mainmatter
 
+	\printbibliography
 	\backmatter
 \end{document}
