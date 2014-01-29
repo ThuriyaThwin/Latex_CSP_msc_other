@@ -1,0 +1,47 @@
+# watson rc
+# watson - inline issue manager
+# [goosecode] labs
+
+
+# Directories
+[dirs]
+./
+
+
+# Tags
+[tags]
+fix
+review
+todo
+
+
+# Ignores
+[ignore]
+.git
+*.swp
+.DS_*
+*~
+*.pdf
+*.toc
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+
+
+[github_api]
+urdh
+
+
+[github_endpoint]
+https://api.github.com
+
+
+[github_repo]
+urdh/thesis
+
+
+
