@@ -29,7 +29,7 @@
 \usepackage{chs-msc-thesis}
 \usepackage{csquotes}
 \usepackage{mathtools}
-\usepackage[authordate,backend=biber,noibid]{biblatex-chicago}
+\usepackage[authordate,backend=biber,noibid,dashed=false]{biblatex-chicago}
 \usepackage{hyperref}
 
 \SetupMetadata{
@@ -61,6 +61,8 @@
 	
 	\mainmatter
 
+	\nocite{*}
+	% [fix] - reference names look strange
 	\printbibliography
 	\backmatter
 \end{document}
