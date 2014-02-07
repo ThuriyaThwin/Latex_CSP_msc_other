@@ -29,8 +29,14 @@
 \usepackage{chs-msc-thesis}
 \usepackage{csquotes}
 \usepackage{mathtools}
-\usepackage[authordate,backend=biber,noibid,dashed=false]{biblatex-chicago}
+% [review] - use plain biblatex with authoryear?
+\usepackage[authordate,backend=biber,noibid]{biblatex-chicago}
 \usepackage{hyperref}
+
+\makeatletter
+% equivalent to dashed=false in standard biblatex styles
+\AtEveryBibitem{\global\undef\bbx@lasthash}
+\makeatother
 
 \SetupMetadata{
 	% Required metadata
