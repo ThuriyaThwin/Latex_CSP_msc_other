@@ -29,13 +29,16 @@
 \usepackage{chs-msc-thesis}
 \usepackage{csquotes}
 \usepackage{mathtools}
-% [review] - use plain biblatex with authoryear?
-\usepackage[authordate,backend=biber,noibid]{biblatex-chicago}
+\usepackage[authordate,backend=biber,noibid,firstinits=true]{biblatex-chicago}
 \usepackage{hyperref}
 
 \makeatletter
 % equivalent to dashed=false in standard biblatex styles
 \AtEveryBibitem{\global\undef\bbx@lasthash}
+% fixes the "strange" (apparently normal) order of names in author list
+\DeclareNameAlias{sortname}{last-first}
+% fixes doi formatting
+\DeclareFieldFormat*{doi}{\textsc{doi}\addcolon\space\textsc{#1}}
 \makeatother
 
 \SetupMetadata{
@@ -68,7 +71,6 @@
 	\mainmatter
 
 	\nocite{*}
-	% [fix] - reference names look strange
 	% [review] - find published variants of unpublished works (incl. strange pubstates)
 	\printbibliography
 	\backmatter
