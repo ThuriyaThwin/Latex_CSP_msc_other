@@ -1,15 +1,33 @@
 \section{Constraint Satisfaction Problems}
-As detailed in the introduction, \glspl{csp} occur in may settings and 
-various forms. In general, however, one may define a \gls{csp} as a
-mathematical problem defined by a set of objects whose state must
-satisfy a number of constraints or limitations, and (in the weighted case)
-in which preferences among the solutions may be expressed.
-This definition is extremely general and covers a wide range of problems,
-such as the \emph{\(n\) queens puzzle}, \emph{map coloring}, and
-\emph{resource allocation}.
+As briefly mentioned in the introduction, \glspl{csp} occur in many settings and various forms.
+Informally, one may express a \gls{csp} as the problem, given variables of finite domains, to assign these variables values fullfilling a set of constraints.
+This definition is vety general and covers a wide range of problems, such as \emph{\(n\)-queen puzzles}, \emph{map coloring}, and \emph{resource allocation} among others.
 
-Formally, a \gls{csp} is defined by 
+Formally, a \gls{csp} may be defined to consist of three components:
+\begin{itemize}
+	\item a set of \emph{variables} \(X = \{X_1,\dotsc,X_n\}\),
+	\item a corresponding set of variable \emph{domains} \(D = \{D_1,\dotsc,D_n\}\) and
+	\item a set of \emph{constraints} \(C = \{C_1,\dotsc,C_m\}\),
+\end{itemize}
+where the constraints \(C_i\) may be defined in different manners depending on setting (for instance, \textcite[\pno~559]{Brailsford99} define a constraint \(C_{ijk\dotso}\) on the variables \(x_i,x_j,x_k,\dotsc\) as a subset in \(D_i\times D_j \times D_k \times \dotsm\) defining the allowed combinations, requiring a feasible solution to satisfy \(\{x_i,x_j,x_k,\dotsc\}\in C_{ijk\dotso}\)).
+In the context of this thesis, a suitable definition of a constraint will be that of a function \(C_\mu: D_i\times D_j \times D_k \times \dotsm \mapsto \{-\infty,0\}\), where \(-\infty\) indicates a disallowed combination.
+A feasible solution will then satisfy \(C_\mu > -\infty\).
 
+Regardless of the chosen representation of the constraints, a \emph{feasible} solution to a \gls{csp} is an assignment of a value \(x_i\in D_i\) to every variable \(X_i\) such that every constraint is satisfied.
+A \gls{csp} is \emph{satisfiable} if such a solution exists, otherwise it is \emph{unsatisfiable}.
+Depending on the underlying problem, one may want to find all feasible solutions, any single one of them, or an optimal feasible solution given some objective function defined in terms of the variables.
+
+% [todo] - this definition is stupid
+One may also define a \gls{vcsp} if the constraints, in addition to specifying which variable combinations are allowed, also specify a cost for every allowed combination.
+When dealing with such problems, one is usually interested in an optimal feasible solution given some objective fucntion that not only depends on the variables but also the constraints.
+The \emph{cost} of a \gls{vcsp} given a feasible solution may then be defined as the sum of constraint costs.
+\Gls{vcsp} constraints may, like their \gls{csp} counterparts, be defined as functions \(C_\mu\), if the codomain of these functions is extended to \(\R\cup\{-\infty\}\) (again, \(-\infty\) indicates a disallowed combination).
+
+% [todo] - eh?
+Using this definition of \glspl{csp} and \glspl{vcsp}, it is evident that any \gls{csp} is a \gls{vcsp} instance where ???.
+
+% [todo] - how does this affect things?
+\gls{csp}, and as a consequence \gls{vcsp}, is known to be NP-complete \parencite{Mackworth93}.
 
 \subsection{Relation to max-sum problems}
 \textcite{Werner07}

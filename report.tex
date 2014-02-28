@@ -8,8 +8,8 @@
 %% FONTS (fold)
 \usepackage{ifxetex}
 \ifxetex
-	\usepackage{fontspec}
-	\usepackage[osf,p,semibold]{libertine}
+	\usepackage[no-math]{fontspec}
+	\usepackage[oldstyle,tabular,semibold]{libertine}
 	\usepackage[libertine,slantedGreek,liby,bigdelims]{newtxmath}
 	\usepackage{polyglossia}
 	\setmainlanguage{english}
@@ -17,7 +17,7 @@
 \else
 	\usepackage[utf8]{inputenc}
 	\usepackage[T1]{fontenc}
-	\usepackage[osf,p,semibold]{libertine}
+	\usepackage[oldstyle,tabular,semibold]{libertine}
 	\usepackage[libertine,slantedGreek,liby,bigdelims]{newtxmath}
 	\usepackage[swedish,english]{babel}
 \fi
@@ -28,6 +28,8 @@
 \usepackage[authordate,backend=biber,noibid,firstinits=true]{biblatex-chicago}
 \usepackage[toc,acronym,nomain]{glossaries}
 \usepackage{hyperref}
+
+\input{macros.tex}
 
 \makeglossaries
 \input{acronyms.tex}
