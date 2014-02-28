@@ -8,5 +8,12 @@
 *.bbl
 *.blg
 *.bcf
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.ist
 *.run.xml
 .watsonrc

@@ -1,5 +1,6 @@
 % arara: xelatex
 % arara: biber
+% arara: makeglossaries
 % arara: xelatex
 % arara: xelatex
 \documentclass[paper=A4,DIV=calc]{scrbook}
@@ -25,7 +26,11 @@
 \usepackage{csquotes}
 \usepackage{mathtools}
 \usepackage[authordate,backend=biber,noibid,firstinits=true]{biblatex-chicago}
+\usepackage[toc,acronym,nomain]{glossaries}
 \usepackage{hyperref}
+
+\makeglossaries
+\input{acronyms.tex}
 
 \makeatletter
 % equivalent to dashed=false in standard biblatex styles
@@ -71,7 +76,7 @@
 
 	\chapter{Theory}
 	\section{LP theory}
-	\section{CSP theory}
+	\input{theory/csp.tex}
 
 	\chapter{???}
 
@@ -80,5 +85,6 @@
 	\nocite{*}
 	% [review] - find published variants of unpublished works (incl. strange pubstates)
 	\printbibliography[heading=bibintoc]
+	\printglossary[type=\acronymtype,]
 	\backmatter
 \end{document}
