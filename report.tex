@@ -3,26 +3,21 @@
 % arara: xelatex
 % arara: xelatex
 \documentclass[paper=A4,DIV=calc]{scrbook}
+\usepackage{amsmath}
 %% FONTS (fold)
 \usepackage{ifxetex}
 \ifxetex
 	\usepackage{fontspec}
-	\usepackage[onlymath,opticals,italicgreek,minionint]{MinionPro}
-	\defaultfontfeatures{Numbers=OldStyle,Kerning=Uppercase,%
-						 Mapping=tex-text}
-	\setmainfont{Minion Pro}
-	\setsansfont{Cronos Pro}
-	\setmonofont[Scale=MatchLowercase]{Source Code Pro}
+	\usepackage[osf,p,semibold]{libertine}
+	\usepackage[libertine,slantedGreek,liby,bigdelims]{newtxmath}
 	\usepackage{polyglossia}
 	\setmainlanguage{english}
 	\setotherlanguage{swedish}
 \else
 	\usepackage[utf8]{inputenc}
 	\usepackage[T1]{fontenc}
-	\usepackage[fullfamily,opticals,italicgreek,%
-				minionint,footnotefigures]{MinionPro}
-	\usepackage[medfamily,opticals]{CronosPro}
-	\usepackage[varqu,varl,scaled=0.9]{zi4}
+	\usepackage[osf,p,semibold]{libertine}
+	\usepackage[libertine,slantedGreek,liby,bigdelims]{newtxmath}
 	\usepackage[swedish,english]{babel}
 \fi
 %% (end)
@@ -69,9 +64,21 @@
 	\tableofcontents
 	
 	\mainmatter
+	\chapter{Introduction}
+	\section{Background}
+	\section{Related work}
+	\section{Methodology}
+
+	\chapter{Theory}
+	\section{LP theory}
+	\section{CSP theory}
+
+	\chapter{???}
+
+	\chapter{Conclusions}
 
 	\nocite{*}
 	% [review] - find published variants of unpublished works (incl. strange pubstates)
-	\printbibliography
+	\printbibliography[heading=bibintoc]
 	\backmatter
 \end{document}
