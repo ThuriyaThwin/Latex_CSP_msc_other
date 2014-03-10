@@ -9,7 +9,7 @@
 \usepackage{ifxetex}
 \ifxetex
 	\usepackage[no-math]{fontspec}
-	\usepackage[oldstyle,tabular,semibold]{libertine}
+	\usepackage[oldstyle,tabular,semibold]{libertineotf}
 	\usepackage[libertine,slantedGreek,liby,bigdelims]{newtxmath}
 	\usepackage{polyglossia}
 	\setmainlanguage{english}
@@ -24,15 +24,23 @@
 %% (end)
 \usepackage{chs-msc-thesis}
 \usepackage{csquotes}
+\usepackage{ntheorem}
 \usepackage{mathtools}
-\usepackage[authordate,backend=biber,noibid,firstinits=true]{biblatex-chicago}
+\usepackage[authordate,backend=biber,noibid,firstinits=true,useprefix=true]{biblatex-chicago}
 \usepackage[toc,acronym,nomain]{glossaries}
 \usepackage{hyperref}
 
+\input{fixes.tex}
 \input{macros.tex}
 
 \makeglossaries
 \input{acronyms.tex}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+%\newtheorem{example}{Example}
 
 \makeatletter
 % equivalent to dashed=false in standard biblatex styles
@@ -81,6 +89,7 @@
 	\input{theory/csp.tex}
 
 	\chapter{???}
+	% [todo] - check how the algorithm exposes/utilizes the notions in Bordeaux08?
 
 	\chapter{Conclusions}
 

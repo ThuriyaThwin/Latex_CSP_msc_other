@@ -15,5 +15,6 @@
 *.glo
 *.gls
 *.ist
+*.thm
 *.run.xml
 .watsonrc

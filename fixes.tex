@@ -1,0 +1,49 @@
+\makeatletter
+% http://tex.stackexchange.com/a/70498/66
+\newcommand*\placeaccent[2]{%
+	\begingroup
+		\def\acc@hat{\mbox{\raisebox{-1.27ex}[0ex][0ex]{\^{}}}}
+		\def\acc@dot{\kern-0.08em.\kern-0.08em}%
+		\def\acc@skip{%
+			\ifx\macc@style\displaystyle0.32
+			\else\ifx\macc@style\textstyle0.32
+			\else\ifx\macc@style\scriptstyle0.22
+			\else0.15\fi\fi\fi ex
+		}%
+		\def\mathaccent##1##2{%
+			\setbox6\hbox{$\m@th\macc@style#1$}%
+			\@tempdima\wd4
+			\advance\@tempdima\macc@kerna
+			\advance\@tempdima-\wd6
+			\divide\@tempdima\tw@
+			\@tempdimb\z@
+			\ifdim\@tempdima<\z@ \@tempdimb-\@tempdima \@tempdima\z@ \fi
+			\vbox{%
+				\offinterlineskip
+				\moveright\@tempdima\box6
+				\kern\acc@skip
+				\moveright\@tempdimb\box4
+			}%
+		}%
+		\macc@depth\@ne
+		\let\math@bgroup\@empty \let\math@egroup\macc@set@skewchar
+		\mathsurround\z@ \frozen@everymath{\mathgroup\macc@group\relax}%
+		\macc@set@skewchar\relax
+		\let\mathaccentV\macc@nested@a
+		\macc@nested@a\relax111{#2}%
+	\endgroup
+}
+\renewcommand*\dot[1]{%
+	\placeaccent{\acc@dot}{#1}%
+}
+\renewcommand*\ddot[1]{%
+	\placeaccent{\acc@dot\mkern1.4mu\acc@dot}{#1}%
+}
+\renewcommand*\hat[1]{%
+	\placeaccent{\acc@hat}{#1}%
+}
+% http://tex.stackexchange.com/a/22134/66
+\renewcommand*\bar[1]{%
+	\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu%
+}
+\makeatother

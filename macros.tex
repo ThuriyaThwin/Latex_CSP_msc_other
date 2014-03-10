@@ -1,1 +1,5 @@
 \NewDocumentCommand\R{}{\ensuremath{\mathbb{R}}}
+\NewDocumentCommand\Rplus{}{\ensuremath{\R_{\geq0}}}
+\NewDocumentCommand\Rminus{}{\ensuremath{\R_{\leq0}}}
+\DeclareMathOperator\costoperator{\mathsf{cost}}
+\NewDocumentCommand\cost{m}{\costoperator\left(#1\right)}

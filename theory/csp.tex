@@ -1,33 +1,52 @@
-\section{Constraint Satisfaction Problems}
-As briefly mentioned in the introduction, \glspl{csp} occur in many settings and various forms.
-Informally, one may express a \gls{csp} as the problem, given variables of finite domains, to assign these variables values fullfilling a set of constraints.
-This definition is vety general and covers a wide range of problems, such as \emph{\(n\)-queen puzzles}, \emph{map coloring}, and \emph{resource allocation} among others.
+\section{(Weighted) Constraint Satisfaction Problems}
+Informally, a \gls{csp} may be described as the problem of assigning values to a set of \emph{variables} such that a number of \emph{constraints} are satisfied.
+Allowing feasible solutions to be differentiated through costs yields a \gls{vcsp}, and the extended problem is then to assign values that satisfy the constraints while also minimizing a \emph{cost function}.
+Each constraint will take different values (\emph{costs}) depending on the values chosen, and the cost function will depend on these in some unspecified manner.
+Such a problem includes a distinction between \emph{soft} and \emph{hard} constraints.
+% [todo] - check that this relation between VCSP and WCSP is correct
 
-Formally, a \gls{csp} may be defined to consist of three components:
-\begin{itemize}
-	\item a set of \emph{variables} \(X = \{X_1,\dotsc,X_n\}\),
-	\item a corresponding set of variable \emph{domains} \(D = \{D_1,\dotsc,D_n\}\) and
-	\item a set of \emph{constraints} \(C = \{C_1,\dotsc,C_m\}\),
-\end{itemize}
-where the constraints \(C_i\) may be defined in different manners depending on setting (for instance, \textcite[\pno~559]{Brailsford99} define a constraint \(C_{ijk\dotso}\) on the variables \(x_i,x_j,x_k,\dotsc\) as a subset in \(D_i\times D_j \times D_k \times \dotsm\) defining the allowed combinations, requiring a feasible solution to satisfy \(\{x_i,x_j,x_k,\dotsc\}\in C_{ijk\dotso}\)).
-In the context of this thesis, a suitable definition of a constraint will be that of a function \(C_\mu: D_i\times D_j \times D_k \times \dotsm \mapsto \{-\infty,0\}\), where \(-\infty\) indicates a disallowed combination.
-A feasible solution will then satisfy \(C_\mu > -\infty\).
+The cost function of a \gls{vcsp} may be restricted to be a linear combination of constraint costs, resulting in a \gls{wcsp} --- these are also called \glspl{cfn} in some litterature \parencite{Allouche14}. We will use a formal definition of \gls{wcsp} similar to the one given by \textcite[\pno~3]{Allouche14}\footnote{In fact, our definition is equivalent to the triple \(\langle X, W, \infty \rangle\) using the definition given by \textcite{Allouche14}, adapted for maximization instead of minimization.}\footnote{Note that this definition may also be used to define regular \glspl{csp}, by restricting the functions \(w_S\) such that \(w_S : D_S \mapsto \{\alpha \in \{0, -\infty\}\}\).}.
 
-Regardless of the chosen representation of the constraints, a \emph{feasible} solution to a \gls{csp} is an assignment of a value \(x_i\in D_i\) to every variable \(X_i\) such that every constraint is satisfied.
-A \gls{csp} is \emph{satisfiable} if such a solution exists, otherwise it is \emph{unsatisfiable}.
-Depending on the underlying problem, one may want to find all feasible solutions, any single one of them, or an optimal feasible solution given some objective function defined in terms of the variables.
+\begin{definition}[\Acrlong{wcsp}]
+	A \gls{wcsp} is a tuple \(\langle X, W \rangle\) where \(X=\{1,\dotsc,n\}\) is a set of \(n\) discrete variables and \(W\) is a set of non-positive functions.
+	Each variable \(i \in X\) has a finite domain \(D_i\) of values that can be assigned to it.
+	A function \(w_S \in W\), with scope \(S \subseteq X\), is a function \(w_S : D_S \mapsto \{\alpha \in \Rminus \cup \{-\infty\}\}\).
+\end{definition}
 
-% [todo] - this definition is stupid
-One may also define a \gls{vcsp} if the constraints, in addition to specifying which variable combinations are allowed, also specify a cost for every allowed combination.
-When dealing with such problems, one is usually interested in an optimal feasible solution given some objective fucntion that not only depends on the variables but also the constraints.
-The \emph{cost} of a \gls{vcsp} given a feasible solution may then be defined as the sum of constraint costs.
-\Gls{vcsp} constraints may, like their \gls{csp} counterparts, be defined as functions \(C_\mu\), if the codomain of these functions is extended to \(\R\cup\{-\infty\}\) (again, \(-\infty\) indicates a disallowed combination).
+Using this definition, we can see that \(X\) defines the aforementioned \emph{variables} while \(W\) defines the \emph{constraints}.
+Constraints for which \(w_S({x}) = -\infty\) for some input \({x}\) are \emph{hard} constraints, which must be satisfied.
+Constraints with \(w_S({x}) < -\infty, \forall {x}\) are \emph{soft} constraints.
 
-% [todo] - eh?
-Using this definition of \glspl{csp} and \glspl{vcsp}, it is evident that any \gls{csp} is a \gls{vcsp} instance where ???.
+Formally, we may now express a solution to the \gls{wcsp} as an assignment \({x} \in D\), and we may note that all such solutions have a corresponding cost, defined by \(\cost{{x}} = \sum w_S({x})\).
+We may then define a \emph{feasible solution} as a solution \({x}\) that satisfies \(\cos{{x}} > -\infty\).
+In some cases we are only interested in finding a feasible solution, but whenever soft constraints are involved it is of interest to find the \emph{optimal solution}, \emph{i.e.} a solution \(\bar{{x}}\) for which \(\cost{\bar{{x}}} \geq \cost{{x}}, \forall {x}\) holds.
+
+% [todo] binary formulation/encoding of the CSP
 
 % [todo] - how does this affect things?
-\gls{csp}, and as a consequence \gls{vcsp}, is known to be NP-complete \parencite{Mackworth93}.
+% [todo] - find a better reference, Bistarelli seems relevant as does Schiex95
+\gls{csp}, and as a consequence \gls{wcsp}, is known to be NP-complete \parencite{Mackworth93}.
 
 \subsection{Relation to max-sum problems}
-\textcite{Werner07}
+A problem closely related to \glspl{wcsp} is the max-sum labeling problem.
+\Textcite{Werner07} provides several links between the max-sum labeling problem and \gls{wcsp}, as well as providing link to the \gls{lp} approach to the max-sum problem (and thus implicitly to \gls{wcsp}).
+The definition of a max-sum labeling problem is intuitive, and we will see that a \gls{wcsp} according to our definition may be rewritten as a max-sum problem.
+
+\begin{definition}[Max-sum problem \parencite{Werner07}]
+	A binary max-sum problem labeling problem is defined as maximizing a sum of unary and binary functions of discrete variables, \emph{i.e.} as computing
+	\begin{equation*}
+		\max_{x\in X^T}\left[
+			\sum_{t\in T}g_t(x_t) + \sum_{\{t,t'\}\in E}g_{tt'}(x_t,x_{t'})
+		\right],
+	\end{equation*}
+	where an undirected graph \((T,E)\), a finite set \(X\) and numbers \(g_t(x_t), g_{tt'}(x_t,x_{t'}) \in \R\cup\{-\infty\}\) are given.
+\end{definition}
+
+It is not immediately obvious that the \gls{wcsp} may be expressed as a max-sum problem.
+\Textcite{Bistarelli97} provide a framework for \emph{semiring-based \glspl{csp}}, which \textcite{Werner07} uses to indicate that the regular \gls{csp} is closely related to the max-sum problem.
+% [todo] - check the following claim!
+Even with our modified definition of \glspl{wcsp}, the reasoning in \textcite[\pno~230]{Bistarelli97} holds insofar that the semiring formulation of our definition, \(\langle \Rminus\cup\{-\infty\}, \max*, +, -\infty, 0 \rangle\), defines a c-semiring.
+As mentioned by \textcite[\pno~3]{Werner07}, the max-sum problem is defined by the semiring \(\langle \R\cup\{-\infty\}, \max*, +, -\infty, 0 \rangle\), which means a \gls{wcsp} should be expressible in terms of a max-sum problem since the only difference is in their domain.
+We will now describe an explicit transformation from our definition of \glspl{wcsp} into a max-sum problem, in order to use the in-the-middle algorithm on \glspl{wcsp} in general.
+
+% [todo] - provide explicit conversion
