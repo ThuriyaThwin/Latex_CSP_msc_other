@@ -1,0 +1,98 @@
+\section[Linear programming theory]{\acrlong{lp} theory and the original in-the-middle algorithm}
+The in-the-middle algorithm applied to \gls{lp} problems was originally described by \textcite{Wedelin95}, and has since been extensively applied to large \acrlong{lp} problems (specifically set covering problems) in the airline industry.
+We will briefly describe the algorithm and an associated heuristic, in order to provide the reader with a good understanding of the algorithm, before we apply it to \gls{csp} and max-sum problems further on. A more recent description of the algorithm is also available \parencite{Wedelin13}, which considers some of the applications to max-sum problems.
+
+As detailed by \textcite{Wedelin95}, the algorithm is designed to solve large scale binary integer programming problems.
+In this thesis, we choose to consider problems
+\begin{equation}
+	\label{eq:lp-ilp}
+	\begin{gathered}
+		\max* cx \\
+		\text{s.t. } Ax = b, \\
+		x_j \in \{0,1\},
+	\end{gathered}
+\end{equation}
+where \(A\) is binary\footnote{This may be extended to \(a_{ij}\in\{-1,0,1\}\) \parencite{Wedelin13}.} and \(b\) is integer.
+This problem is NP-hard, and many difficult problems such as set partitioning and set covering may be conveniently stated in this way.
+
+Observing the Lagrangian relaxation of \eqref{eq:lp-ilp}, \emph{i.e.}
+\begin{equation}
+	\label{eq:lp-ilp-relax}
+	\max*[0\leq x\leq1] cx + y(b-Ax),
+\end{equation}
+we may define the \emph{reduced cost vector} \(\bar{c}=c-yA\).
+It is then obvious that we may express the solution to \eqref{eq:lp-ilp-relax} as
+\begin{equation*}
+	x_j = 
+	\begin{cases}
+		1, &\quad \text{if \(\bar{c}_j > 0\)}, \\
+		0\text{ or }1, &\quad \text{if \(\bar{c}_j = 0\)}, \\
+		0, &\quad \text{if \(\bar{c}_j < 0\)}.
+	\end{cases}
+\end{equation*}
+A unique integer solution to \eqref{eq:lp-ilp} is guaranteed if \(\bar{c}\) is nonzero (otherwise, finding a feasible solution is difficult), and it is therefore interesting to find some \(y\) for which this is true.
+In cases where such \(y\) may not exist, the algorithm applies a heuristic (which will be described later).
+
+\subsection{The in-the-middle algorithm}
+The algorithm, when expressed without its approximative heuristic, may be viewed as a simple coordinate search.
+Iterating over \(y\), each \(y_i\) is chosen so that the solution \(x\) to \eqref{eq:lp-ilp-relax} satisfies the \(i\)th constraint of \(Ax=b\).
+
+The general idea is to choose \(y_i\) so that the corresponding elements of \(\bar{c}\), which we will denote \(\bar{c}^i\) (\emph{i.e.} \(\bar{c}^i = \{\bar{c}_j \mid a_{ij} = 1\}\)), are non-zero with exactly \(b_i\) positive elements.
+Considering the case of binary \(a_{ij}\), we may choose two \emph{critical values} \(r^+\) and \(r^-\), where \(r^+\) is the \(b_i\)th largest element of \(\bar{c}^i\) and \(r^+\) is the \((b_i+1)\)th largest.
+The new value \(y_i\) is now chosen as \(y_i \coloneq y_i + \frac{r^+ + r^-}{2}\).
+By iteratively applying this update to each constraint until sign changes in \(\bar{c}\) no longer occur, a solution \(x\) which satisfies \eqref{eq:lp-ilp} may be obtained (assuming \(\bar{c}_j\neq0\)).
+Pseudo-code describing these operations may be seen in \cref{alg:itm-lp}.
+
+\begin{algorithm}[tbp]
+	\Repeat{no sign changes in \(\bar{c}\)}{
+		\ForAll{constraints \(i\) in \(A\)}{
+			\(r^+ \leftarrow b_i\text{th largest element of }\bar{c}^i\) \;
+			\(r^- \leftarrow (b_i+1)\text{th largest element of }\bar{c}^i\) \;
+			\(y_i \leftarrow y_i + \frac{r^+ + r^-}{2}\) \;
+		}
+	}
+
+	\caption{The in-the-middle algorithm without approximation.}
+	\label{alg:itm-lp}
+\end{algorithm}
+
+For simple problems this algorithm is very efficient, but for many problems the algorithm converges to a situation where many elements in \(\bar{c}\) are \(0\), and no integer solution is found.
+To remedy this problem, a heuristic is applied (thus making the algorithm approximative instead of exact).
+
+\subsection{The in-the-middle heuristic}
+The heuristic used in the in-the-middle algorithm is designed to enforce \(\bar{c}_j\neq0\) and as a consequence guarantee that the algorithm finds integer solutions to \eqref{eq:lp-ilp}.
+Ideally, the modifications to \(\bar{c}\) should be as small as possible to avoid distorting the problem too much (and providing poor approximative solutions).
+A parameter \(\alpha\) is therefore introduced, which will control the degree of approximation introduced by the heuristic.
+When \(\alpha=0\), no approximation is applied.
+
+In essence, the heuristic consists of a modification of the update procedure described above, where the dual solutions \(\bar{c}_j\) are modified with invariant offsets \(s_j\).
+Before each update is performed, previous offsets \(s^i\) (where \(s^i\) is defined analogously to \(\bar{c}^i\)) are removed from the reduced costs \(\bar{c}^i\).
+After the update, new offsets are re-applied to \(\bar{c}^i\), in effect moving the reduced costs away from \(0\).
+The offsets are based on the difference between the two critical values used by the exact algorithm, so that
+\begin{equation*}
+	\bar{c}_j \coloneq \bar{c}_j + \alpha\sgn{\bar{c}_j}\frac{r^+-r^-}{2}.
+\end{equation*}
+The resulting pseudo-code may be seen in \cref{alg:itm-lp-heur}.
+
+\begin{algorithm}[tbp]
+	% [review] - express loops over j more elegantly
+	\Repeat{no sign changes in \(\bar{c}\)}{
+		\ForAll{constraints \(i\) in \(A\)}{
+			\lForAll{\(j\)}{\(\bar{c}^i_j \leftarrow \bar{c}^i_j - s^i_j\)}
+			\(r^+ \leftarrow b_i\text{th largest element of }\bar{c}^i\) \;
+			\(r^- \leftarrow (b_i+1)\text{th largest element of }\bar{c}^i\) \;
+			\(y_i \leftarrow y_i + \frac{r^+ + r^-}{2}\) \;
+			\ForAll{\(j\)}{
+				\(s^i_j \leftarrow \alpha\sgn{\bar{c}^i_j}\frac{r^+-r^-}{2}\) \;
+				\(\bar{c}^i_j \leftarrow \bar{c}^i + s^i\) \;
+			}
+		}
+	}
+
+	\caption{The in-the-middle algorithm with approximation.}
+	\label{alg:itm-lp-heur}
+\end{algorithm}
+
+The parameter \(\alpha\) is hard to choose, and it is difficult to know in advance what value of \(\alpha\) may work well for any given problem instance.
+To address this issue, a sweep strategy may be applied, which starts at \(\alpha=0\) and progressively raises this value until an integer solution is found. 
+In addition, ties in the problem may be resolved by adding random offsets to the reduced costs if deemed necessary.

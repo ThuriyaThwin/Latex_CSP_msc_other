@@ -1,5 +1,9 @@
-\NewDocumentCommand\R{}{\ensuremath{\mathbb{R}}}
+%\NewDocumentCommand\R{}{\ensuremath{\mathbb{R}}}
+\NewDocumentCommand\Nplus{}{\ensuremath{\N_{\geq0}}}
+\NewDocumentCommand\Nminus{}{\ensuremath{\N_{\leq0}}}
 \NewDocumentCommand\Rplus{}{\ensuremath{\R_{\geq0}}}
 \NewDocumentCommand\Rminus{}{\ensuremath{\R_{\leq0}}}
 \DeclareMathOperator\costoperator{\mathsf{cost}}
 \NewDocumentCommand\cost{m}{\costoperator\left(#1\right)}
+\DeclareMathOperator\sgnoperator{\mathrm{sgn}}
+\NewDocumentCommand\sgn{m}{\sgnoperator\left(#1\right)}
