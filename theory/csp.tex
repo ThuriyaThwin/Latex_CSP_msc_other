@@ -4,11 +4,12 @@ By annotating each constraint of a \gls{csp} with a value denoting the impact of
 Each constraint will take different values (\emph{costs}) depending on the variable assignment, and the cost function will depend on these in some unspecified manner (commonly as the sum of all constraint costs).
 Such problems are also called \glspl{cfn} in some litterature \parencite{Allouche14}.
 
+\label{page:wcsp-semiring}
 A \gls{wcsp}, when defined as a maximization problem, has an associated semiring\footnote{In fact, even regular \glspl{csp} have an associated semiring: \(\langle \{0,1\}, \vee, \wedge, 0, 1 \rangle\).} \(\langle \Rminus\cup\{-\infty\}, \max*, +, -\infty, 0 \rangle\) \parencite[\pno~211]{Bistarelli99} which will be discussed further on.
 Such a problem also includes a distinction between \emph{soft} and \emph{hard} constraints.
 We will use a formal definition of \gls{wcsp} similar to the one given by \textcite[\pno~3]{Allouche14}\multfootnote{In fact, our definition is equivalent to the triple \(\langle X, W, \infty \rangle\) using the definition given by \textcite{Allouche14}, adapted for maximization instead of minimization.;Note that this definition may also be used to define regular \glspl{csp}, by only including hard constraints.}.
 
-\begin{definition}[\Acrlong{wcsp}]
+\begin{definition}[\Acrlong{wcsp}] \label{def:wcsp}
 	A \gls{wcsp} is a tuple \(\langle X, W \rangle\) where \(X=\{1,\dotsc,n\}\) is a set of \(n\) discrete variables and \(W\) is a set of non-positive functions.
 	Each variable \(i \in X\) has a finite domain \(D_i\) of values that can be assigned to it.
 	A function \(w_S \in W\), with scope \(S \subseteq X\), is a function \(w_S : D_S \mapsto \{\alpha \in \Rminus \cup \{-\infty\}\}\).
@@ -37,36 +38,25 @@ Then, each variable \(z_i^r\) corresponds to the \(i\)th variable taking the \(r
 To ensure that exactly one value from each domain is chosen, additional constraints \(\sum_{r\in D_i} x_i^r = 1, \forall i\) are added --- we will see that these are implicitly enforced by the in-the-middle algorithm.
 
 \subsection{Max-sum formulation of \acrshortpl{wcsp}}
-A problem closely related to \glspl{wcsp} is the max-sum labeling problem.
-\Textcite{Werner07} provides several links between the max-sum labeling problem and \gls{wcsp}, as well as providing link to the \gls{lp} approach to the max-sum problem (and thus implicitly to \gls{wcsp}).
-The definition of a max-sum labeling problem is intuitive, and we will see that a \gls{wcsp} according to our definition may be rewritten as a max-sum problem.
+The max-sum problem is most commonly defined as
+\begin{equation}
+	\label{eq:max-sum-orig}
+	\max*[w] f(w) = \sum_k g_k(w^k) + C,
+\end{equation}
+where \(g_k(w^k) \in \R\) are distinct arbitrary functions over \(w^k \subseteq w\).
+Modelling a \gls{wcsp} in terms of a max-sum problem is fairly straight-forward, and will be intstrumental in solving these problems using the in-the-middle algorithm.
+Using the fact that max-sum problems have an associated semiring \(\langle\R\cup\{-\infty\},\max*,+,-\infty,0\rangle\) \parencite[\pno~3]{Werner07}, which happens to be the same semiring as that of \glspl{wcsp} (see \cpageref{page:wcsp-semiring}), we can provide a link between max-sum problems and \glspl{wcsp}.
 
-% [review] - use a more compatible definition? is there one in Bistarelli97 or associated papers?
-% there is also the "relaxed max-sum problem" on page 5 of Werner07
-% the Werner07 explanation later (semirings) illustrates the connection between T/F <-> 0/-inf ands AND/OR <-> +/max from p. 3 of Wedelin08, which is useful but perhaps needs to be more explicit?
-% Werner07 only compares max-sum and CSP; try to argue from the respective semirings directly instead of refering to Werner07?
-\begin{definition}[Max-sum problem \parencite{Werner07}]
-	A binary max-sum problem labeling problem is defined as maximizing a sum of unary and binary functions of discrete variables, \emph{i.e.} as computing
-	\begin{equation*}
-		\max[x\in X^T]*\left[
-			\sum_{t\in T}g_t(x_t) + \sum_{\{t,t'\}\in E}g_{tt'}(x_t,x_{t'})
-		\right],
-	\end{equation*}
-	where an undirected graph \((T,E)\), a finite set \(X\) and numbers \(g_t(x_t), g_{tt'}(x_t,x_{t'}) \in \R\cup\{-\infty\}\) are given.
-\end{definition}
+Observing the definitions of max-sum problems and \glspl{wcsp}, it is clear that the set \(S\) corresponds to some \(w^k\) in the max-sum problem definition and that the \(X\) in our \gls{wcsp} corresponds to \(w\) in the max-sum problem.
+Next, consider the functions \(w_S\) (\emph{i.e.} all constraints of the \gls{wcsp} defined on the subset \(S\subseteq X\)).
+These are in fact equivalent to the \(g_k\) defined in our max-sum problem, with \(g_k(w^k) = w_S(x_S)\), where \(x_S \in D_S \subseteq D\) corresponds to \(w^k \subseteq w\).
+For brevity, \(x_S\) may be written as simply \(x\).
 
-It is not immediately obvious that the \gls{wcsp} may be expressed as a max-sum problem.
-\Textcite{Bistarelli97} provide a framework for \emph{semiring-based \glspl{csp}}, which \textcite{Werner07} uses to indicate that the regular \gls{csp} is closely related to the max-sum problem.
+All that remains is to relate the objective function of our max-sum problem to the \gls{wcsp}.
+We may immediately notice that \(\sum_k g_k(w^k) = \sum w_S(x) = \cost{x}\), and therefore we may express our \gls{wcsp} as the max-sum problem
+\begin{equation}
+	\label{eq:max-sum-wcsp}
+	\max*[x\in D] \cost{x} = \sum_S w_S(x),
+\end{equation}
+where the constant \(C\) of \eqref{eq:max-sum-orig} is set to \(0\).
 
-% [review] - Bistarelli99, page 211, defines the c-semiring exactly as in our case!
-Even with our modified definition of \glspl{wcsp}, the reasoning in \textcite[\pno~230]{Bistarelli97} holds insofar that the semiring formulation of our definition, \(\langle \Rminus\cup\{-\infty\}, \max*, +, -\infty, 0 \rangle\), defines a c-semiring.
-As mentioned by \textcite[\pno~3]{Werner07}, the max-sum problem is defined by the semiring \(\langle \R\cup\{-\infty\}, \max*, +, -\infty, 0 \rangle\), which means a \gls{wcsp} should be expressible in terms of a max-sum problem since the only difference is in their domain.
-We will now describe an explicit transformation from our definition of \glspl{wcsp} into a max-sum problem, in order to use the in-the-middle algorithm on \glspl{wcsp} in general.
-
-Consider the \enquote{original} \gls{wcsp} \(\langle X, W \rangle\). Now, let the finite set \(Z = \{z_i^r \mid i\in X, r\in D_i\}\) as given by the direct encoding described on \cpageref{term:direct-encoding}, and let the undirected graph \((T,E)\) ...
-% [todo] - continue with explicit conversion
-
-The resulting max-sum problem may be expressed in more intuitively as
-\begin{equation*}
-	\max*[x\in Z] \sum_{S} w_S(x).
-\end{equation*}
