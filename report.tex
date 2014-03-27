@@ -22,12 +22,20 @@
 	\usepackage[swedish,english]{babel}
 \fi
 %% (end)
-% [review] - title styles?
-\usepackage[titles=false]{chs-msc-thesis}
+% tikz stuff
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows,positioning}
+\tikzset{>=stealth,pointer/.style={->,thick,shorten <=2pt,shorten >=2pt}}
+% subcaptions
+\usepackage{caption,subfig}
+\captionsetup[subfigure]{font={it,small},labelfont={bf,small}}
+% more packages
+\usepackage{chs-msc-thesis}
 \usepackage{csquotes}
 \usepackage[algoruled,algochapter]{algorithm2e}
 \usepackage{ntheorem}
 \usepackage{mathtools}
+\usepackage[binary-units=true]{siunitx}
 \usepackage[authordate,backend=biber,firstinits=true,useprefix=true]{biblatex-chicago} % noibid?
 \usepackage[toc,acronym,nomain]{glossaries}
 \usepackage{hyperref}
@@ -48,6 +56,7 @@
 %\newtheorem{example}{Example}
 
 \DontPrintSemicolon
+\sisetup{locale=DE}
 
 \makeatletter
 % equivalent to dashed=false in standard biblatex styles
@@ -59,18 +68,21 @@
 \makeatother
 \ExplSyntaxOn
 % circumvents lack of italic small-caps by redefining title styles
-\iffalse
-\cs_if_exist_use:NT\addtokomafont{{section}{\sffamily}}
-\cs_if_exist_use:NT\addtokomafont{{subsection}{\sffamily\normalsize}}
-\titleformat{\subsection}[hang]{
+\titleformat{\section}[block]{
+	\vspace*{.25\baselineskip}\centering
 	\__unless_usekomafont:n{\large}
-	\__maybe_usekomafont:n{subsection}
-}{\llap{\thesubsection\hspace{1ex}}}{0pt}{{#1}}[\vspace{-.5\baselineskip}]
-\cs_if_exist_use:NT\addtokomafont{{subsubsection}{\sffamily}}
-\titleformat{\subsubsection}[hang]{
-	\__maybe_usekomafont:n{subsubsection}
-}{\llap{\thesubsubsection\hspace{1ex}}}{0pt}{\textit{#1}}[\vspace{-.5\baselineskip}]
-\fi
+	\__maybe_usekomafont:n{section}
+}{\thesection}{1ex}{\textsc{\MakeLowercase{#1}}}[\vspace{-.5\baselineskip}]
+%\cs_if_exist_use:NT\addtokomafont{{section}{\sffamily}}
+%\cs_if_exist_use:NT\addtokomafont{{subsection}{\sffamily\normalsize}}
+%\titleformat{\subsection}[hang]{
+%	\__unless_usekomafont:n{\large}
+%	\__maybe_usekomafont:n{subsection}
+%}{\llap{\thesubsection\hspace{1ex}}}{0pt}{{#1}}[\vspace{-.5\baselineskip}]
+%\cs_if_exist_use:NT\addtokomafont{{subsubsection}{\sffamily}}
+%\titleformat{\subsubsection}[hang]{
+%	\__maybe_usekomafont:n{subsubsection}
+%}{\llap{\thesubsubsection\hspace{1ex}}}{0pt}{\textit{#1}}[\vspace{-.5\baselineskip}]
 \ExplSyntaxOff
 
 \SetupMetadata{
@@ -100,8 +112,13 @@
 	\cleardoublepage
 	\tableofcontents
 	
+	% [review] - Kolla tempus, n:te person osv.
+
 	\mainmatter
 	\chapter{Introduction}
+
+	Also mention application to probabilistic problems by log-transformation here.
+
 	\section{Background}
 	\section{Related work}
 	\section{Methodology}
@@ -110,18 +127,20 @@
 	\input{theory.tex}
 	\input{theory/lp.tex}
 	\input{theory/csp.tex}
+	% [review] - beskriv Max-CSP?
 	\input{theory/algorithm.tex}
 
-	\chapter{Implementation}
-	\section{Data representation}
-	\subsection{Input format: \textsc{wcsp}}
-	\subsection{Internal storage}
+	\chapter{Method}
+	\input{method.tex}
+	\input{method/implementation.tex}
+	\input{method/benchmarking.tex}
 
 	\chapter{Results}
-	\section{Standard algorithm}
-	\section{Specialized updates for ??? problems}
+	\input{results.tex}
+	\input{results/standard.tex}
+	\input{results/specialized.tex}
 
-	\chapter{???}
+	%\chapter{???}
 	% [todo] - check how the algorithm exposes/utilizes the notions in Bordeaux08?
 
 	\chapter{Conclusions}

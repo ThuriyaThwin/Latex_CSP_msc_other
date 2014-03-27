@@ -1,0 +1,25 @@
+\section{Benchmarking}
+In order to determine the efficiency of the algorithm, and determine what problem paradigm the algorithm is most usefully applied to, extensive benchmark testing will be performed.
+The algorithm was tested against the large problem set provided by \textcite{deGivry14}, which includes problems from the \gls{mrf}, \gls{wpms}, \gls{cfn}, Max-\gls{csp}, \gls{cp} and \gls{cvpr} domains.
+All problems in the set are available in the \textsc{wcsp} file format.
+Exact data (elapsed time and obtained solution for every solver, as well as proven optima and upper bounds for every problem) for these data sets have been obtained directly from \citeauthor{deGivry14}.
+
+Since the algorithm, when used with the corresponding huristic, is an inexact algorithm (the solvers benchmarked by \textcite{deGivry14} are all exact solvers) the quality of the solution must be compared in addition to the elapsed time per problem.
+Two statistict were therefore extracted from the benchmarks.
+
+First, a relative deviation of the obtained solution is calculated as
+\begin{equation*}
+	\frac{f - \bar{f}}{\mathrm{UB} - \bar{f}},
+\end{equation*}
+where \(f\) is the solution found by the algorithm, \(\bar{f}\) is the proven optimum and \(\mathrm{UB}\) is the upper bound of the problem as given by \textcite[\pno~??]{deGivry14}.
+Then, a relative deviation of runtime is calculated as
+\begin{equation*}
+	\begin{cases}
+		\frac{t}{t*}, &\quad t < t*, \\
+		\frac{t_{\text{max}} - t}{t_{\text{max}} - t*}, &\quad t \geq t*,
+	\end{cases}
+\end{equation*}
+where \(t_{\text{max}}\) is the upper time limit, \(t*\) is the runtime of the best solver \parencite[of those tested by]{deGivry14} and \(t\) is the elapsed time.
+
+All problem instances were limited in runtime by the upper time limit \(t_{\text{max}} = \SI{1200}{\second}\), and the benchmarks were run on an Intel~Core~i5 processor at \SI{2.3}{\giga\hertz}, with \SI{8}{\gibi\byte} RAM.
+This is comparable to the conditions of the benchmark performed by \textcite{deGivry14}, and should ensure that the comparisons are valid.

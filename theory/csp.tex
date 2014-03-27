@@ -31,8 +31,7 @@ In some cases we are only interested in finding a feasible solution, but wheneve
 \label{term:direct-encoding}
 In order to solve \glspl{wcsp} using the in-the-middle method, the variable set \(X\) has to be transformed --- the in-the-middle algorithm was originally designed to solve binary \gls{lp} instances \parencite{Wedelin95}, and the variant discussed in this thesis is designed to operate on binary representations as well.
 
-The \gls{wcsp} is transformed by \emph{encoding} each variable \(i\in X\) using what \textcite[\pno~5]{Allouche14} refers to as \emph{direct encoding}, which is a more general variation of the \emph{variable component} defined by \textcite[\pno~5]{Wedelin08}.
-
+The \gls{wcsp} is transformed by \emph{encoding} each variable \(i\in X\) using a more general variation of the \emph{variable component} defined by \textcite[\pno~5]{Wedelin08}.
 The encoding may be summarized as follows: for every variable \(i\in X\), introduce \(\abs{D_i}\) binary variables \(z_i^r, r\in D_i\) (and modify the affected constraints \(w_S\) in the obvious manner). 
 Then, each variable \(z_i^r\) corresponds to the \(i\)th variable taking the \(r\)th value of its domain \(D_i\).
 To ensure that exactly one value from each domain is chosen, additional constraints \(\sum_{r\in D_i} x_i^r = 1, \forall i\) are added --- we will see that these are implicitly enforced by the in-the-middle algorithm.
@@ -59,4 +58,5 @@ We may immediately notice that \(\sum_k g_k(w^k) = \sum w_S(x) = \cost{x}\), and
 	\max*[x\in D] \cost{x} = \sum_S w_S(x),
 \end{equation}
 where the constant \(C\) of \eqref{eq:max-sum-orig} is set to \(0\).
+As before, we say that a solution \(x\) is \emph{feasible} if \(\cost{x}>-\infty\), and that the problem is feasible if the optimal solution is.
 
