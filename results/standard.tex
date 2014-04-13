@@ -3,8 +3,76 @@ jfr. med deGivry, plocka lite kondenserad data från excel-bladet som visar vilk
 
 
 \begin{figure}
-	%\subfloat[Test]{\input{figs/times-per-paradigm.tikz}} \\
-	%\subfloat[Test]{\input{figs/time-diff-per-paradigm.tikz}} \\
-	%\subfloat[Test]{\input{figs/quality-per-paradigm.tikz}} \\
-	\caption{Histograms, lol}
+	\centering
+	\input{figs/quality-per-paradigm.tikz}
+	\caption{Distribution of solution quality per category.}
+	\label{fig:quality-per-paradigm}
 \end{figure}
+
+\begin{figure}
+	\centering
+	\input{figs/times-per-paradigm.tikz}
+	\caption{Distribution of runtime per category.}
+	\label{fig:time-per-paradigm}
+\end{figure}
+
+
+As indicated by \cref{tab:comparative-results}, the performance of the in-the-middle algorithm depends greatly on the problem domain.
+For instance, while the algorithm is \emph{very} efficient on max-\gls{csp} problems, the approximative solutions found in that particular problem domain are fairly bad.
+This, coupled with the fact that efficient exact solvers exist, makes the algorithm less interesting in that domain.
+
+The most interesting problem domains, judging by the results in \cref{tab:comparative-results}, are \gls{cvpr}, max-\gls{csp} and \gls{mrf}.
+Results in these categories are characterized by a small loss in solution quality compensated by a consideral improvement in runtime.
+
+\begin{table}
+	\centering
+	% Updated 2014-04-13
+	\caption{Solution quality and runtime difference. For each problem instance given by \textcite{deGivry14}, the in-the-middle solver runtime and objective value is compared with the best solver found by \citeauthor{deGivry14} as described on \cpageref{pg:bench-method}. The last column indicates the number of problems in the set, and how many the algorithm successfully solved (\emph{i.e.} found a feasible solution) within \SI{20}{\minute}.}
+	\label{tab:comparative-results}
+	\begin{tabular}{ccS[round-mode=places,round-precision=2]
+					  S[round-mode=places,round-precision=2]c}
+		\toprule
+			{} & {} & \multicolumn{2}{c}{Median (\si{\percent})} & {} \\
+			\cmidrule(rl){3-4}
+			{Category} & {Set} & {Time diff.} & {Solution diff.} & {Solved} \\
+		\midrule
+			\acrshort{cfn}	&	Auction	&	-0.38941665	&	1.75804865	&	170/170 \\
+			\acrshort{cfn}	&	CELAR	&	78.62115385	&	0.02693055	&	16/16 \\
+			\acrshort{cfn}	&	Pedigree	&	-0.14204165	&	3.84460550	&	4/10 \\
+			\acrshort{cfn}	&	ProteinDesign	&	-1.70025000	&	0.01159545	&	10/10 \\
+			\acrshort{cfn}	&	SPOT5	&	{n/a}	&	{n/a}	&	0/20 \\
+			\acrshort{cfn}	&	Warehouse	&	{n/a}	&	{n/a}	&	0/55 \\
+			\acrshort{cp}	&	---	&	{n/a}	&	{n/a}	&	0/35 \\
+			\acrshort{cvpr}	&	ChineseChars	&	95.87654165	&	0.35237695	&	100/100 \\
+			\acrshort{cvpr}	&	ColorSeg	&	{n/a}	&	{n/a}	&	0/3 \\
+			\acrshort{cvpr}	&	ColorSeg-\{4,8\}	&	{n/a}	&	{n/a}	&	0/18 \\
+%			\acrshort{cvpr}	&	ColorSeg-4	&	{n/a}	&	{n/a}	&	0/9 \\
+%			\acrshort{cvpr}	&	ColorSeg-8	&	{n/a}	&	{n/a}	&	0/9 \\
+			\acrshort{cvpr}	&	GeomSurf-3	&	74.24870370	&	1.14060755	&	300/300 \\
+			\acrshort{cvpr}	&	GeomSurf-7	&	-0.51702070	&	1.29686805	&	300/300 \\
+			\acrshort{cvpr}	&	InPainting-\{4,8\}	&	{n/a}	&	{n/a}	&	0/4 \\
+%			\acrshort{cvpr}	&	InPainting-4	&	{n/a}	&	{n/a}	&	0/2 \\
+%			\acrshort{cvpr}	&	InPainting-8	&	{n/a}	&	{n/a}	&	0/2 \\
+			\acrshort{cvpr}	&	Matching	&	29.61402980	&	2.10526320	&	4/4 \\
+			\acrshort{cvpr}	&	MatchingStereo	&	{n/a}	&	{n/a}	&	0/2 \\
+			\acrshort{cvpr}	&	ObjectSeg	&	14.08194440	&	0.98150450	&	5/5 \\
+			\acrshort{cvpr}	&	PhotoMontage	&	{n/a}	&	{n/a}	&	0/2 \\
+			\acrshort{cvpr}	&	SceneDecomp	&	99.90955060	&	43.69204310	&	715/715 \\
+			Max-\acrshort{csp}	&	BlackHole	&	10.50000000	&	2.70000000	&	37/37 \\
+			Max-\acrshort{csp}	&	Coloring	&	-0.00079150	&	0.55000000	&	22/22 \\
+			Max-\acrshort{csp}	&	Composed	&	-0.02604165	&	1.35000000	&	80/80 \\
+			Max-\acrshort{csp}	&	EHI	&	99.81300000	&	18.60000000	&	200/200 \\
+			Max-\acrshort{csp}	&	Geometric	&	-0.06608330	&	3.20000000	&	100/100 \\
+			Max-\acrshort{csp}	&	Langford	&	78.32013890	&	1.15000000	&	4/4 \\
+			Max-\acrshort{csp}	&	QCP	&	36.54796000	&	4.05000000	&	60/60 \\
+			\acrshort{mrf}	&	DBN	&	-0.02612500	&	0.05144450	&	108/108 \\
+			\acrshort{mrf}	&	Grid	&	96.21333330	&	0.83243000	&	21/21 \\
+			\acrshort{mrf}	&	ImageAlignment	&	-4.86886685	&	0.03140500	&	10/10 \\
+			\acrshort{mrf}	&	Linkage	&	{n/a}	&	{n/a}	&	0/22 \\
+			\acrshort{mrf}	&	ObjectDetection	&	99.50541670	&	7.78720400	&	37/37 \\
+			\acrshort{mrf}	&	ProteinFolding	&	-6.63669720	&	0.52854400	&	21/21 \\
+			\acrshort{mrf}	&	Segmentation	&	-0.24935450	&	0.00908050	&	100/100 \\
+			\acrshort{wpms}	&	---	&	{n/a}	&	{n/a}	&	0/427 \\
+		\bottomrule
+	\end{tabular}
+\end{table}

@@ -7,11 +7,8 @@ Exact data (elapsed time and obtained solution for every solver, as well as prov
 Since the algorithm, when used with the corresponding huristic, is an inexact algorithm (the solvers benchmarked by \textcite{deGivry14} are all exact solvers) the quality of the solution must be compared in addition to the elapsed time per problem.
 Two statistict were therefore extracted from the benchmarks.
 
-First, a relative deviation of the obtained solution is calculated as
-\begin{equation*}
-	\frac{f - \bar{f}}{\mathrm{UB} - \bar{f}},
-\end{equation*}
-where \(f\) is the solution found by the algorithm, \(\bar{f}\) is the proven optimum and \(\mathrm{UB}\) is the upper bound of the problem as given by \textcite[\pno~??]{deGivry14}.
+\label{pg:bench-method}
+First, a relative deviation of the obtained solution is calculated as\(\left(f - \bar{f}\right)/\mathrm{UB}\), where \(f\) is the solution found by the algorithm, \(\bar{f}\) is the proven optimum and \(\mathrm{UB}\) is the upper bound of the problem as given by \textcite[\pno~??]{deGivry14}.
 Then, a relative deviation of runtime is calculated as
 \begin{equation*}
 	\begin{cases}
@@ -19,7 +16,7 @@ Then, a relative deviation of runtime is calculated as
 		\frac{t_{\text{max}} - t}{t_{\text{max}} - t*}, &\quad t \geq t*,
 	\end{cases}
 \end{equation*}
-where \(t_{\text{max}}\) is the upper time limit, \(t*\) is the runtime of the best solver \parencite[of those tested by]{deGivry14} and \(t\) is the elapsed time.
+where \(t_{\text{max}}\) is the upper time limit, \(t*\) is the runtime of the best solver \parencite[of those tested by][]{deGivry14} and \(t\) is the elapsed time.
 
 All problem instances were limited in runtime by the upper time limit \(t_{\text{max}} = \SI{1200}{\second}\), and the benchmarks were run on an Intel~Core~i5 processor at \SI{2.3}{\giga\hertz}, with \SI{8}{\gibi\byte} RAM.
 This is comparable to the conditions of the benchmark performed by \textcite{deGivry14}, and should ensure that the comparisons are valid.
