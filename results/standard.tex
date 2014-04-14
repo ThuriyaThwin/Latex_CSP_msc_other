@@ -18,44 +18,39 @@ jfr. med deGivry, plocka lite kondenserad data från excel-bladet som visar vilk
 
 
 As indicated by \cref{tab:comparative-results}, the performance of the in-the-middle algorithm depends greatly on the problem domain.
-For instance, while the algorithm is \emph{very} efficient on max-\gls{csp} problems, the approximative solutions found in that particular problem domain are fairly bad.
-This, coupled with the fact that efficient exact solvers exist, makes the algorithm less interesting in that domain.
+For instance, while the algorithm is \emph{very} efficient on some max-\gls{csp} problems, the approximative solutions found for those problems are fairly bad.
 
-The most interesting problem domains, judging by the results in \cref{tab:comparative-results}, are \gls{cvpr}, max-\gls{csp} and \gls{mrf}.
-Results in these categories are characterized by a small loss in solution quality compensated by a consideral improvement in runtime.
+The most interesting problem domain, judging by the results in \cref{tab:comparative-results}, is \gls{cvpr}, with some problem sets in \gls{cfn}, max-\gls{csp} and \gls{mrf} being interesting as well.
+Results in the two former categories are characterized by a small loss in solution quality compensated by a consideral improvement in runtime, although this is not true for all the problem sets in those categories.
 
 \begin{table}
 	\centering
 	% Updated 2014-04-13
-	\caption{Solution quality and runtime difference. For each problem instance given by \textcite{deGivry14}, the in-the-middle solver runtime and objective value is compared with the best solver found by \citeauthor{deGivry14} as described on \cpageref{pg:bench-method}. The last three columns indicate the number of problems in the set, and how many the algorithm successfully solved (\emph{i.e.} found a feasible solution) within \SI{20}{\minute}.}
+	\caption{Solution quality and runtime difference. For each problem instance given by \textcite{deGivry14}, the in-the-middle solver runtime and objective value is compared with the best solver found by \citeauthor{deGivry14} as described on \cpageref{pg:bench-method}. The last three columns indicate the number of problems in the set, and how many the algorithm successfully solved (\emph{i.e.} found a feasible solution) within \SI{1200}{\second}. Problem sets which have comparatively poor runtime performance have been faded.}
 	\label{tab:comparative-results}
-	\begin{tabular}{ccS[round-mode=places,round-precision=3]
+	\begin{tabu}{ccS[round-mode=places,round-precision=3]
 					  S[round-mode=places,round-precision=0]
-					  S[round-mode=places,round-precision=0]ccc}
+					  S[round-mode=places,round-precision=0]HHH}
 		\toprule
-			{} & {} & \multicolumn{3}{c}{Median} & \multicolumn{3}{c}{\(\#\) instances} \\
-			\cmidrule(rl){3-5} \cmidrule(rl){6-8}
+			{} & {} & \multicolumn{3}{c}{Median} & {}&{}&{}\\%\multicolumn{3}{c}{\(\#\) instances} \\
+			\cmidrule(rl){3-5} %\cmidrule(rl){6-8}
 			{Category} & {Set} & {Solution diff. (\si{\percent})} & {Our time (\si{\second})} & {Their time (\si{\second})} & {Our solved} & {Their solved} & {Total} \\
 		\midrule
-			\acrshort{cfn}	&	Auction	&	1.75804865	&	4.6730	&	0.0	&	170	&	170	&	170 \\
+\rowcolor{gray}	\textcolor{black}{\acrshort{cfn}}	&	Auction	&	1.75804865	&	4.6730	&	0.0	&	170	&	170	&	170 \\
 				&	CELAR	&	0.02693055	&	6.9325	&	22.5	&	16	&	16	&	16 \\
 				&	Pedigree	&	3.84460550	&	1.7045	&	3.0	&	4	&	10	&	10 \\
-				&	ProteinDesign	&	0.01159545	&	34.0100	&	2.0	&	10	&	10	&	10 \\
-				&	SPOT5	&	{n/a}	&	{n/a}	&	0.5	&	0	&	20	&	20 \\
-				&	Warehouse	&	{n/a}	&	{n/a}	&	0.0	&	0	&	55	&	55 \\
-			\acrshort{cp}	&	---	&	{n/a}	&	{n/a}	&	{n/a}	&	0	&	35	&	35 \\
+\rowcolor{gray}	&	ProteinDesign	&	0.01159545	&	34.0100	&	2.0	&	10	&	10	&	10 \\
+\rowcolor{gray}	&	SPOT5	&	{n/a}	&	{n/a}	&	0.5	&	0	&	20	&	20 \\
+\rowcolor{gray}	&	Warehouse	&	{n/a}	&	{n/a}	&	0.0	&	0	&	55	&	55 \\
+\rowcolor{gray}	\acrshort{cp}	&	---	&	{n/a}	&	{n/a}	&	{n/a}	&	0	&	35	&	35 \\
 			\acrshort{cvpr}	&	ChineseChars	&	0.35237695	&	49.4815	&	1200.0	&	100	&	100	&	100 \\
-				&	ColorSeg	&	{n/a}	&	{n/a}	&	1200.0	&	0	&	3	&	3 \\
-				&	ColorSeg-4	&	{n/a}	&	{n/a}	&	1037.0	&	0	&	9	&	9 \\
-				&	ColorSeg-8	&	{n/a}	&	{n/a}	&	1200.0	&	0	&	7	&	9 \\
-				&	GeomSurf-3	&	1.14060755	&	2.7020	&	11.0	&	300	&	300	&	300 \\
-				&	GeomSurf-7	&	1.29686805	&	9.0945	&	3.0	&	300	&	300	&	300 \\
-				&	InPainting-4	&	{n/a}	&	{n/a}	&	600.5	&	0	&	2	&	2 \\
-				&	InPainting-8	&	{n/a}	&	{n/a}	&	1058.0	&	0	&	2	&	2 \\
+(!)				&	ColorSeg	&	{n/a}	&	{n/a}	&	1200.0	&	0	&	19	&	21 \\
+				&	GeomSurf	&	1.22292465	&	4.3900	&	6.0	&	600	&	600	&	600 \\
+(!)				&	InPainting	&	{n/a}	&	{n/a}	&	600.5	&	0	&	4	&	4 \\
 				&	Matching	&	2.10526320	&	2.0920	&	4.0	&	4	&	4	&	4 \\
-				&	MatchingStereo	&	{n/a}	&	{n/a}	&	1200.0	&	0	&	2	&	2 \\
+(!)				&	MatchingStereo	&	{n/a}	&	{n/a}	&	1200.0	&	0	&	2	&	2 \\
 				&	ObjectSeg	&	0.98150450	&	420.9690	&	432.0	&	5	&	5	&	5 \\
-				&	PhotoMontage	&	{n/a}	&	{n/a}	&	{n/a}	&	0	&	0	&	2 \\
+(!)				&	PhotoMontage	&	{n/a}	&	{n/a}	&	{n/a}	&	0	&	0	&	2 \\
 				&	SceneDecomp	&	43.69204310	&	0.4060	&	449.0	&	715	&	715	&	715 \\
 			Max-\acrshort{csp}	&	BlackHole	&	2.70000000	&	1.4510	&	1.0	&	37	&	37	&	37 \\
 				&	Coloring	&	0.55000000	&	0.0310	&	0.0	&	22	&	22	&	22 \\
@@ -66,12 +61,12 @@ Results in these categories are characterized by a small loss in solution qualit
 				&	QCP	&	4.05000000	&	0.2120	&	0.5	&	60	&	60	&	60 \\
 			\acrshort{mrf}	&	DBN	&	0.05144450	&	0.8705	&	0.0	&	108	&	108	&	108 \\
 				&	Grid	&	0.83243000	&	5.3500	&	161.0	&	21	&	21	&	21 \\
-				&	ImageAlignment	&	0.03140500	&	59.8440	&	1.5	&	10	&	10	&	10 \\
-				&	Linkage	&	{n/a}	&	{n/a}	&	2.0	&	0	&	22	&	22 \\
+\rowcolor{gray}	&	ImageAlignment	&	0.03140500	&	59.8440	&	1.5	&	10	&	10	&	10 \\
+\rowcolor{gray}	&	Linkage	&	{n/a}	&	{n/a}	&	2.0	&	0	&	22	&	22 \\
 				&	ObjectDetection	&	7.78720400	&	5.9350	&	1200.0	&	37	&	37	&	37 \\
-				&	ProteinFolding	&	0.52854400	&	91.1530	&	23.0	&	21	&	21	&	21 \\
+\rowcolor{gray}	&	ProteinFolding	&	0.52854400	&	91.1530	&	23.0	&	21	&	21	&	21 \\
 				&	Segmentation	&	0.00908050	&	3.2680	&	0.0	&	100	&	100	&	100 \\
-			\acrshort{wpms}	&	---	&	{n/a}	&	{n/a}	&	{n/a}	&	0	&	404	&	427 \\
+\rowcolor{gray}	\acrshort{wpms}	&	---	&	{n/a}	&	{n/a}	&	{n/a}	&	0	&	404	&	427 \\
 		\bottomrule
-	\end{tabular}
+	\end{tabu}
 \end{table}

@@ -7,3 +7,6 @@
 \NewDocumentCommand\cost{m}{\costoperator\left(#1\right)}
 \DeclareMathOperator\sgnoperator{\mathrm{sgn}}
 \NewDocumentCommand\sgn{m}{\sgnoperator\left(#1\right)}
+
+\newcolumntype{H}{>{\setbox0=\hbox\bgroup}c<{\egroup}@{}}
+\newcommand*\rowcolor[1]{\rowfont{\color{#1}}}
