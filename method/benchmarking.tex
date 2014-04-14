@@ -4,19 +4,13 @@ The algorithm was tested against the large problem set provided by \textcite{deG
 All problems in the set are available in the \textsc{wcsp} file format.
 Exact data (elapsed time and obtained solution for every solver, as well as proven optima and upper bounds for every problem) for these data sets have been obtained directly from \citeauthor{deGivry14}.
 
-Since the algorithm, when used with the corresponding huristic, is an inexact algorithm (the solvers benchmarked by \textcite{deGivry14} are all exact solvers) the quality of the solution must be compared in addition to the elapsed time per problem.
-Two statistict were therefore extracted from the benchmarks.
+Since the algorithm, when used with the corresponding huristic, is an inexact algorithm (while the solvers benchmarked by \textcite{deGivry14} are all exact solvers) the quality of the solution must be compared in addition to the elapsed time per problem.
+Two statistics were therefore extracted from the benchmarks.
 
 \label{pg:bench-method}
-First, a relative deviation of the obtained solution is calculated as\(\left(f - \bar{f}\right)/\mathrm{UB}\), where \(f\) is the solution found by the algorithm, \(\bar{f}\) is the proven optimum and \(\mathrm{UB}\) is the upper bound of the problem as given by \textcite[\pno~??]{deGivry14}.
-Then, a relative deviation of runtime is calculated as
-\begin{equation*}
-	\begin{cases}
-		\frac{t}{t*}, &\quad t < t*, \\
-		\frac{t_{\text{max}} - t}{t_{\text{max}} - t*}, &\quad t \geq t*,
-	\end{cases}
-\end{equation*}
-where \(t_{\text{max}}\) is the upper time limit, \(t*\) is the runtime of the best solver \parencite[of those tested by][]{deGivry14} and \(t\) is the elapsed time.
+First, a relative deviation of the obtained solution is calculated as\(\left(f - \bar{f}\right)/(\mathrm{UB}-\mathrm{LB})\), where \(f\) is the solution found by the algorithm, \(\bar{f}\) is the proven optimum and \(\mathrm{UB}, \mathrm{LB}\) is the upper and lower bound of the problem as given by \textcite[\pno~??]{deGivry14}.
+When \(\bar{f}\) is unknown, the best value found by \citeauthor{deGivry14} (or as a final fallback, \(\mathrm{LB}\)) is used instead.
+A similar measurement for relative deviation of runtime is less meaningful. Therefore, runtime differences are illustrated by simply listing the runtime of the in-the-middle algorithm along with the runtime of the best solver found by \citeauthor{deGivry14}.
 
 All problem instances were limited in runtime by the upper time limit \(t_{\text{max}} = \SI{1200}{\second}\), and the benchmarks were run on an Intel~Core~i5 processor at \SI{2.3}{\giga\hertz}, with \SI{8}{\gibi\byte} RAM.
 This is comparable to the conditions of the benchmark performed by \textcite{deGivry14}, and should ensure that the comparisons are valid.

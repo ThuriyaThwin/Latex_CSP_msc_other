@@ -3,12 +3,12 @@
 Informally, a \gls{csp} may be described as the problem of assigning values to a set of \emph{variables} such that a number of \emph{constraints} are satisfied.
 By annotating each constraint of a \gls{csp} with a value denoting the impact of its violation, a \gls{wcsp} is obtained --- the problem becomes to assign values such that the impact is minimized \parencite[\pno~219]{Bistarelli99}.
 Each constraint will take different values (\emph{costs}) depending on the variable assignment, and the cost function will depend on these in some unspecified manner (commonly as the sum of all constraint costs).
-Such problems are also called \glspl{cfn} in some litterature \parencite{Allouche14}.
+Such problems are also called \glspl{cfn} in some litterature \parencite{Allouche14b}.
 
 \label{page:wcsp-semiring}
 A \gls{wcsp}, when defined as a maximization problem, has an associated semiring\footnote{In fact, even regular \glspl{csp} have an associated semiring: \(\langle \{0,1\}, \vee, \wedge, 0, 1 \rangle\).} \(\langle \Rminus\cup\{-\infty\}, \max*, +, -\infty, 0 \rangle\) \parencite[\pno~211]{Bistarelli99} which will be discussed further on.
 Such a problem also includes a distinction between \emph{soft} and \emph{hard} constraints.
-We will use a formal definition of \gls{wcsp} similar to the one given by \textcite[\pno~3]{Allouche14}\multfootnote{In fact, our definition is equivalent to the triple \(\langle X, W, \infty \rangle\) using the definition given by \textcite{Allouche14}, adapted for maximization instead of minimization.;Note that this definition may also be used to define regular \glspl{csp}, by only including hard constraints.}.
+We will use a formal definition of \gls{wcsp} similar to the one given by \textcite[\pno~3]{Allouche14b}\multfootnote{In fact, our definition is equivalent to the triple \(\langle X, W, \infty \rangle\) using the definition given by \textcite{Allouche14b}, adapted for maximization instead of minimization.;Note that this definition may also be used to define regular \glspl{csp}, by only including hard constraints.}.
 
 \begin{definition}[\Acrlong{wcsp}] \label{def:wcsp}
 	A \gls{wcsp} is a tuple \(\langle X, W \rangle\) where \(X=\{1,\dotsc,n\}\) is a set of \(n\) discrete variables and \(W\) is a set of non-positive functions.
