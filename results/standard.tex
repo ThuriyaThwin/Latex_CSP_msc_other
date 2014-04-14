@@ -1,23 +1,21 @@
 \section{Standard algorithm}
-jfr. med deGivry, plocka lite kondenserad data från excel-bladet som visar vilka problem algoritmen är bra på
+Applying a reasonably optimized implementation of the algorithm to the problem set introduced by \textcite{deGivry14} yields fairly promising results. Runtimes range from roughly \SI{0,5}{\second} to extreme cases of \SI{20}{\minute} (reaching the time limit), and solution quality similarly ranges from a \SI{0}{\percent} difference to extremes of up to \SI{50}{\percent}.
 
+\begin{figure}
+	\centering
+	%\input{figs/quality-per-paradigm.tikz}
+	\caption{Distribution of solution quality per category.}
+	\label{fig:quality-per-paradigm}
+\end{figure}
 
-%\begin{figure}
-%	\centering
-%	\input{figs/quality-per-paradigm.tikz}
-%	\caption{Distribution of solution quality per category.}
-%	\label{fig:quality-per-paradigm}
-%\end{figure}
-%
-%\begin{figure}
-%	\centering
-%	\input{figs/times-per-paradigm.tikz}
-%	\caption{Distribution of runtime per category.}
-%	\label{fig:time-per-paradigm}
-%\end{figure}
+\begin{figure}
+	\centering
+	%\input{figs/times-per-paradigm.tikz}
+	\caption{Distribution of runtime per category.}
+	\label{fig:time-per-paradigm}
+\end{figure}
 
-
-As indicated by \cref{tab:comparative-results}, the performance of the in-the-middle algorithm depends greatly on the problem domain.
+Dividing the problems into categories and sets, as shown in \cref{tab:comparative-results}, reveals that the performance of the in-the-middle algorithm depends greatly on the problem domain.
 For instance, while the algorithm is \emph{very} efficient on some max-\gls{csp} problems, the approximative solutions found for those problems are fairly bad.
 
 The most interesting problem domain, judging by the results in \cref{tab:comparative-results}, is \gls{cvpr}, with some problem sets in \gls{cfn}, max-\gls{csp} and \gls{mrf} being interesting as well.
@@ -48,7 +46,7 @@ Results in the two former categories are characterized by a small loss in soluti
 				&	GeomSurf	&	1.22292465	&	4.3900	&	6.0	&	600	&	600	&	600 \\
 				&	InPainting	&	48.61429240	&	56.6215	&	1058.0	&	4	&	4	&	4 \\
 				&	Matching	&	2.10526320	&	2.0920	&	4.0	&	4	&	4	&	4 \\
-(!)				&	MatchingStereo	&	{n/a}	&	{n/a}	&	1200.0	&	0	&	2	&	2 \\
+\rowcolor{gray}	&	MatchingStereo	&	11.55652450	&	1200.0	&	1200.0	&	1	&	2	&	2 \\
 				&	ObjectSeg	&	0.98150450	&	420.9690	&	432.0	&	5	&	5	&	5 \\
 				&	PhotoMontage	&	23.49423115	&	1200.0000	&	{n/a}	&	2	&	0	&	2 \\
 				&	SceneDecomp	&	43.69204310	&	0.4060	&	449.0	&	715	&	715	&	715 \\

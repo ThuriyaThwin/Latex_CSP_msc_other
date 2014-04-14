@@ -74,7 +74,7 @@
 	\vspace*{.25\baselineskip}\centering
 	\__unless_usekomafont:n{\large}
 	\__maybe_usekomafont:n{section}
-}{\thesection}{1ex}{\textsc{\MakeLowercase{#1}}}[\vspace{-.5\baselineskip}]
+}{\thesection}{1ex}{\__maybe_textssc:n{\MakeLowercase{#1}}}[\vspace{-.5\baselineskip}]
 %\cs_if_exist_use:NT\addtokomafont{{section}{\sffamily}}
 %\cs_if_exist_use:NT\addtokomafont{{subsection}{\sffamily\normalsize}}
 %\titleformat{\subsection}[hang]{
