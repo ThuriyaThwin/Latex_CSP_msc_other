@@ -41,9 +41,9 @@
 		};
 	\end{scope}
 	% explanatory texts
-	\node[below=of components] (cc-text) {\emph{constraint component}}
+	\node[below=of components] (cc-text) {\emph{constraint component \(g_k(x_i,x_j)\)}}
 		(cc-text.east) edge[pointer,bend right=67.5] (table.east);
-	\node[above=of components] (vc-text) {\emph{variable components}}
+	\node[above=of components] (vc-text) {\emph{variable components \(x_i,x_j\)}}
 		(vc-text.east) edge[pointer,bend left=67.5] (upper-var.east)
 		(vc-text.west) edge[pointer,bend right=67.5] (left-var.north west);
 		%\node[anchor=west] (0, .25) {\emph{constraint component}};
