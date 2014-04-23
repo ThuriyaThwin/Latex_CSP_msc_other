@@ -1,6 +1,43 @@
 \section{Improved variants}
+% [review] - express these in terms of changes instead? maybe not since the magnitude is lost.
+
 \subsection{Improving solution quality}
 \subsubsection{The \enquote{push} operation}
+\begin{table}
+	\centering
+	% Updated 2014-04-13
+	\caption{Solution quality and runtime difference using the \enquote{push} operation. For further explanation of the method and data, see \cref{tab:comparative-results}. Uninteresting problem sets (\emph{i.e.} those with bad runtime performance or unsolved problems in \cref{tab:comparative-results}) have been omitted. Problem sets with no quality improvement or significantly longer runtime have been shaded.}
+	\label{tab:comparative-results-push}
+	\begin{tabu}{ccS[round-mode=places,round-precision=3]
+					  S[round-mode=places,round-precision=0]
+					  S[round-mode=places,round-precision=0]HHH}
+		\toprule
+			{} & {} & \multicolumn{3}{c}{Median} & {}&{}&{}\\%\multicolumn{3}{c}{\(\#\) instances} \\
+			\cmidrule(rl){3-5} %\cmidrule(rl){6-8}
+			{Category} & {Set} & {Solution diff. (\si{\percent})} & {Our time (\si{\second})} & {Their time (\si{\second})} & {Our solved} & {Their solved} & {Total} \\
+		\midrule
+\rowcolor{gray}	\acrshort{cfn}	&	CELAR	&	0.02582885	&	4.6795	&	22.5	&	16	&	16	&	16 \\
+(!)			\acrshort{cvpr}	&	ChineseChars	&	0.35237695	&	49.4815	&	1200.0	&	100	&	100	&	100 \\
+(!)				&	GeomSurf	&	1.22292465	&	4.3900	&	6.0	&	600	&	600	&	600 \\
+(!)				&	InPainting	&	48.61429240	&	56.6215	&	1058.0	&	4	&	4	&	4 \\
+(!)				&	Matching	&	2.10526320	&	2.0920	&	4.0	&	4	&	4	&	4 \\
+(!)				&	ObjectSeg	&	0.98150450	&	420.9690	&	432.0	&	5	&	5	&	5 \\
+(!)				&	PhotoMontage	&	23.49423115	&	1200.0000	&	{n/a}	&	2	&	0	&	2 \\
+(!)				&	SceneDecomp	&	43.69204310	&	0.4060	&	449.0	&	715	&	715	&	715 \\
+\rowcolor{gray}	Max-\acrshort{csp}	&	BlackHole	&	3.30000000	&	2.2320	&	1.0	&	37	&	37	&	37 \\
+\rowcolor{gray}	&	Coloring	&	0.95000000	&	0.0435	&	0.0	&	22	&	22	&	22 \\
+\rowcolor{gray}	&	Composed	&	2.25000000	&	0.5590	&	0.0	&	80	&	80	&	80 \\
+\rowcolor{gray}	&	EHI	&	39.50000000	&	3.6240	&	1200.0	&	200	&	200	&	200 \\
+\rowcolor{gray}	&	Geometric	&	4.60000000	&	1.8595	&	0.0	&	100	&	100	&	100 \\
+\rowcolor{gray}	&	Langford	&	1.20000000	&	0.5820	&	1.0	&	3	&	3	&	3 \\
+\rowcolor{gray}	&	QCP	&	5.85000000	&	0.3795	&	0.5	&	60	&	60	&	60 \\
+\rowcolor{gray}	\acrshort{mrf}	&	DBN	&	0.05058100	&	1.1260	&	0.0	&	108	&	108	&	108 \\
+\rowcolor{gray}	&	Grid	&	0.84009400	&	3.2780	&	161.0	&	21	&	21	&	21 \\
+\rowcolor{gray}	&	ObjectDetection	&	7.81434200	&	6.8470	&	1200.0	&	37	&	37	&	37 \\
+\rowcolor{gray}	&	Segmentation	&	0.01000150	&	2.9635	&	0.0	&	100	&	100	&	100 \\
+		\bottomrule
+	\end{tabu}
+\end{table}
 
 \subsubsection{The cost function reset operation}
 \begin{table}
@@ -29,9 +66,9 @@
 \rowcolor{gray}	&	Composed	&	1.35000000	&	0.4935	&	0.0	&	80	&	80	&	80 \\
 				&	EHI	&	14.95000000	&	3.8515	&	1200.0	&	200	&	200	&	200 \\
 \rowcolor{gray}	&	Geometric	&	3.20000000	&	2.1370	&	0.0	&	100	&	100	&	100 \\
-				&	Langford	&	1.05000000	&	0.4990	&	576.5	&	4	&	4	&	4 \\
-\rowcolor{gray}	&	QCP	&	4.20000000	&	0.3960	&	0.5	&	60	&	60	&	60 \\
-(!)			\acrshort{mrf}	&	DBN	&	{n/a}	&	{n/a}	&	0.0	&	108	&	108	&	108 \\
+\rowcolor{gray}	&	Langford	&	0.900000	&	0.9010	&	1.0	&	3	&	3	&	3 \\
+				&	QCP	&	3.550000	&	0.3895	&	0.5	&	60	&	60	&	60 \\
+			\acrshort{mrf}	&	DBN	&	0.035976	&	0.3865	&	0.0	&	108	&	108	&	108 \\
 				&	Grid	&	0.680693	&	2.5030	&	161.0	&	21	&	21	&	21 \\
 				&	ObjectDetection	&	7.570422	&	5.9700	&	1200.0	&	37	&	37	&	37 \\
 				&	Segmentation	&	0.004515	&	1.3900	&	0.0	&	100	&	100	&	100 \\
