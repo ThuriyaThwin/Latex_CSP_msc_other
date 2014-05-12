@@ -1,4 +1,16 @@
 \makeatletter
+% figcenter from skrapport
+\ExplSyntaxOn
+\cs_generate_variant:Nn\coffin_typeset:Nnnnn{Nnnon}
+\DeclareDocumentEnvironment{figcenter}{}{
+    \coffin_clear:N\l_tmpa_coffin
+    \hcoffin_set:Nw\l_tmpa_coffin
+}{
+    \hcoffin_set_end:
+    \dim_set:Nn\l_tmpa_dim{(\textwidth - \coffin_wd:N\l_tmpa_coffin)/2}
+    \coffin_typeset:Nnnon\l_tmpa_coffin{H}{l}{\dim_use:N\l_tmpa_dim}{0pt}
+}
+\ExplSyntaxOff
 % http://tex.stackexchange.com/a/70498/66
 \newcommand*\placeaccent[2]{%
 	\begingroup
