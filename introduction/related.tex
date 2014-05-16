@@ -1,17 +1,23 @@
 \section{Related work}
-% [todo] - Short blurb here
+% [todo] - review this section
+Since the purpose of this thesis is to extend an existing algorithm and benchmark it against known solvers, it is interesting to note previous work both related to the algorithm itself (either its \gls{lp} formulation or the max-sum variant discussed in this thesis) as well as previous benchmarks in the related fields.
+
+Previous work on the algorithm itself, especially the \gls{lp} variant, will be implemented and examined to determine if known modifications of the algorithm apply to the max-sum variant as well.
+Benchmarks in the \gls{csp} field will be surveyed to collect suitable problem sets and to pick appropriate solvers to benchmark the algorithm against.
 
 \subsection{The in-the-middle algorithm}
 Although the in-the-middle algorithm has mostly been discussed by its principal author \parencites{Wedelin95}{Wedelin08}{Wedelin13}{Alefragis00}, there is some litterature evaluating and improving upon the algorithm available.
 
-\Textcite{Bastert10} notes the practical relevance of the field of heuristics for integer programming in recent years, and evaluates the in-the-middle algorithm applies to such problems. In addition to explicitly providing the generalizations mentioned by \textcite{Wedelin95}, they also introduce a \enquote{push} operation intended to improve the quality of the approximative solutions. Finally, they also compare the algorithm with commercial software, with fairly favourable results.
+\Textcite{Bastert10} notes the practical relevance of the field of heuristics for integer programming in recent years, and evaluates the in-the-middle algorithm applied to such problems. In addition to explicitly providing the generalizations mentioned by \textcite{Wedelin95}, they also introduce a \enquote{push} operation intended to improve the quality of the approximative solutions. Finally, they also compare the algorithm with commercial software, with fairly favourable results.
 
 % [todo] - more related work on in-the-middle?
 
-\subsection{Graphical models and related problems}
+\subsection{Max-sum and constraint satisfaction problems}
+% [todo] - review this section
 Graphical models allow the modelling of a range of NP-hard optimization problems in a consistent manner \parencite{deGivry14}, and recent articles on the subject expose strong connections between linear programming and graphical models \parencites{Werner07}{Kolmogorov13}.
 As such, there is reason to believe that the application of linear programming algorithms, especially approximative ones, to graphical models may have practical relevance.
 
-\Textcite{deGivry14} evaluate several exact optimizers to graphical model optimization problems, and the results indicate that there may be several problem domains (most notably \acrshort{mrf}, \acrshort{wpms} and Max-\acrshort{csp}) which could benefit from fast, approximative solvers.
+\Textcites{Allouche14b}{deGivry14} evaluate several exact optimizers to graphical model optimization problems, and the results indicate that there may be several problem domains (most notably \acrshort{mrf}, \acrshort{wpms} and Max-\acrshort{csp}) which could benefit from fast, approximative solvers.
+Additionally, several large problem sets from each domains are included in the benchmark, and these problem sets have also been made available online by the authors\footnote{\url{http://genoweb.toulouse.inra.fr/~degivry/evalgm} \parencite[\pno~7]{Allouche14b}.}.
 
 % [todo] - more related work on graphical models?

@@ -1,8 +1,8 @@
-\section{Improved variants}
+\section{Extensions and improvements}
+% [todo] - review and rewrite this
 % [review] - express these in terms of changes instead? maybe not since the magnitude is lost.
 
-\subsection{Improving solution quality}
-\subsubsection{The \enquote{push} operation}
+\subsection{The \enquote{push} operation}
 \begin{table}
 	\centering
 	% Updated 2014-05-12
@@ -21,20 +21,19 @@
 			\cmidrule(rl){3-4} \cmidrule(rl){5-6} \cmidrule(rl){7-8}
 			{Category} & {Set} & {Std.} & {\enquote{Push}} & {Std.} & {\enquote{Push}} & {Std.} & {\enquote{Push}} \\
 		\midrule
-\acrshort{cfn}	&	Pedigree	&	10	&	{\textcolor{gray}{n/a}}	&	1.804874e-02	&	{\textcolor{gray}{n/a}}	&	2.3750	&	{\textcolor{gray}{n/a}} \\
-\acrshort{cvpr}	&	GeomSurf	&	600	&	{\textcolor{gray}{n/a}}	&	2.091307e-02	&	{\textcolor{gray}{n/a}}	&	0.0460	&	{\textcolor{gray}{n/a}} \\
-				&	SceneDecomp	&	715	&	{\textcolor{gray}{n/a}}	&	7.545481e-01	&	{\textcolor{gray}{n/a}}	&	0.0210	&	{\textcolor{gray}{n/a}} \\
-Max-\acrshort{csp}	&	BlackHole	&	37	&	{\textcolor{gray}{n/a}}	&	9.009009e-03	&	{\textcolor{gray}{n/a}}	&	58.8900	&	{\textcolor{gray}{n/a}} \\
-				&	Langford	&	4	&	{\textcolor{gray}{n/a}}	&	1.311265e-02	&	{\textcolor{gray}{n/a}}	&	70.7775	&	{\textcolor{gray}{n/a}} \\
-				&	QCP	&	60	&	{\textcolor{gray}{n/a}}	&	1.292034e-02	&	{\textcolor{gray}{n/a}}	&	43.2575	&	{\textcolor{gray}{n/a}} \\
+\acrshort{cfn}	&	Pedigree	&	10	&	10	&	1.804874e-02	&	0.01512494	&	2.3750	&	5.6070 \\
+\acrshort{cvpr}	&	GeomSurf	&	600	&	600	&	2.091307e-02	&	0.02091307	&	0.0460	&	0.0425 \\
+				&	SceneDecomp	&	715	&	715	&	7.545481e-01	&	0.75454789	&	0.0210	&	0.0170 \\
+Max-\acrshort{csp}	&	BlackHole	&	37	&	37	&	9.009009e-03	&	0.01081081	&	58.8900	&	31.3310 \\
+				&	Langford	&	4	&	4	&	1.311265e-02	&	0.01554176	&	70.7775	&	56.2925 \\
+				&	QCP	&	60	&	60	&	1.292034e-02	&	0.01303595	&	43.2575	&	38.0705 \\
 		\bottomrule
 	\end{tabu}
 	\end{figcenter}
 \end{table}
 
 
-\subsection{Improving runtime}
-\subsubsection{The greedy DP update}
+\subsection{The greedy DP update}
 \begin{table}
 	\centering
 	% Updated 2014-05-12
@@ -42,6 +41,7 @@ Max-\acrshort{csp}	&	BlackHole	&	37	&	{\textcolor{gray}{n/a}}	&	9.009009e-03	&	{
 	%Problem sets which have comparatively poor runtime performance have been faded.
 	Problem sets marked with \textdagger{} include unsolved problems, and n/a values indicate that none of the problems in the set were solved.}
 	% [review] - present in same way as deGivry14?
+	% [review] - ignore MPLP2 (saves width without losing too much useful information)
 	\label{tab:greedy-dp-results}
 	\begin{figcenter}
 	\begin{tabu}{ccSSS[round-mode=places,round-precision=3,scientific-notation=fixed,fixed-exponent=0]
@@ -53,19 +53,19 @@ Max-\acrshort{csp}	&	BlackHole	&	37	&	{\textcolor{gray}{n/a}}	&	9.009009e-03	&	{
 			\cmidrule(rl){3-4} \cmidrule(rl){5-6} \cmidrule(rl){7-8}
 			{Category} & {Set} & {Std.} & {\(\alpha=1\)} & {Std.} & {\(\alpha=1\)} & {Std.} & {\(\alpha=1\)} \\
 		\midrule
-\acrshort{cfn}	&	Auction	&	102	&	{\textcolor{gray}{n/a}}	&	0.000000e+00	&	{\textcolor{gray}{n/a}}	&	82.8575	&	{\textcolor{gray}{n/a}} \\
-				&	CELAR	&	10	&	{\textcolor{gray}{n/a}}	&	1.067174e-09	&	{\textcolor{gray}{n/a}}	&	193.3445	&	{\textcolor{gray}{n/a}} \\
-				&	ProteinDesign	&	10	&	{\textcolor{gray}{n/a}}	&	0.000000e+00	&	{\textcolor{gray}{n/a}}	&	43.3995	&	{\textcolor{gray}{n/a}} \\
-				&	Warehouse	&	38	&	{\textcolor{gray}{n/a}}	&	0.000000e+00	&	{\textcolor{gray}{n/a}}	&	55.8550	&	{\textcolor{gray}{n/a}} \\
-\acrshort{cvpr}	&	Matching	&	4	&	{\textcolor{gray}{n/a}}	&	0.000000e+00	&	{\textcolor{gray}{n/a}}	&	17.9275	&	{\textcolor{gray}{n/a}} \\
-Max-\acrshort{csp}	&	BlackHole	&	37	&	{\textcolor{gray}{n/a}}	&	9.009009e-03	&	{\textcolor{gray}{n/a}}	&	58.8900	&	{\textcolor{gray}{n/a}} \\
-				&	Composed	&	80	&	{\textcolor{gray}{n/a}}	&	1.342282e-03	&	{\textcolor{gray}{n/a}}	&	20.3400	&	{\textcolor{gray}{n/a}} \\
-				&	Geometric	&	100	&	{\textcolor{gray}{n/a}}	&	1.082434e-02	&	{\textcolor{gray}{n/a}}	&	98.9760	&	{\textcolor{gray}{n/a}} \\
-				&	Langford	&	4	&	{\textcolor{gray}{n/a}}	&	1.311265e-02	&	{\textcolor{gray}{n/a}}	&	70.7775	&	{\textcolor{gray}{n/a}} \\
-				&	QCP	&	60	&	{\textcolor{gray}{n/a}}	&	1.292034e-02	&	{\textcolor{gray}{n/a}}	&	43.2575	&	{\textcolor{gray}{n/a}} \\
-\acrshort{mrf}	&	DBN	&	108	&	{\textcolor{gray}{n/a}}	&	0.000000e+00	&	{\textcolor{gray}{n/a}}	&	37.9040	&	{\textcolor{gray}{n/a}} \\
-%				&	Grid	&	0	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}} \\
-				&	Linkage	&	8	&	{\textcolor{gray}{n/a}}	&	0.000000e+00	&	{\textcolor{gray}{n/a}}	&	41.0700	&	{\textcolor{gray}{n/a}} \\
+\acrshort{cfn}	&	Auction	&	102	&	0	&	0.000000e+00	&	{\textcolor{gray}{n/a}}	&	82.8575	&	{\textcolor{gray}{n/a}} \\
+				&	CELAR	&	10	&	4	&	1.067174e-09	&	0.00000000	&	193.3445	&	3.8775 \\
+				&	ProteinDesign	&	10	&	9	&	0.000000e+00	&	0.00000000	&	43.3995	&	0.7220 \\
+				&	Warehouse	&	38	&	53	&	0.000000e+00	&	0.00000000	&	55.8550	&	0.6780 \\
+\acrshort{cvpr}	&	Matching	&	4	&	4	&	0.000000e+00	&	0.00000000	&	17.9275	&	4.5525 \\
+Max-\acrshort{csp}	&	BlackHole	&	37	&	36	&	9.009009e-03	&	0.01081081	&	58.8900	&	13.1665 \\
+				&	Composed	&	80	&	80	&	1.342282e-03	&	0.00000000	&	20.3400	&	0.9980 \\
+				&	Geometric	&	100	&	100	&	1.082434e-02	&	0.00940821	&	98.9760	&	13.3705 \\
+				&	Langford	&	4	&	4	&	1.311265e-02	&	0.00733559	&	70.7775	&	7.3910 \\
+				&	QCP	&	60	&	60	&	1.292034e-02	&	0.02122605	&	43.2575	&	4.4240 \\
+\acrshort{mrf}	&	DBN	&	108	&	108	&	0.000000e+00	&	0.00000000	&	37.9040	&	0.4465 \\
+				&	Linkage	&	8	&	10	&	0.000000e+00	&	0.00000000	&	41.0700	&	3.6005 \\
+				&	ObjectDetection	&	37	&	37	&	6.465565e-02	&	0.06465565	&		279.8620	&	0.8380 \\
 		\bottomrule
 	\end{tabu}
 	\end{figcenter}

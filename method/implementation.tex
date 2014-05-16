@@ -1,5 +1,48 @@
 \section{Implementation}
-Things to mention:
-* the push operation is slightly different from the article (should be mentioned earlier)
-* how the strategy works, including how it terminates and how khappa is increased
-* ???
+The algorithm, including reading routines for the WCSP format \parencite{wcspformat}, parameter sweep strategy and timing facilities, has been implemented in C++11.
+The code was compiled using version 5.1 of the LLVM compiler, with all safe optimizations enabled.
+
+There are several implementation details which are highly relevant to the performance of the algorithm, and this section will explore such details n depth.
+In particular, the choice of data structure for constraint component data as well as implementation of constraint updates makes significant impact on the runtime of the algorithm.
+
+A parameter sweep strategy used in conjunction with the algorithm, which controls the \(\alpha\) parameter of the fractional DP update, will also be introduced and explained in further detail.
+
+\subsection{Constraint component design decisions}
+
+\subsection{Parameter sweep strategy}
+As explained earlier, the fractional DP update of constraint components depends on a parameter \(\alpha\), which dictates the amount \enquote{moved out} of the constraint component.
+Choosing this parameter is difficult, but some of the results discussed earlier may be used to create a strategy for a parameter sweep.
+Knowing that values \(\alpha=n^{-1}\) --- where \(n\) is the arity of a constraint --- guarantee that any solution found is optimal, we may take \(n^{-1}\) as a lower limit for the parameter.
+A reasonable upper limit fo the parameter is \(\alpha=1\), which in essence corresponds to the regular, non-fractional DP update.
+
+To vary the parameter between these two values, a sweep strategy is employed.
+\Cref{fig:khappa-plot} shows the value of a parameter \(\kappa\) (defined so that \(\alpha = n^{-1}\left(1 + \kappa(n - 1)\right)\), \emph{i.e.} mapping \(\left[0,1\right]\) to \(\left[n^{-1},1\right]\)) over the first \emph{trial} for two different problems, along with the number of sign changes which is used as a termination criterion.
+
+\begin{figure}[p]
+	\centering
+	% [review] - font size on axis labels too large?
+	\subfloat[\label{fig:khappa-plot:comp}A max-\gls{csp} problem from the \enquote{Composed} set.]{\input{figs/composed-khappa-plot.tikz}}
+	\\
+	\subfloat[\label{fig:khappa-plot:deer}A \gls{mrf} problem from the \enquote{ObjectDetection} set.]{\input{figs/deer-khappa-plot.tikz}}
+	\caption{Influence of the \(\kappa\) parameter for two different problems using the fractional update, with noise applied to resolve ties. Only the first trial is shown.}
+	\label{fig:khappa-plot}
+\end{figure}
+
+In particular, \cref{fig:khappa-plot:deer} shows a full run in which \(\kappa\) is varied throughout the entire range \([0,1]\).
+As can be seen, \(\kappa\) is initiall kept at 0 for a number of iterations --- this is in effect an attempt to find guaranteed optimal solutions if possible, only attempting to solve the problem heuristically if this fails.
+Then, the parameter is increased fairly quickly until reaching an upper limit (\SI{70}{\percent} of the final value of \(\kappa\)), after which it is increased more slowly.
+
+In \cref{fig:khappa-plot:deer} the final value of \(\kappa\) is 1, but this is not always the case.
+For instance, when a solution has been found in a previous trial, the \(\kappa\) for which that solution was found is used as a final value instead.
+This means that in the next trial of the problem shown in \cref{fig:khappa-plot:comp} the final value of \(\kappa\) will be around \num{0.3}.
+
+The purpose of increasing \(\kappa\) slowly near this value is to increase accuracy by avoiding overshoot, as a lower \(\alpha\) will result in a better approximative solution.
+
+\subsubsection{Trials}
+As briefly mentioned above, the optimization involves several \emph{trials}.
+Before each trial all constraints, variables and costs are reset to their original state.
+Then, the parameter sweep is performed and until the final \(\kappa\) value is reached or a feasible solution is found.
+If \(\kappa=0\) (\emph{i.e.} the solution is optimal), no more trials are run.
+Otherwise, the program moves on to the next trial.
+
+The number of trials is configurable, but the current implementation moves on to a new trial unless the best solution hasn't been improved in the last 4 trials.

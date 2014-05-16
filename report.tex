@@ -11,6 +11,7 @@
 	\usepackage[no-math]{fontspec}
 	\usepackage[oldstyle,tabular,semibold]{libertineotf}
 	\usepackage[libertine,slantedGreek,liby,bigdelims]{newtxmath}
+	\setmonofont[Scale=0.9]{Anonymous Pro}
 	\usepackage{polyglossia}
 	\setmainlanguage{english}
 	\setotherlanguage{swedish}
@@ -19,6 +20,7 @@
 	\usepackage[T1]{fontenc}
 	\usepackage[oldstyle,tabular,semibold]{libertine}
 	\usepackage[libertine,slantedGreek,liby,bigdelims]{newtxmath}
+	\usepackage[ttdefault,scale=0.9]{AnonymousPro}
 	\usepackage[swedish,english]{babel}
 \fi
 %% (end)
@@ -63,8 +65,8 @@
 \makeatletter
 % equivalent to dashed=false in standard biblatex styles
 \AtEveryBibitem{\global\undef\bbx@lasthash}
-% fixes the "strange" (apparently normal) order of names in author list
-\DeclareNameAlias{sortname}{last-first}
+%% fixes the "strange" (apparently normal) order of names in author list
+%\DeclareNameAlias{sortname}{last-first}
 % fixes doi formatting
 \DeclareFieldFormat*{doi}{\textsc{doi}\addcolon\space\textsc{#1}}
 \makeatother
@@ -117,6 +119,7 @@
 	% [review] - Kolla tempus, n:te person osv.
 
 	\mainmatter
+
 	\chapter{Introduction}
 	\input{introduction.tex}
 	\input{introduction/background.tex}
@@ -124,10 +127,9 @@
 
 	\chapter{Theory}
 	\input{theory.tex}
-	\input{theory/lp.tex}
-	\input{theory/csp.tex}
-	% [review] - beskriv Max-CSP?
-	\input{theory/algorithm.tex}
+	\input{theory/maxsum.tex}
+	\input{theory/inthemiddle.tex}
+	% [todo] - check how the algorithm exposes/utilizes the notions in Bordeaux08?
 
 	\chapter{Method}
 	\input{method.tex}
@@ -139,15 +141,10 @@
 	\input{results/standard.tex}
 	\input{results/improvements.tex}
 
-	%\chapter{???}
-	% [todo] - check how the algorithm exposes/utilizes the notions in Bordeaux08?
-
 	\chapter{Conclusions}
-	% [review] - "no free lunch" theorem?
-	\section{Applications}
+	\input{conclusions.tex}
 
-	\nocite{*}
-	% [review] - find published variants of unpublished works (incl. strange pubstates)
+	%% [review] - find published variants of unpublished works (incl. strange pubstates)
 	\printglossary[type=\acronymtype,]
 	\printbibliography[heading=bibintoc]
 	%\printindex
