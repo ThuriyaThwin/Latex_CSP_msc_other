@@ -1,13 +1,44 @@
 \section{Implementation}
-The algorithm, including reading routines for the WCSP format \parencite{wcspformat}, parameter sweep strategy and timing facilities, has been implemented in C++11.
+The algorithm --- including reading routines for the WCSP format \parencite{wcspformat}, parameter sweep strategy and timing facilities --- was implemented in C++11.
 The code was compiled using version 5.1 of the LLVM compiler, with all safe optimizations enabled.
 
-There are several implementation details which are highly relevant to the performance of the algorithm, and this section will explore such details n depth.
+There are several implementation details which are highly relevant to the performance of the algorithm, and this section will explore such details in depth.
 In particular, the choice of data structure for constraint component data as well as implementation of constraint updates makes significant impact on the runtime of the algorithm.
 
 A parameter sweep strategy used in conjunction with the algorithm, which controls the \(\alpha\) parameter of the fractional DP update, will also be introduced and explained in further detail.
 
 \subsection{Constraint component design decisions}
+Several design decisions in the implementation of the constraint components have significant impact on the performance of the constraint component updates.
+These design decisions mostly relate to the data structure representing costs inside the constraint component.
+The main concern in selecting this data structure is quick access in the update loop.
+Since the constraint component is kept constant through all iterations, and the temporary cost table \(h\) can be made implicit, this is the only major concern.
+
+Another implementation detail that increases performance is the storage of unary constraint components directly in the cost vector \(c\).
+This is equivalent to including explicit unary constraints, but saves time by reducing the number of virtual method calls.
+Additionally, not including the implicit marginalization and normalization onstraints \parencite[\pno~12]{Wedelin13} offers similar improvements.
+
+The data structure chosen for the cost table of the constraint component was a vector with a sparse representation of the table costs.
+Entries with cost \(-\infty\) (\emph{i.e.} infeasible combinations) were omitted and represented implicitly by the initialization of the intermediary variable \(s\) in \cref{alg:itm-maxsum-fast}.
+The vector representation, consisting of a list of variable values (or rather, a list of indices pointing to the cost in \(\bar{c}\) corresponding to that variable value) followed by the cost of that combination (repeated for each table entry) lends itself well to the algorithm described in \cref{alg:itm-maxsum-fast}.
+Depending on problem structure and processor specifications, this implementation may make extensive use of low-level processor caches which improves performance significantly.
+
+\begin{algorithm}[tbp]
+	% [review] - this is horrible
+	\(r \leftarrow \bar{c} - s\) \;
+	\(s \leftarrow -\infty\) \;
+	\For{\(i\leftarrow 0\) \KwTo{} number of entries in cost table \(T\)}{
+		\(v \leftarrow 0\) \;
+		\lFor{\(j\leftarrow 0\) \KwTo{} arity}{\(v \leftarrow v + \bar{c}_{T_{i+j}}\)}
+		\(v \leftarrow \alpha (v + T_{i+\text{arity}})\) \;
+		\For{\(j\leftarrow 0\) \KwTo{} arity}{
+			\(s_{T_{i+j}} \leftarrow \max{s_{T_{i+j}}, v}\) \;
+		}
+	}
+	\(\bar{c} \leftarrow s\) \;
+	\(s \leftarrow s - r\) \;
+	\caption{Fast implementation of the fractional DP update described in \cref{alg:itm-maxsum}. This does not include the sign change count mechanism. Here, \(T\) is a vector of unions which may be interpreted as integers (\(T_{i+j}, j < \text{arity}\)) or double-precision numbers (when \(j = \text{arity}\)).}
+	\label{alg:itm-maxsum-fast}
+\end{algorithm}
 
 \subsection{Parameter sweep strategy}
 As explained earlier, the fractional DP update of constraint components depends on a parameter \(\alpha\), which dictates the amount \enquote{moved out} of the constraint component.
