@@ -1,5 +1,7 @@
 \section{Benchmarking}
 % [todo] - review this section
+% * explain the conditions of the tests, compare to conditions in deGivry14
+% * ???
 In order to determine the efficiency of the algorithm, and determine what problem paradigm the algorithm is most usefully applied to, extensive benchmark testing will be performed.
 The algorithm was tested against the large problem set provided by \textcite{deGivry14}, which includes problems from the \gls{mrf}, \gls{wpms}, \gls{cfn}, Max-\gls{csp}, \gls{cp} and \gls{cvpr} domains.
 All problems in the set are available in the \textsc{wcsp} file format.
@@ -18,4 +20,109 @@ This is comparable to the conditions of the benchmark performed by \textcite{deG
 
 % [todo] - write this
 \subsection{Problem sets}
+The problem sets obtained from \textcite{deGivry14} belong to a number of different domains and represent different types of problems from industry, academia and random generation.
+This section will briefly review each problem set used in the benchmark, and review both problem source, interpretation and size.
+% [review] - wcsp same as cfn, make this clear?
+All of these problems are directly representable as \gls{wcsp} problems, and hence as max-sum optimization problems, and \textcite{deGivry14} provide details on the translation from each field to the \gls{wcsp} formulation used in this benchmark.
+
+\Textcite{deGivry14} additionally present problem sets from the \gls{wpms} and \gls{cp} fields, but these have been omitted from the benchmark in this thesis since the algorithm failed to solve any of the problems contained in these sets within the time limit imposed.
+
+\subsubsection{Constraint Function Network (CFN)}
+This category contains six problem sets, all from the CFLib collection mentioned by \textcite[\pno~3]{deGivry14}.
+Most of them are real-world problems or generated to approximate such problems, and all of them are readily available in the WCSP file format mentioned earlier.
+
+\begin{description}
+	\item[Auction]
+		The combinatorial auction problem set was first introduced by \textcite{Larrosa08}.
+		In summary, the problem allows bidders to bid for indivisible subsets of goods, and the optimization problem is to maximize the revenue of the bid-taker.
+		The problems are generated, but inspired by real-world scenarios.
+		All variables are binary (the original problem is a binary Max-SAT problem), and the problems contain up to \num{246} variables and \num{12000} constraints.
+
+		The problem set includes \emph{scheduling} and \emph{path} distribution problems, but omits the \emph{regions} distribution mentioned by \textcite[\pno~228]{Larrosa08}.
+
+	\item[CELAR]
+		As detailed by \textcite{Cabon99}, this problem set concerns radio frequency assignment, \emph{i.e.} the problem of providing communication channels from limited resources while minimizing interference in the network.
+		The problems where initially introduced in 1993 by \emph{Centre d’Electronique de l’Armement}, and are based on real-world data.
+
+		The CELAR problems are fairly large, with variable domains ranging up to \num{44}, with up to \num{458} variables and \num{2400} constraints.
+		Problems included in the benchmark are mainly the CELAR sub-instances \parencite[\pno~85]{Cabon99} and some GRAPH instances.
+
+	\item[Pedigree]
+		This category contains problems relating to the Mendelian error correction on complex pedigree \parencite{Sanchez08}, which is a real-world \gls{wcsp} problem.
+		The problem may be described as surveying a pedigree (similar to a family tree), detecting individuals that are erroneous in the sense that they do not conform to the Mendelian laws of inheritance.
+		Specifically, the problem formulation is to find the minimum number of errors needed to explain erroneous data.
+
+		The problems are very large, with the number of variables reaching \num{10000} and almost \num{20000} constraints, with variable domains around \num{25}.
+
+	\item[Protein Design]
+		Computational Protein Design problems concern the identification of proteins performing given tasks. The actual problem statement is the optimization of a complex energy function over amino acid sequences, and it is described in length by \textcite{Allouche12}.
+
+		The problems may be expressed by \gls{cfn} or integer \gls{lp} models — only the \gls{cfn} formulations are used in this benchmark. The problems contain few (roughly \num{20}) variables with very large domains (up to \num{200}), and around \num{170} constraints.
+
+	\item[SPOT5]
+		The SPOT5 problems are in essence planning problems, taken from real-world planning of earth optical observation satellites.
+		Given a number of images to be taken during one day using one of three instruments, an associated importance and a set of imperative constraints (transition times, data flow limitations, on-board recording capacity \emph{etc.}), the problem is to find a feasible subset of images that maximize the sum of the associated weights \parencite{Bensana99}.
+
+		The problems are large, with roughly \num{1000} variables and \num{22000} constraints, but the variable are all 4-ary.
+
+	\item[Warehouse]
+		Originally presented by \textcite{Kratica01}, the uncapacitated warehouse location instances are randomly generated instances of the facility location problem. In essence, the problem concerns the optimal placement of facilities (in this case warehouses) while minimizing transport costs. These instances were previously used by \textcite{deGivry05} in their evaluation of existential arc consistency for \glspl{csp}.
+
+		These problem instances are very large. The variable domain reaches \num{300} for some problems, with \num{1100} variables and \num{101100} constraint functions.
+
+\end{description}
+
+\subsubsection{Computer Vision and Pattern Recognition (CVPR)}
+In this category there are nine problem sets containing \gls{mrf} instances from the OpenGM2 benchmark \parencite{Kappes13}.
+The problems have been collected from various sources \parencite[\pno~1330]{Kappes13}, but all concern various computer vision tasks performed on real-world images.
+
+The size of these problems vary, with \numrange{20}{500000} variables, \numrange{210}{2000000} constraints and variable domains reaching \num{20} for some sets.
+
+% [review] - explain every set?
+
+\subsubsection{Max-CSP}
+The seven max-\gls{csp} sets are restated binary \gls{csp} instances such that the optimal solution of each instance is the minimal number of unsatisfiable constraints in the original \gls{csp} problem.
+The instances are from the 2008 max-\gls{csp} competition\footnote{\url{http://cpai.ucc.ie/08/}}.
+
+% [todo] - describe problems!
+
+\begin{description}
+	\item[Black Hole]
+	\item[Coloring]
+	\item[Composed]
+	\item[EHI]
+	\item[Geometric]
+	\item[Langford]
+	\item[QCP]
+\end{description}
+
+\subsubsection{Markov Random Fields (MRF)}
+This category consists of seven sets, where the task is to estimate \gls{map} probabilities on \gls{mrf}. ???
+
+All of these problems, except those in the \emph{Linkage} set, are from the 2011 Probabilistic Inference Challenge\footnote{\url{http://www.cs.huji.ac.il/project/PASCAL/}}.
+The problems were translated into their \gls{wcsp} equivalent using a \(-\log*\) transformation.
+
+\begin{description}
+	\item[DBN]
+	\item[Grid]
+	\item[Image Alignment]
+	\item[Linkage]
+		\textcite{Favier01} UAI 2008
+	\item[Object Detection]
+	\item[Protein Folding]
+	\item[Segmentation]
+\end{description}
+
+% * review briefly the different fields
+% * explain briefly what kind of problem each set contains (both in terms of what the optimization problem is and what its structure looks like)
+
 \subsection{Solvers}
+% * review briefly the method each solver uses, with references to original articles if possible
+
+\subsubsection{Toulbar2}
+Description in \parencite{Allouche10}, first mentioned by \textcite{deGivry05} and later improved (see deGivry14 for more refs) and also mentioned in \parencite{Sanchez08}
+
+\subsubsection{CPLEX}
+
+\subsubsection{MaxHS}
+Introduced by \textcite{Davies11} and improved by \parencite{Davies13}
