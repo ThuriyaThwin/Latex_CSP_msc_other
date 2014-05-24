@@ -1,5 +1,12 @@
 \section{Standard algorithm}
 % [todo] - review and rewrite this
+% * stating parameters used (maybe before this section)
+% * analyzing interesting problem sets
+% * comparing with other solvers
+% * identify what problems ITM is good at
+
+% Interesting cactus plots: CP/ParityLearning, CVPR/GeomSurf, MaxCSP/{BlackHole,Geometric,QCP}, MRF/{DBN,ObjectDetection,Segmentation}
+
 Applying a reasonably optimized implementation of the algorithm to the problem set introduced by \textcite{deGivry14} yields fairly promising results. Runtimes range from roughly \SI{0,5}{\second} to extreme cases of \SI{20}{\minute} (reaching the time limit), and solution quality similarly ranges from a \SI{0}{\percent} difference to extremes of up to \SI{50}{\percent}.
 
 % [todo] - kappa plot from one or both problems using the alpha=1 method
@@ -27,65 +34,71 @@ Results in the two former categories are characterized by a small loss in soluti
 \begin{table}
 	\centering
 	% Updated 2014-05-12
-	\caption{Solution quality and runtime difference. For each problem instance given by \textcite{deGivry14}, the in-the-middle solver runtime and objective value is compared with the best solver found by \citeauthor{deGivry14} as described on \cpageref{pg:bench-method}. 
-	%Problem sets which have comparatively poor runtime performance have been faded.
-	Problem sets marked with \textdagger{} include unsolved problems, and n/a values indicate that none of the problems in the set were solved.}
+	\caption{
+		Solution quality and runtime. For each problem instance given by \textcite{deGivry14}, the in-the-middle solver runtime is compared the other solvers included in the benchmark, and the objective value is compared to the best known optimum from \textcite{deGivry14}.
+		Problem sets marked with \textdagger{} include unsolved problems (no feasible solution found by the in-the-middle solver), and n/a values indicate that none of the problems in the set were solved.
+		Some problem sets have been omitted. % [todo] - omitted data sets should be removed from the presentation and mentioned in the beginning of that section as omitted.
+	}
 	% [review] - present in same way as deGivry14?
+	% [todo] - find a way to fit this table on one page!
+	% [todo] - run solver on missing sets
 	\label{tab:comparative-results}
 	\begin{figcenter}
-	\begin{tabu}{cccS[round-mode=places,round-precision=3,scientific-notation=fixed,fixed-exponent=0]
-				    S[round-mode=places,round-precision=0,scientific-notation=fixed,fixed-exponent=0]
-				    H%S[round-mode=places,round-precision=0,scientific-notation=fixed,fixed-exponent=0]
-				    S[round-mode=places,round-precision=0,scientific-notation=fixed,fixed-exponent=0]
-				    S[round-mode=places,round-precision=0,scientific-notation=fixed,fixed-exponent=0]
-				    S[round-mode=places,round-precision=0,scientific-notation=fixed,fixed-exponent=0]}
+	\begin{tabu}{xyHS[round-mode=places,round-precision=3,scientific-notation=fixed,fixed-exponent=0]
+				    S[round-mode=places,round-precision=2,scientific-notation=fixed,fixed-exponent=0]
+				    H%S[round-mode=places,round-precision=2,scientific-notation=fixed,fixed-exponent=0]
+				    S[round-mode=places,round-precision=2,scientific-notation=fixed,fixed-exponent=0]
+				    S[round-mode=places,round-precision=2,scientific-notation=fixed,fixed-exponent=0]
+				    S[round-mode=places,round-precision=2,scientific-notation=fixed,fixed-exponent=0]}
 		\toprule
-			{} & {} & \multicolumn{2}{c}{In-the-middle} & \multicolumn{5}{c}{Mean solution time (\si{\second})} \\
-			\cmidrule(rl){3-4} \cmidrule(rl){5-9}
-			{Category} & {Set} & {\(\#\) solved} & {Sol. diff. (\si{\percent})} & {ITM} & {MPLP2} & {Toulbar2} & {CPLEX} & {MaxHS} \\
+			%{} & {} & \multicolumn{2}{c}{In-the-middle} & \multicolumn{5}{c}{Mean solution time (\si{\second})} \\
+			%\cmidrule(rl){3-4} \cmidrule(rl){5-9}
+			{} & {} & {} & {} & \multicolumn{5}{c}{Mean solution time (\si{\second})} \\
+			\cmidrule(rl){5-9}
+			{\normalsize Category} & {\normalsize Set} & {\(\#\) solved} & {Sol. diff. (\si{\percent})} & {ITM} & {MPLP2} & {Toulbar2} & {CPLEX} & {MaxHS} \\
 		\midrule
-\acrshort{cfn}	&	Auction	&	{102/170}	&	0.000000e+00	&	82.8575	&	1200	&	8.0	&	0.0	&	0.0 \\
-				&	CELAR	&	{10/16}	&	1.067174e-09	&	193.3445	&	1200	&	22.5	&	1200	&	{\textcolor{gray}{n/a}} \\
-				&	Pedigree	&	\emph{10/10}	&	1.804874e-02	&	2.3750	&	{\textcolor{gray}{n/a}}	&	4.0	&	1.0	&	0.0 \\
-				&	ProteinDesign	&	\emph{10/10}	&	0.000000e+00	&	43.3995	&	61	&	2.0	&	1200	&	{\textcolor{gray}{n/a}} \\
-				&	SPOT5	&	{5/20}	&	4.977105e-05	&	6.4360	&	1200	&	1200	&	0.5	&	1.0 \\
-				&	Warehouse	&	{38/55}	&	0.000000e+00	&	55.8550	&	58	&	0.0	&	0.0	&	1.0 \\
-%\acrshort{cp}	&	AMaze	&	{0/6}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	544.5	&	{\textcolor{gray}{n/a}}	&	3.0 \\
-%				&	FastFood	&	{1/6}	&	0.000000e+00	&	0.0000	&	{\textcolor{gray}{n/a}}	&	0.0	&	0.0	&	0.0 \\
-%				&	Golomb	&	{0/6}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	20.0	&	{\textcolor{gray}{n/a}}	&	43.0 \\
-%				&	OnCallRostering	&	{3/5}	&	4.000000e-08	&	10.3540	&	{\textcolor{gray}{n/a}}	&	71.0	&	1200.0	&	19.0 \\
-%				&	ParityLearning	&	\emph{7/7}	&	1.800000e-07	&	34.5300	&	{\textcolor{gray}{n/a}}	&	368.0	&	1200.0	&	223.0 \\
-%				&	VRP	&	{0/5}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.0	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}} \\
-\acrshort{cvpr}	&	ChineseChars	&	{0/100}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200	&	1200.0	&	1200.0	&	{\textcolor{gray}{n/a}} \\
-				&	ColorSeg	&	{0/21}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200	&	1200.0	&	1200.0	&	{\textcolor{gray}{n/a}} \\
-				&	GeomSurf	&	\emph{600/600}	&	2.091307e-02	&	0.0460	&	2	&	0.0	&	7.0	&	27.0 \\
-				&	InPainting	&	\emph{4/4}	&	1.797097e-04	&	1009.5145	&	1058	&	1200.0	&	1200.0	&	{\textcolor{gray}{n/a}} \\
-				&	Matching	&	\emph{4/4}	&	0.000000e+00	&	17.9275	&	13	&	4.0	&	1200.0	&	{\textcolor{gray}{n/a}} \\
-				&	MatchingStereo	&	{0/2}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200	&	1200.0	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}} \\
-				&	ObjectSeg	&	\emph{5/5}	&	3.253700e-06	&	1200.0	&	1200	&	1200.0	&	1200.0	&	{\textcolor{gray}{n/a}} \\
-				&	PhotoMontage	&	{0/2}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}} \\
-				&	SceneDecomp	&	\emph{715/715}	&	7.545481e-01	&	0.0210	&	0	&	0.0	&	1200.0	&	521.0 \\
-Max-\acrshort{csp}	&	BlackHole	&	\emph{37/37}	&	9.009009e-03	&	58.8900	&	{\textcolor{gray}{n/a}}	&	1200.0	&	315.0	&	1.0 \\
-				&	Coloring	&	\emph{22/22}	&	0.000000e+00	&	1.6860	&	{\textcolor{gray}{n/a}}	&	0.0	&	1.5	&	0.0 \\
-				&	Composed	&	\emph{80/80}	&	1.342282e-03	&	20.3400	&	1200	&	0.0	&	5.5	&	33.0 \\
-				&	EHI	&	{0/200}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.0	&	1200.0	&	{\textcolor{gray}{n/a}} \\
-				&	Geometric	&	\emph{100/100}	&	1.082434e-02	&	98.9760	&	{\textcolor{gray}{n/a}}	&	1.0	&	1200.0	&	0.0 \\
-				&	Langford	&	\emph{4/4}	&	1.311265e-02	&	70.7775	&	1200	&	600.5	&	851.5	&	0.5 \\
-				&	QCP	&	\emph{60/60}	&	1.292034e-02	&	43.2575	&	1200	&	1200.0	&	1200.0	&	0.0 \\
-\acrshort{mrf}	&	DBN	&	\emph{108/108}	&	0.000000e+00	&	37.9040	&	1200	&	0.0	&	48.0	&	20.0 \\
-				&	Grid	&	{0/21}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200	&	1200.0	&	161.0	&	542.5 \\
-				&	ImageAlignment	&	\emph{10/10}	&	0.000000e+00	&	0.5815	&	5	&	1.5	&	1200.0	&	{\textcolor{gray}{n/a}} \\
-				&	Linkage	&	{8/22}	&	0.000000e+00	&	41.0700	&	1200	&	32.5	&	327.5	&	16.5 \\
-				&	ObjectDetection	&	\emph{37/37}	&	{\textcolor{gray}{n/a}}	&	6.465565e-02	&	279.8620	&	1200	&	1200.0	&	1200.0 \\
-				&	ProteinFolding	&	{0/21}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200	&	23.0	&	116.5	&	{\textcolor{gray}{n/a}} \\
-				&	Segmentation	&	\emph{100/100}	&	0.000000e+00	&	0.0310	&	0	&	0.0	&	600.0	&	0.0 \\
-%\acrshort{wpms}	&	Haplotyping	&	{0/100}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.0	&	1200.0	&	5.0 \\
-%				&	MaxClique	&	{0/62}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200	&	390.0	&	481.5	&	9.0 \\
-%				&	MIPLib	&	{0/12}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	194.0	&	533.0	&	0.0 \\
-%				&	PackupWeighted	&	{0/99}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	293.0	&	0.0	&	5.0 \\
-%				&	PlanningWithPref	&	{0/29}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.0	&	1200.0	&	1.0 \\
-%				&	TimeTabling	&	{0/25}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.0	&	1200.0	&	84.0 \\
-%???			&	Upgradeability	&	{0/100}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	3.0	&	1.0	&	25.0 \\
+\acrshort{cfn}	&	Auction\textdagger	&	{102/170}	&	0.000000e+00	&	82.8575	&	1200.00	&	8.195	&	0.030	&	0.040 \\
+				&	CELAR\textdagger	&	{10/16}	&	1.067174e-09	&	193.3445	&	1200.00	&	22.375	&	1200.00	&	{\textcolor{gray}{n/a}} \\
+				&	Pedigree	&	\emph{10/10}	&	1.804874e-02	&	2.3750	&	{\textcolor{gray}{n/a}}	&	4.130	&	0.710	&	0.030 \\
+				&	ProteinDesign	&	\emph{10/10}	&	0.000000e+00	&	43.3995	&	60.500	&	2.330	&	1200.00	&	{\textcolor{gray}{n/a}} \\
+				&	SPOT5\textdagger	&	{5/20}	&	4.977105e-05	&	6.4360	&	1200.00	&	1200.00	&	0.465	&	0.820 \\
+				&	Warehouse\textdagger	&	{38/55}	&	0.000000e+00	&	55.8550	&	57.970	&	0.160	&	0.050	&	0.560 \\
+%\acrshort{cp}	&	AMaze\textdagger	&	{0/6}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	544.545	&	{\textcolor{gray}{n/a}}	&	2.940 \\
+%				&	FastFood\textdagger	&	{1/6}	&	0.000000e+00	&	0.0000	&	{\textcolor{gray}{n/a}}	&	0.0	&	0.010	&	0.0 \\
+%\acrshort{cp}	&	Golomb\textdagger	&	{0/6}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	19.860	&	{\textcolor{gray}{n/a}}	&	42.670 \\
+\acrshort{cp}	&	OnCallRostering\textdagger	&	{3/5}	&	4.000000e-08	&	10.3540	&	{\textcolor{gray}{n/a}}	&	71.040	&	1200.0	&	18.950 \\
+				&	ParityLearning	&	\emph{7/7}	&	1.800000e-07	&	34.5300	&	{\textcolor{gray}{n/a}}	&	368.080	&	1200.0	&	222.690 \\
+%				&	VRP\textdagger	&	{0/5}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.0	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}} \\
+%\acrshort{cvpr}	&	ChineseChars\textdagger	&	{0/100}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.00	&	1200.0	&	1200.0	&	{\textcolor{gray}{n/a}} \\
+%				&	ColorSeg\textdagger	&	{0/21}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.00	&	1200.0	&	1200.0	&	{\textcolor{gray}{n/a}} \\
+\acrshort{cvpr}	&	GeomSurf	&	\emph{600/600}	&	2.091307e-02	&	0.0460	&	1.740	&	0.070	&	6.620	&	27.110 \\
+				&	InPainting	&	\emph{4/4}	&	1.797097e-04	&	1009.5145	&	1057.860	&	1200.0	&	1200.0	&	{\textcolor{gray}{n/a}} \\
+				&	Matching	&	\emph{4/4}	&	0.000000e+00	&	17.9275	&	12.710	&	4.120	&	1200.0	&	{\textcolor{gray}{n/a}} \\
+%				&	MatchingStereo\textdagger	&	{0/2}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.00	&	1200.0	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}} \\
+				&	ObjectSeg	&	\emph{5/5}	&	3.253700e-06	&	1200.0	&	1200.00	&	1200.0	&	1200.0	&	{\textcolor{gray}{n/a}} \\
+%				&	PhotoMontage\textdagger	&	{0/2}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}} \\
+				&	SceneDecomp	&	\emph{715/715}	&	7.545481e-01	&	0.0210	&	0.110	&	0.020	&	1200.0	&	521.160 \\
+Max-\acrshort{csp}	&	BlackHole	&	\emph{37/37}	&	9.009009e-03	&	58.8900	&	{\textcolor{gray}{n/a}}	&	1200.0	&	315.050	&	0.635 \\
+				&	Coloring	&	\emph{22/22}	&	0.000000e+00	&	1.6860	&	{\textcolor{gray}{n/a}}	&	0.405	&	1.275	&	0.030 \\
+				&	Composed	&	\emph{80/80}	&	1.342282e-03	&	20.3400	&	1200.00	&	0.115	&	5.755	&	32.690 \\
+				&	EHI\textdagger	&	{0/200}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.0	&	1200.0	&	{\textcolor{gray}{n/a}} \\
+				&	Geometric	&	\emph{100/100}	&	1.082434e-02	&	98.9760	&	{\textcolor{gray}{n/a}}	&	0.620	&	1200.0	&	0.150 \\
+				&	Langford	&	\emph{4/4}	&	1.311265e-02	&	70.7775	&	1200.00	&	600.255	&	851.605	&	0.270 \\
+				&	QCP	&	\emph{60/60}	&	1.292034e-02	&	43.2575	&	1200.00	&	1200.0	&	1200.0	&	0.125 \\
+\acrshort{mrf}	&	DBN	&	\emph{108/108}	&	0.000000e+00	&	37.9040	&	1200.00	&	0.180	&	48.280	&	20.020 \\
+				&	Grid\textdagger	&	{0/21}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.00	&	1200.0	&	160.640	&	542.850 \\
+				&	ImageAlignment	&	\emph{10/10}	&	0.000000e+00	&	0.5815	&	4.855	&	1.800	&	1200.0	&	{\textcolor{gray}{n/a}} \\
+				&	Linkage\textdagger	&	{8/22}	&	0.000000e+00	&	41.0700	&	1200.00	&	32.050	&	327.625	&	16.520 \\
+				&	ObjectDetection	&	\emph{37/37}	&	{\textcolor{gray}{n/a}}	&	6.465565e-02	&	279.8620	&	1200.00	&	1200.0	&	1200.0 \\
+				&	ProteinFolding\textdagger	&	{0/21}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.00	&	23.140	&	116.735	&	{\textcolor{gray}{n/a}} \\
+				&	Segmentation	&	\emph{100/100}	&	0.000000e+00	&	0.0310	&	0.355	&	0.150	&	600.070	&	0.300 \\
+%\acrshort{wpms}	&	Haplotyping	&	{0/100}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.0	&	1200.0	&	5.200 \\
+\acrshort{wpms}	&	MaxClique	&	{0/62}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.00	&	389.745	&	481.550	&	8.795 \\
+%				&	MIPLib\textdagger	&	{0/12}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	193.990	&	533.220	&	0.360 \\
+%				&	PackupWeighted\textdagger	&	{0/99}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	292.960	&	0.280	&	4.620 \\
+%				&	PlanningWithPref	&	{0/29}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.0	&	1200.0	&	1.270 \\
+%				&	TimeTabling	&	{0/25}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.0	&	1200.0	&	83.800 \\
+%				&	Upgradeability\textdagger	&	{0/100}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	3.095	&	1.010	&	24.985 \\
 		\bottomrule
 	\end{tabu}
 	\end{figcenter}
