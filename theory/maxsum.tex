@@ -76,21 +76,21 @@ The attentive reader will notice the similarity between \cref{def:wcsp} and \cre
 Using this definition, \emph{feasible} solutions are assignments \(t\) for which \(\cost{t} < k\).
 One may also make a distinction between \emph{hard} constraints (\(f_V(t^V) = k\) for some assignment(s) \(t^V\)) and \emph{soft} constraints.
 
-
-
 % [todo] - more text?
 % * example: 4-queens?
-% * special cases: Max-CSP, Max-SAT, ??? (see Meseguer06, p. 284)
 % * upper/lower bounds
 % * previous algorithms and results?
 % * special terminology in the field
 
-\subsubsection{Max-CSP}
+\subsubsection{Max-CSP and (weighted) max-SAT}
 The special case of \gls{wcsp} where all constraints have either unit or zero cost (\emph{i.e.} \(f_V : D^V \mapsto {0,1}\), regardless of choice of \(k\)) is normally referred to as max-\gls{csp} \parencite[\pno~284]{Meseguer06}.
 Here, the objective value is exactly the number of violated clauses, and as such it is the most natural formulation of existing \gls{csp} instances as optimization problems.
-If the constraints are also clauses of a Boolean formula, we have the well-known \gls{maxsat} problem. 
 
-\subsubsection{Weighted partial max-SAT}
+The special case where all constraints are clauses of a Boolean formula (and weights are unrestricted) yields the \gls{wpms} problem \textcite[\pno~2]{deGivry14}.
+% [review] - page number above will have to change
+If the weights are restricted to unit or zero costs as above, the problem becomes the well-known \gls{maxsat} problem \parencite[\pno~284]{Meseguer06}.
+
+This makes explicit the fact that many real-world and academic problems in satisfiability and operations reserach may be restated as \gls{wcsp} (and therefore max-sum) problems, and consequently that the in-the-middle algorithm may present a viable alternative to solving these problems using \gls{lp} formulations \parencites{Ansotegui13a}{Davies13} or special algorithms \parencites{Ansotegui13b}{Larrosa08}.
 
 % * previous algorithms and results?
 % * special terminology in the field
@@ -106,7 +106,7 @@ In fact, it seems that the only differences between the two problems as stated i
 However, by transforming the weighted constraints of the \gls{wcsp} problem in such a way that the ordering is preserved but reversed (\emph{i.e.} by negating all costs), and additionally setting \(k=-\infty\) (and changing the costs of all hard constraints accordingly), we get a formulation which has a semiring \(\langle\Rminus \cup \{-\infty\},+,\max*,\geq\rangle\), which is exactly what the max-sum problem has.
 From there, it is only a matter of translating the constraints of the \gls{wcsp} into corresponding cost functions in the max-sum formulation.
 
-The translation from \gls{wcsp} to the equivalent max-sum problem may be summarized in a few points:
+The translation from \gls{wcsp} to the equivalent max-sum problem may be summarized by a few steps:
 \begin{enumerate}
 	\item Variable sets and domains are kept in the translation; the sets \(D\), \(X\) and \(X^V\) in \cref{def:wcsp,def:csp} correspond directly to the sets \(D\), \(W\) and \(W^k\) of \cref{def:max-sum}. Additionally, the subsets \(V\) of the \gls{wcsp} problem correspond to the subsets \(k\) in \cref{def:max-sum}.
 	\item The weighted constraints \(f_V\) of \cref{def:wcsp} are replaced by new constraints \(f'_V\) defined as
