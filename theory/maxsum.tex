@@ -8,22 +8,22 @@ Formally, we may use the following definition (based on that of \citeauthor{Wede
 \begin{definition}[Max-sum problem] \label{def:max-sum}
 	The max-sum problem is the optimization problem
 	\begin{equation*}
-		\max*[w] f(w) = \sum_k g_k(w^k),
+		\max*[x] f(x) = \sum_{g_k\in G} g_k(x^k),
 	\end{equation*}
-	where \(g_k(w^k) \in \R\) are distinct arbitrary functions over \(w^k \subseteq w\).
+	where \(g_k(x^k) \in \R\) are distinct arbitrary functions over \(x^k \subseteq x\).
 \end{definition}
 
 The max-sum problem then has three distinct components by which it is defined:
 \begin{itemize}
-	\item A finite set of \emph{variables} \(W = \{w_1, \dotsc, w_n\}\). We let \(W^k \subseteq W\) denote a specific subset of \(W\), and we let \(w^k \in W^k\) and \(w \in W\) be \emph{assignments}.
+	\item A finite set of \emph{variables} \(X = \{x_1, \dotsc, x_n\}\). We let \(X^k \subseteq X\) denote a specific subset of \(X\), and we let \(x^k \in X^k\) and \(x \in X\) be \emph{assignments} of the variables.
 	% [review] - above definition of set is strange, double-check with \textcite[\pno~281]{Meseguer06}
-	\item \emph{Domains} of the variables, \(D = \{D_1, \dotsc, D_n\}\), such that \(w_i \in D_i, \forall i\). Subsets \(D^k \subseteq D\) may be defined analogously to the variable subsets.
-	\item A finite set \(G\) of \emph{cost functions}. Every cost function \(g_k \in G\) is defined over a variable subset \(W^k\), \emph{i.e.} it is a map \(g_k : D^k \mapsto \Rminus \cup \{-\infty\}\).
+	\item \emph{Domains} of the variables, \(D = \{D_1, \dotsc, D_n\}\), such that \(x_i \in D_i, \forall i\). Subsets \(D^k \subseteq D\) may be defined analogously to the variable subsets.
+	\item A finite set \(G\) of \emph{cost functions}. Every cost function \(g_k \in G\) is defined over a variable subset \(X^k\), \emph{i.e.} it is a map \(g_k : D^k \mapsto \Rminus \cup \{-\infty\}\).
 \end{itemize}
-The cost functions may additionally be divided into three kinds: those defined on the empty set (\emph{constants}), those defined on singleton subsets \(W^k = \{x_i\} \subseteq W\) (\emph{variable components}) and those defined on larger subsets (\emph{constraint components}) --- this is the \emph{component model} introduced by \textcite[\pno~98]{Wedelin08}.
+The cost functions may additionally be divided into three kinds: those defined on the empty set (\emph{constants}), those defined on singleton subsets \(X^k = \{x_i\} \subseteq X\) (\emph{variable components}) and those defined on larger subsets (\emph{constraint components}) --- this is the \emph{component model}\label{pg:component-model} introduced by \textcite[\pno~98]{Wedelin08}.
 
 One should also note that the codomains of \(g_k\) need not be restricted to \(\Rminus \cup \{-\infty\}\), but for the purposes of this thesis that is the chosen output.
-This allows us to order solutions \(w\) to the max-sum problem by their cost, where we define the cost as \(\cost{w} = f(w) = \sum_k g_k(w^k)\), and additionally allows us to define \emph{infeasible} solutions to the max-sum problem as those for which \(\cost{w} = -\infty\).
+This allows us to order solutions \(x\) to the max-sum problem by their cost, where we define the cost as \(\cost{x} = f(x) = \sum_k g_k(x^k)\), and additionally allows us to define \emph{infeasible} solutions to the max-sum problem as those for which \(\cost{x} = -\infty\).
 This will be useful in the translation between \glspl{wcsp} and max-sum problems.
 
 % [review]  more terminology?
@@ -68,7 +68,7 @@ The reformulation as an optimization problem mainly concerns the introduction of
 	A weighted constraint \(f_V\in C\) maps a subset \(V\) of variables to the set \([0,k]\), \emph{i.e.} \(f_V : D^V \mapsto [0,k]\).
 	The \emph{cost} of an assignment \(t\) is defined as the (bounded) sum of all \(f_V\), and the optmization problem amounts to
 	\begin{equation*}
-		\min*[t] \cost{t} = \sum f_V(t^V).
+		\min*[t] \cost{t} = \sum_{f_V\in C} f_V(t^V).
 	\end{equation*}
 \end{definition}
 
@@ -108,11 +108,11 @@ From there, it is only a matter of translating the constraints of the \gls{wcsp}
 
 The translation from \gls{wcsp} to the equivalent max-sum problem may be summarized by a few steps:
 \begin{enumerate}
-	\item Variable sets and domains are kept in the translation; the sets \(D\), \(X\) and \(X^V\) in \cref{def:wcsp,def:csp} correspond directly to the sets \(D\), \(W\) and \(W^k\) of \cref{def:max-sum}. Additionally, the subsets \(V\) of the \gls{wcsp} problem correspond to the subsets \(k\) in \cref{def:max-sum}.
+	\item Variable sets and domains are kept in the translation; the sets \(D\), \(X\) and \(X^V\) in \cref{def:wcsp,def:csp} correspond directly to the sets \(D\), \(X\) and \(X^k\) of \cref{def:max-sum}. Additionally, the subsets \(V\) of the \gls{wcsp} problem correspond to the subsets \(k\) in \cref{def:max-sum}.
 	\item The weighted constraints \(f_V\) of \cref{def:wcsp} are replaced by new constraints \(f'_V\) defined as
 	\begin{equation*}
 		f'_V(t) = \begin{cases}
-			-\infty &\quad \text{if \(f_V(t) < k\)}, \\
+			-\infty &\quad \text{if \(f_V(t) < k\)} \\
 			-f_V(t) &\quad \text{otherwise}
 		\end{cases}, \quad \forall t.
 	\end{equation*}

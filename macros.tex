@@ -12,3 +12,9 @@
 \newcolumntype{x}{>{\bgroup\small}r<{\egroup}}
 \newcolumntype{y}{>{\bgroup\small}l<{\egroup}}
 \newcommand*\rowcolor[1]{\rowfont{\color{#1}}}
+
+\SetKw{KwOr}{or}
+\SetKwComment{tct}{\(\blacktriangleright\;\)}{}
+\NewDocumentCommand\smalltextsfit{m}{\textsf{\itshape\small #1}}
+\SetCommentSty{smalltextsfit}
+\SetKwProg{Fn}{Function}{}{end}

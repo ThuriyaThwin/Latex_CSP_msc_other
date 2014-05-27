@@ -1,6 +1,168 @@
 \section{The in-the-middle algorithm}
+% * short introductory blurb
+% * previous utility in industry? (is in introduction already)
+
 \subsection{Original LP formulation}
+To provide context for the max-sum formulation of the in-the-middle algorithm and heuristic, we will briefly describe the original algorithm as applied to \gls{lp} problems, as well as providing an explicit pseudo-code for the algorithm.
+Full descriptions of the \gls{lp} variant of the in-the-middle algorithm are available from \textcites{Wedelin95}{Bastert10}.
+
+The algorithm solves an integer program
+\begin{equation}\label{eq:ilp}
+	\begin{aligned}
+		{}           & \min*{c^\top x} \\
+		\text{s.t. } & Ax = b, \\
+		{}           & x \in \{0,1\}^n,
+	\end{aligned}
+\end{equation}
+where \(A \in \{-1,0,1\}^{m\times n}\) and \(b\in\N^m\) (\textcite{Wedelin95} considers the case \(A \in \{0,1\}^{m\times n}\)).
+The idea is to exploit the Lagrangian relaxation of the problem,
+\begin{equation}\label{eq:ilp-lagrange}
+	\begin{aligned}
+		{}           & \min*{c^\top x - y^\top (Ax - b)}\\
+		\text{s.t. } & x \in \{0,1\}^n,
+	\end{aligned}
+\end{equation}
+where \(y\) are the Lagrangian multipliers --- once a value of \(y\) has been fixed to \(\hat{y}\) it is easy to find the minimum of this relaxation.
+Assuming all reduced costs \(\bar{c} = (c^\top - \hat{y}^\top A)\) are non-zero one may then express an optimal solution \(\hat{x}\) to the original problem, with \(\hat{x}_i = 1\) for \(\bar{c}_i < 0\) and \(\hat{x}_i = 0\) for \(\bar{c}_i > 0\).
+
+The goal of the algorithm is to manipulate \(y\) to minimize \eqref{eq:ilp-lagrange} while maintaining feasibility for \eqref{eq:ilp}.
+The basic idea is to, for every single constraint \(j\) of the problem, find the elements in \(\bar{c}\) that correspond to the variables of that constraint (denoted by \(\bar{c}^j\)) and subtract the average of two \emph{critical values} \(r^+\) and \(r^-\).
+The critical values are chosen so that at most \(b_j\) of the values in \(\bar{c}^j\) are strictly positive.
+If no sign changes occur after visiting each constraint once, the algorithm has converged and a feasible (and possibly optimal, if \(\bar{c} \neq 0\)) solution has been found.
+\Cref{alg:itm-lp} provides complete pseudo-code for this algorithm, and \textcites{Wedelin95}{Wedelin13} provides further theoretical results.
+
+\begin{algorithm}[tp]
+	\KwIn{\(A \in \{-1,0,1\}^{m\times n}\), \(b\in\N^m\), \(c\in\R^n\)}
+	\KwOut{Optimal solution \(\hat{x}\in\{0,1\}^n\) to \eqref{eq:ilp} \KwOr{} \(\emptyset\)}
+	\(\bar{c} \leftarrow c\) \;
+	\(s^j \leftarrow 0\) \;
+	\Repeat{no sign changes in \(\bar{c}\)}{
+		\For{\(j=1,\dotsc,m\)}{
+			\(r \leftarrow \bar{c}^j + s^j\)\;
+			\(d \leftarrow r \cdot a_{\cdot,j}^{-1}\)\;
+			\(r^+ \leftarrow b_j\text{th largest element of }d\)\;
+			\(r^- \leftarrow (b_j+1)\text{th largest element of }d\)\;
+			\(\Delta y \leftarrow (r^+_j + r^-_j)/2\) \;
+			\(s^j \leftarrow \Delta y \cdot a_{\cdot,j}\) \;
+			\(\) \label{alg:itm-lp:deltay} \tct*[r]{Intentionally left blank}
+			\(\bar{c} \leftarrow r - s^j\) \;
+		}
+	}
+	% [todo] - fix the strange empty line occurring below
+	\eIf{\(\bar{c} \neq 0\)}{%
+		\lFor{\(i=1,\dotsc,n\)}{\leIf{\(\bar{c}_i \leq 0\)}%
+									 {\(\hat{x}_i\leftarrow1\)}%
+									 {\(\hat{x}_i\leftarrow0\)}%
+		}%
+	}{%
+		\KwRet{\(\emptyset\)}%
+	}
+
+	\caption{
+		The in-the-middle algorithm without its heuristic.
+		Counting the sign changes may be done efficiently in the final assignment to \(\bar{c}\).
+	}
+	\label{alg:itm-lp}
+\end{algorithm}
+
+The attentive reader will note that the method described by \cref{alg:itm-lp} may produce situations in which \(\bar{c}_i = 0\) for some \(i\), terminating without an integer solution to the original problem.
+To address this issue, the algorithm is transformed from being exact to being approximative by introducing a heuristic.
+The purpose of the heuristic is to \enquote{nudge} the reduced costs and move them away from \(0\), while still distorting them as little as possible.
+This will force an integer solution through what may be interpreted as coordinate search.
+A parameter \(\kappa\) is introduced to govern the heuristic: for \(\kappa=0\) there is no approximation and for \(\kappa=1\) there is maximal approximation.
+
+The idea of the heuristic is then to add a small positive value to positive elements \(\bar{c}_i\), and a small negative value to negative ones.
+To this end, the empty \cref{alg:itm-lp:deltay} of \cref{alg:itm-lp} is replaced, introducing an assignment
+\begin{equation*}
+	s^j_i \leftarrow s^j_i \pm \left(\frac{\kappa}{1-\kappa}(r^+_j - r^-_j) + \delta\right)
+\end{equation*}
+where addition is used when \(r_i - s^j_i \geq 0\) and subtraction otherwise.
+This assignment is (as implied) applied to all elements of \(s^j\).
+The (small) parameter \(\delta>0\) ensures that elements of \(\bar{c}\) are kept non-zero at all times.
+
+% * short description referring to Wedelin95
+% * explicit algorithm
+
+Note that \textcite[\pno~97]{Bastert10} provide a different but equivalent formulation of \cref{alg:itm-lp} with the approximative heuristic.
+
 \subsection{Max-sum formulation}
+Working from the \gls{lp} formulation of the in-the-middle algorithm, \textcite{Wedelin08} introduce a similar algorithm for max-sum problems (which they call \emph{cost propagation}).
+The formulation is examined further by \textcite[\pno~11\psqq]{Wedelin13}.
+This section will describe the max-sum formulation of the in-the-middle algorithm, reference some theoretical results, and provide explicit pseudo-code for the algorithm.
+
+The algorithm considers a max-sum problem
+\begin{equation}\label{eq:maxsum}
+	\max*[x] \sum_{g_k\in C} g_k(x^k),
+\end{equation}
+in accordance with \cref{def:max-sum}.
+Recalling the \emph{component model} (\cpageref{pg:component-model}), the functions \(g_k\) may be divided into \emph{variable} and \emph{constraint} components --- for instance, the problem
+\begin{equation*}
+	\max*[x] g_1(x_1) + g_2(x_2) + g_3(x_3) + g_4(x_1, x_2) + g_5(x_2, x_3)
+\end{equation*}
+has variable components \(g_1, g_2, g_3\) and constraint components \(g_4, g_5\).
+While it is possible to implement the algorithm so that all functions \(g_k\) are translated into constraint components, this division has computational advantages in that the variable components may be represented implicitly in a cost variable.
+While \textcite{Wedelin08} restricts the variables \(x_i\) to be binary, we will allow their domain to have any (finite) size.
+
+The basic framework is shown by \cref{alg:itm-maxsum}: first, the (reduced) costs are initialized along with other required variables, then the actual algorithm iterates repeatedly over all constraint components.
+Note that the formulation used here differs in that \textcite{Wedelin08} consider changes to the solution \(x\) as a termination criterium, while the variant used in this thesis is constructed so that the sign change termination criterium can be kept.
+
+\begin{algorithm}[tbp]
+	\SetKwFunction{UpdateConstraint}{UpdateConstraint}
+	\KwIn{Variable components \(g_1,\dotsc,g_n\), constraint components \(g_{n+1},\dotsc,m\)}
+	\KwOut{Optimal solution \(\hat{x}\in X\) to \eqref{eq:maxsum} \KwOr{} \(\emptyset\)}
+	\For{\(i=1,\dotsc,n\)}{
+		\lForEach{\(d_j\in D_i\)}{
+			\(\bar{c}_{i+(n-1)j} \leftarrow g_i(d_j)\) \; % [review] - unclear?
+		}
+	}
+	\(s^j \leftarrow 0\) \;
+	\Repeat{no sign changes in \(\bar{c}\)}{
+		\For{\(j=1,\dotsc,m\)}{
+			\UpdateConstraint{\(g_{n+j}\), \(\bar{c}^j\)}
+		}
+	}
+	% [todo] - fix the strange empty line occurring below
+	\eIf{\(\bar{c} \neq 0\)}{%
+		\lForEach{\(d_j\in D_i\)}{
+			\lIf{\(\bar{c}_{i+(n-1)j} < 0\)}{\(\hat{x}_i\leftarrow d_j\)} % [review] - unclear?
+		}
+	}{%
+		\KwRet{\(\emptyset\)}%
+	}
+
+	\caption{
+		The max-sum in-the-middle algorithm without its heuristic.
+	}
+	\label{alg:itm-maxsum}
+\end{algorithm}
+
+\subsubsection{The DP constraint update}
+\Cref{proc:dp-update}
+\begin{algorithm}
+	\SetKwFunction{UpdateConstraint}{UpdateConstraint}
+	\Fn{\UpdateConstraint{\(g_k\), \(\bar{c}^j\)}}{
+		\KwData{???}
+		\KwResult{???}
+	}
+	\(x\)
+	
+	\caption{
+		The DP constraint update.
+	}
+	\label{proc:dp-update}
+\end{algorithm}
+
+\subsubsection{The fractional DP constraint update}
+
+% * long, thorough description referring to Wedelin08 and Wedelin13
+% * explicit algorithm
+
 \subsection{Extensions and improvements}
+% * short blurb
+
 \subsubsection{The \enquote{push} operation}
+% * description referring to Bastert10
+% * interpretation of functionality and purpose
+
 \subsection{Interpretations in other fields}
+% * ???
