@@ -1,7 +1,6 @@
 \section{Benchmarking}
 % [todo] - review this section
-% * explain the conditions of the tests, compare to conditions in deGivry14
-% * ???
+% [todo] - explain the conditions of the tests, compare to conditions in deGivry14
 In order to determine the efficiency of the algorithm, and determine what problem paradigm the algorithm is most usefully applied to, extensive benchmark testing will be performed.
 The algorithm was tested against (part of) the large problem set used by \textcite{deGivry14}, which includes problems from the \gls{mrf}, \gls{wpms}, \gls{cfn}, Max-\gls{csp}, \gls{cp} and \gls{cvpr} domains.
 All problems in the set are available in the \textsc{wcsp} file format.
@@ -31,6 +30,7 @@ Several sets from the benchmark performed by \textcite{deGivry14} have been omit
 This is because the in-the-middle algorithm wasn't able to solve any instances in the set (due to time or memory constraints), making them uninteresting in the sense that the algorithm isn't a feasible alternative for those problems. 
 The omitted problem sets are mostly from the \gls{cp} and \gls{wpms} categories (where only two resp. one problem(s) were kept), but the \emph{Chinese Characters}, \emph{Color Segmentation}, \emph{Matching Stereo} and \emph{Photo Montage} sets from \gls{cvpr} are also omitted from the benchmark.
 % [todo] - review briefly the different fields?
+% [todo] - mention mean/median number of hard/soft constraints in each problem set? use c program to find out! 
 
 \subsubsection{Constraint Function Network (CFN)}
 This category contains six problem sets, all from the CFLib collection mentioned by \textcite[\pno~3]{deGivry14}.
@@ -46,14 +46,14 @@ Most of them are real-world problems or generated to approximate such problems, 
 		The problem set includes \emph{scheduling} and \emph{path} distribution problems, but omits the \emph{regions} distribution mentioned by \textcite[\pno~228]{Larrosa08}.
 
 	\item[CELAR]
-		As detailed by \textcite{Cabon99}, this problem set concerns radio frequency assignment, \emph{i.e.} the problem of providing communication channels from limited resources while minimizing interference in the network.
+		As detailed by \textcite{Cabon99} \parencite[and to some extent][\pno~315\psq]{Meseguer06}, this problem set concerns radio frequency assignment, \emph{i.e.} the problem of providing communication channels from limited resources while minimizing interference in the network.
 		The problems where initially introduced in 1993 by \emph{Centre d’Electronique de l’Armement}, and are based on real-world data.
 
 		The CELAR problems are fairly large, with variable domains ranging up to \num{44}, with up to \num{458} variables and \num{2400} constraints.
 		Problems included in the benchmark are mainly the CELAR sub-instances \parencite[\pno~85]{Cabon99} and some GRAPH instances.
 
 	\item[Pedigree]
-		This category contains problems relating to the Mendelian error correction on complex pedigree \parencite{Sanchez08}, which is a real-world \gls{wcsp} problem.
+		This category contains problems relating to the Mendelian error correction on complex pedigree \parencites{Sanchez08}[\pno~317\psq]{Meseguer06}, which is a real-world \gls{wcsp} problem.
 		The problem may be described as surveying a pedigree (similar to a family tree), detecting individuals that are erroneous in the sense that they do not conform to the Mendelian laws of inheritance.
 		Specifically, the problem formulation is to find the minimum number of errors needed to explain erroneous data.
 
@@ -183,7 +183,7 @@ The instances were used in the eigth Max-SAT Evaluation\footnote{\url{http://max
 \end{description}
 
 \subsection{Solvers}
-% * review briefly the method each solver uses, with references to original articles if possible
+% [todo] - review briefly the method each solver uses, with references to original articles if possible
 
 %\subsubsection{MPLP2}
 

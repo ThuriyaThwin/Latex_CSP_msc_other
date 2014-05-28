@@ -26,10 +26,10 @@ One should also note that the codomains of \(g_k\) need not be restricted to \(\
 This allows us to order solutions \(x\) to the max-sum problem by their cost, where we define the cost as \(\cost{x} = f(x) = \sum_k g_k(x^k)\), and additionally allows us to define \emph{infeasible} solutions to the max-sum problem as those for which \(\cost{x} = -\infty\).
 This will be useful in the translation between \glspl{wcsp} and max-sum problems.
 
-% [review]  more terminology?
-% * example?
-% * upper/lower bounds
-% * special terminology in the field
+% [review] - more terminology?
+% [review] - include an example?
+% [review] - theory on upper/lower bounds?
+% [review] - mention special terminology in the field?
 
 There are several algorithms available for solving max-sum problems, with \textcite{Werner07} mentioning the \emph{augmented DAG algorithm}, the \emph{max-sum diffusion algorithm} and a \gls{lp} relaxation method.
 In addition to those direct methods, the relation to \gls{csp} provides many more (which will be mentioned later), and algorithms such as \emph{belief propagation} and \emph{message passing} are also applicable to some max-sum problems (in particular, max-sum problems without loops).
@@ -40,8 +40,8 @@ In addition to those direct methods, the relation to \gls{csp} provides many mor
 A restricted variant of the max-sum problem called the \emph{binary max-sum labeling problem} has direct applications to artificial intelligence and pattern recognition, where the problem is known as computing the \gls{map} configuration of \acrlongpl{mrf} \parencite[\pno~1165]{Werner07}.
 
 % [todo] - more text?
-% * previous algorithms and results?
-% * special terminology in the field
+% [todo] - include previous algorithms and results from the AI field
+% [review] - special terminology in the field?
 
 \subsection{Weighted constraint satisfaction problems}
 \Glspl{csp} are very general decision problems, defined through a set of objects which must satisfy a set of constraints.
@@ -77,10 +77,10 @@ Using this definition, \emph{feasible} solutions are assignments \(t\) for which
 One may also make a distinction between \emph{hard} constraints (\(f_V(t^V) = k\) for some assignment(s) \(t^V\)) and \emph{soft} constraints.
 
 % [todo] - more text?
-% * example: 4-queens?
-% * upper/lower bounds
-% * previous algorithms and results?
-% * special terminology in the field
+% [review] - include an example? 4-queens?
+% [review] - theory on upper/lower bounds?
+% [review] - mention special terminology in the field?
+% [review] - include previous algorithms and results?
 
 \subsubsection{Max-CSP and (weighted) max-SAT}
 The special case of \gls{wcsp} where all constraints have either unit or zero cost (\emph{i.e.} \(f_V : D^V \mapsto {0,1}\), regardless of choice of \(k\)) is normally referred to as max-\gls{csp} \parencite[\pno~284]{Meseguer06}.
@@ -92,8 +92,8 @@ If the weights are restricted to unit or zero costs as above, the problem become
 
 This makes explicit the fact that many real-world and academic problems in satisfiability and operations reserach may be restated as \gls{wcsp} (and therefore max-sum) problems, and consequently that the in-the-middle algorithm may present a viable alternative to solving these problems using \gls{lp} formulations \parencites{Ansotegui13a}{Davies13} or special algorithms \parencites{Ansotegui13b}{Larrosa08}.
 
-% * previous algorithms and results?
-% * special terminology in the field
+% [review] - include previous algorithms and results?
+% [review] - mention special terminology in the field?
 
 \subsection{Translating WCSP to max-sum}
 The translation from \gls{wcsp} to max-sum, when using the definitions given above, is fairly straight-forward.
@@ -120,4 +120,4 @@ The translation from \gls{wcsp} to the equivalent max-sum problem may be summari
 \end{enumerate}
 
 \subsubsection{Terminology overlap}
-% * translation of equivalent terminology?
+% [todo] - translation of equivalent terminology?

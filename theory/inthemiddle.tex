@@ -1,6 +1,6 @@
 \section{The in-the-middle algorithm}
-% * short introductory blurb
-% * previous utility in industry? (is in introduction already)
+% [todo] - short introductory blurb
+% [review] - previous utility in industry? (is in introduction already)
 
 \subsection{Original LP formulation}
 To provide context for the max-sum formulation of the in-the-middle algorithm and heuristic, we will briefly describe the original algorithm as applied to \gls{lp} problems, as well as providing an explicit pseudo-code for the algorithm.
@@ -214,7 +214,7 @@ Interesting values of \(\alpha\) for parameter sweep schemes are thus \(\alpha\i
 % [todo] - continue writing here?
 
 \subsection{Extensions and improvements}
-% * short blurb
+% [todo] - short blurb
 
 \subsubsection{The \enquote{push} operation}
 In their paper examining the in-the-middle algorithm, \textcite{Bastert10} introduce a \enquote{push} operation intended to improve the quality of any non-optimal solutions found by the approximative algorithm \parencite[\pno~99\psq]{Bastert10}.
@@ -226,9 +226,7 @@ Given the favourable results of \textcite{Bastert10}, it is interesting to bench
 Luckily, the \enquote{push} operation is easily translated to apply to the max-sum formulation of the in-the-middle algorithm.
 After encountering a feasible solution (and assuming the optimality guarantee does not apply), the modified variable components \(\bar{\vcomp}_i\) are updated as in the \gls{lp} formulation (\emph{i.e.} \(\bar{\vcomp}_i\leftarrow\bar{\vcomp}_i+\rho\vcomp_i\)), and the parameter \(\alpha\) is reduced in a similar way.
 
-% * description referring to Bastert10
-% * interpretation of functionality and purpose
 % [review] - mention this under implementation instead?
 
 \subsection{Interpretations in other fields}
-% * terminology, guarantees and so on that correspond between Wedelin08's language and that of Allouche/Givry/Schiex
+% [todo] - write about terminology, guarantees and so on that correspond between Wedelin08's language and that of Allouche/Givry/Schiex

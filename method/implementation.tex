@@ -13,17 +13,22 @@ These design decisions mostly relate to the data structure representing costs in
 The main concern in selecting this data structure is quick access in the update loop.
 Since the constraint component is kept constant through all iterations, and the temporary cost table \(h\) can be made implicit, this is the only major concern.
 
+% [todo] - remove this, it is not an implementation detail
 Another implementation detail that increases performance is the storage of unary constraint components directly in the cost vector \(c\).
 This is equivalent to including explicit unary constraints, but saves time by reducing the number of virtual method calls.
-Additionally, not including the implicit marginalization and normalization onstraints \parencite[\pno~12]{Wedelin13} offers similar improvements.
+% [todo] - mention the choice of normalizing variables to use existing sign change code here
+Additionally, not including the implicit marginalization and normalization constraints \parencite[\pno~12]{Wedelin13} offers similar improvements.
 
+% [todo] - review terminology, remove \bar{c}
 The data structure chosen for the cost table of the constraint component was a vector with a sparse representation of the table costs.
 Entries with cost \(-\infty\) (\emph{i.e.} infeasible combinations) were omitted and represented implicitly by the initialization of the intermediary variable \(s\) in \cref{alg:itm-maxsum-fast}.
 The vector representation, consisting of a list of variable values (or rather, a list of indices pointing to the cost in \(\bar{c}\) corresponding to that variable value) followed by the cost of that combination (repeated for each table entry) lends itself well to the algorithm described in \cref{alg:itm-maxsum-fast}.
 Depending on problem structure and processor specifications, this implementation may make extensive use of low-level processor caches which improves performance significantly.
 
 \begin{algorithm}[tbp]
-	% [review] - this is horrible
+	% [todo] - make this a procedure like proc:dp-update?
+	% [review] - this is horrible, use terminology from earlier and mention the data structures used in text, this listing should showcase mainly the normalization, maybe something more
+	% [review] - should we include a real code listing instead? or as well? or in an appendix?
 	\(r \leftarrow \bar{c} - s\) \;
 	\(s \leftarrow -\infty\) \;
 	\For{\(i\leftarrow 0\) \KwTo{} number of entries in cost table \(T\)}{
@@ -36,7 +41,7 @@ Depending on problem structure and processor specifications, this implementation
 	}
 	\(\bar{c} \leftarrow s\) \;
 	\(s \leftarrow s - r\) \;
-	\caption{Fast implementation of the fractional DP update described in \cref{alg:itm-maxsum}. This does not include the sign change count mechanism. Here, \(T\) is a vector of unions which may be interpreted as integers (\(T_{i+j}, j < \text{arity}\)) or double-precision numbers (when \(j = \text{arity}\)).}
+	\caption{Fast implementation of the fractional DP update described in \cref{proc:dp-update}. This does not include the sign change count mechanism. Here, \(T\) is a vector of unions which may be interpreted as integers (\(T_{i+j}, j < \text{arity}\)) or double-precision numbers (when \(j = \text{arity}\)).}
 	\label{alg:itm-maxsum-fast}
 \end{algorithm}
 
@@ -45,6 +50,7 @@ As explained earlier, the fractional DP update of constraint components depends 
 Choosing this parameter is difficult, but some of the results discussed earlier may be used to create a strategy for a parameter sweep.
 Knowing that values \(\alpha=n^{-1}\) --- where \(n\) is the arity of a constraint --- guarantee that any solution found is optimal, we may take \(n^{-1}\) as a lower limit for the parameter.
 A reasonable upper limit fo the parameter is \(\alpha=1\), which in essence corresponds to the regular, non-fractional DP update.
+% [todo] - explain that kappa maps [0,1] to an alpha that is tailored for each individual constraint and that this is why we use kappa
 
 To vary the parameter between these two values, a sweep strategy is employed.
 \Cref{fig:khappa-plot} shows the value of a parameter \(\kappa\) (defined so that \(\alpha = n^{-1}\left(1 + \kappa(n - 1)\right)\), \emph{i.e.} mapping \(\left[0,1\right]\) to \(\left[n^{-1},1\right]\)) over the first \emph{trial} for two different problems, along with the number of sign changes which is used as a termination criterion.
@@ -68,6 +74,12 @@ For instance, when a solution has been found in a previous trial, the \(\kappa\)
 This means that in the next trial of the problem shown in \cref{fig:khappa-plot:comp} the final value of \(\kappa\) will be around \num{0.3}.
 
 The purpose of increasing \(\kappa\) slowly near this value is to increase accuracy by avoiding overshoot, as a lower \(\alpha\) will result in a better approximative solution.
+
+% [todo] - mention the push operation here WITH PARAMETERS (or are parameters mentioned in results?)
+% parameters:
+% \rho = 5
+% khappa factor 0.8
+% 100 iterations after push
 
 \subsubsection{Trials}
 As briefly mentioned above, the optimization involves several \emph{trials}.

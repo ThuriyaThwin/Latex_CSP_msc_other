@@ -1,11 +1,11 @@
 \section{Standard algorithm}
 % [todo] - review and rewrite this
-% * stating parameters used (maybe before this section)
-% * analyzing interesting problem sets
-% * comparing with other solvers
-% * identify what problems ITM is good at
+% [todo] - stating parameters used (should maybe be in method? check writing guide!)
+% [todo] - analyzing interesting problem sets
+% [todo] - comparing with other solvers
+% [todo] - identify what problems ITM is good at
 
-% Interesting cactus plots: CP/ParityLearning, CVPR/GeomSurf, MaxCSP/{BlackHole,Geometric,QCP}, MRF/{DBN,ObjectDetection,Segmentation}
+% Interesting cactus plots: CP/ParityLearning, CVPR/GeomSurf, MaxCSP/{BlackHole,Geometric,EHI,QCP}, MRF/{DBN,ObjectDetection,Segmentation}
 
 Applying a reasonably optimized implementation of the algorithm to the problem set introduced by \textcite{deGivry14} yields fairly promising results. Runtimes range from roughly \SI{0,5}{\second} to extreme cases of \SI{20}{\minute} (reaching the time limit), and solution quality similarly ranges from a \SI{0}{\percent} difference to extremes of up to \SI{50}{\percent}.
 
@@ -31,13 +31,17 @@ For instance, while the algorithm is \emph{very} efficient on some max-\gls{csp}
 The most interesting problem domain, judging by the results in \cref{tab:comparative-results}, is \gls{cvpr}, with some problem sets in \gls{cfn}, max-\gls{csp} and \gls{mrf} being interesting as well.
 Results in the two former categories are characterized by a small loss in solution quality compensated by a consideral improvement in runtime, although this is not true for all the problem sets in those categories.
 
+% note for the EHI runs - time is worse than CPLEX but solutions are better!
+% [review] - find a recent test of max-clique solvers on the WPMS-MaxClique set? (not for the table but may be interesting to refer rough timings) Östergård02 might be ok but that hardware is way too old.
+
 \begin{table}
 	\centering
-	% Updated 2014-05-12
+	% Updated 2014-05-25
 	\caption{
-		Solution quality and runtime. For each problem instance given by \textcite{deGivry14}, the in-the-middle solver runtime is compared the other solvers included in the benchmark, and the objective value is compared to the best known optimum from \textcite{deGivry14}.
+		Solution quality and runtime.
+		For each problem instance given by \textcite{deGivry14}, the in-the-middle solver runtime is compared the other solvers included in the benchmark, and the objective value is compared to the best known optimum from \textcite{deGivry14}.
 		Problem sets marked with \textdagger{} include unsolved problems (no feasible solution found by the in-the-middle solver), and n/a values indicate that none of the problems in the set were solved.
-		Some problem sets have been omitted. % [todo] - omitted data sets should be removed from the presentation and mentioned in the beginning of that section as omitted.
+		Some problem sets have been omitted.
 	}
 	% [review] - present in same way as deGivry14?
 	% [todo] - find a way to fit this table on one page!
@@ -81,7 +85,7 @@ Results in the two former categories are characterized by a small loss in soluti
 Max-\acrshort{csp}	&	BlackHole	&	\emph{37/37}	&	9.009009e-03	&	58.8900	&	{\textcolor{gray}{n/a}}	&	1200.0	&	315.050	&	0.635 \\
 				&	Coloring	&	\emph{22/22}	&	0.000000e+00	&	1.6860	&	{\textcolor{gray}{n/a}}	&	0.405	&	1.275	&	0.030 \\
 				&	Composed	&	\emph{80/80}	&	1.342282e-03	&	20.3400	&	1200.00	&	0.115	&	5.755	&	32.690 \\
-				&	EHI\textdagger	&	{0/200}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.0	&	1200.0	&	{\textcolor{gray}{n/a}} \\
+				&	EHI	&	{200/200}	&	9.000000e-03	&	191.2190	&	{\textcolor{gray}{n/a}}	&	1200.0	&	1200.0	&	{\textcolor{gray}{n/a}} \\
 				&	Geometric	&	\emph{100/100}	&	1.082434e-02	&	98.9760	&	{\textcolor{gray}{n/a}}	&	0.620	&	1200.0	&	0.150 \\
 				&	Langford	&	\emph{4/4}	&	1.311265e-02	&	70.7775	&	1200.00	&	600.255	&	851.605	&	0.270 \\
 				&	QCP	&	\emph{60/60}	&	1.292034e-02	&	43.2575	&	1200.00	&	1200.0	&	1200.0	&	0.125 \\
@@ -90,10 +94,10 @@ Max-\acrshort{csp}	&	BlackHole	&	\emph{37/37}	&	9.009009e-03	&	58.8900	&	{\textc
 				&	ImageAlignment	&	\emph{10/10}	&	0.000000e+00	&	0.5815	&	4.855	&	1.800	&	1200.0	&	{\textcolor{gray}{n/a}} \\
 				&	Linkage\textdagger	&	{8/22}	&	0.000000e+00	&	41.0700	&	1200.00	&	32.050	&	327.625	&	16.520 \\
 				&	ObjectDetection	&	\emph{37/37}	&	{\textcolor{gray}{n/a}}	&	6.465565e-02	&	279.8620	&	1200.00	&	1200.0	&	1200.0 \\
-				&	ProteinFolding\textdagger	&	{0/21}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.00	&	23.140	&	116.735	&	{\textcolor{gray}{n/a}} \\
+				&	ProteinFolding\textdagger	&	{20/21}	&	0.000000e+00	&	1200.0000	&	1200.00	&	23.140	&	116.735	&	{\textcolor{gray}{n/a}} \\
 				&	Segmentation	&	\emph{100/100}	&	0.000000e+00	&	0.0310	&	0.355	&	0.150	&	600.070	&	0.300 \\
 %\acrshort{wpms}	&	Haplotyping	&	{0/100}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.0	&	1200.0	&	5.200 \\
-\acrshort{wpms}	&	MaxClique	&	{0/62}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.00	&	389.745	&	481.550	&	8.795 \\
+\acrshort{wpms}	&	MaxClique\textdagger	&	{46/62}	&	2.710027e-03	&	257.0920	&	1200.00	&	389.745	&	481.550	&	8.795 \\
 %				&	MIPLib\textdagger	&	{0/12}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	193.990	&	533.220	&	0.360 \\
 %				&	PackupWeighted\textdagger	&	{0/99}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	292.960	&	0.280	&	4.620 \\
 %				&	PlanningWithPref	&	{0/29}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	{\textcolor{gray}{n/a}}	&	1200.0	&	1200.0	&	1.270 \\
