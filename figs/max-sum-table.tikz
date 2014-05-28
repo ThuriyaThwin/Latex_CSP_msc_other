@@ -4,13 +4,13 @@
 		\node (table) {
 			\begin{tikzpicture}[scale=.8]
 				\draw[step=1,black,thin] (0,0) grid (3,3);
-				\node[anchor=center] at ( .5, .5) {\(-\infty\)};
+				\node[anchor=center] at ( .5, .5) {\(0\)};
 				\node[anchor=center] at ( .5,1.5) {\(0\)};
-				\node[anchor=center] at ( .5,2.5) {\(0\)};
+				\node[anchor=center] at ( .5,2.5) {\(-\infty\)};
 				\node[anchor=center] at (1.5, .5) {\(0\)};
-				\node[anchor=center] at (1.5,1.5) {\(0\)};
+				\node[anchor=center] at (1.5,1.5) {\(-\infty\)};
 				\node[anchor=center] at (1.5,2.5) {\(0\)};
-				\node[anchor=center] at (2.5, .5) {\(0\)};
+				\node[anchor=center] at (2.5, .5) {\(-\infty\)};
 				\node[anchor=center] at (2.5,1.5) {\(0\)};
 				\node[anchor=center] at (2.5,2.5) {\(0\)};
 			\end{tikzpicture}
@@ -41,9 +41,9 @@
 		};
 	\end{scope}
 	% explanatory texts
-	\node[below=of components] (cc-text) {\emph{constraint component \(g_k(x_i,x_j)\)}}
+	\node[below=of components] (cc-text) {\emph{constraint component \(\ccomp_k(x_i, x_j)\)}}
 		(cc-text.east) edge[pointer,bend right=67.5] (table.east);
-	\node[above=of components] (vc-text) {\emph{variable components \(x_i,x_j\)}}
+	\node[above=of components] (vc-text) {\emph{variable components \(\vcomp_i(x_i), \vcomp_j(x_j)\)}}
 		(vc-text.east) edge[pointer,bend left=67.5] (upper-var.east)
 		(vc-text.west) edge[pointer,bend right=67.5] (left-var.north west);
 		%\node[anchor=west] (0, .25) {\emph{constraint component}};
