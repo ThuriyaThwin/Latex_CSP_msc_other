@@ -80,10 +80,9 @@ where addition is used when \(r_i - s^j_i \geq 0\) and subtraction otherwise.
 This assignment is (as implied) applied to all elements of \(s^j\).
 The (small) parameter \(\delta>0\) ensures that elements of \(\bar{c}\) are kept non-zero at all times.
 
-% * short description referring to Wedelin95
-% * explicit algorithm
-
 Note that \textcite[\pno~97]{Bastert10} provide a different but equivalent formulation of \cref{alg:itm-lp} with the approximative heuristic.
+
+% [review] - mention tie-breaking with random offsets?
 
 \subsection{Max-sum formulation}
 Working from the \gls{lp} formulation of the in-the-middle algorithm, \textcite{Wedelin08} introduce a similar algorithm for max-sum problems (which they call \emph{cost propagation}).
@@ -101,50 +100,82 @@ Recalling the \emph{component model} (\cpageref{pg:component-model}), the functi
 \end{equation*}
 has variable components \(g_1, g_2, g_3\) and constraint components \(g_4, g_5\).
 While it is possible to implement the algorithm so that all functions \(g_k\) are translated into constraint components, this division has computational advantages in that the variable components may be represented implicitly in a cost variable.
-While \textcite{Wedelin08} restricts the variables \(x_i\) to be binary, we will allow their domain to have any (finite) size.
+Therefore, to keep the variable and constraint components apart, we will denote the former by \(\vcomp_1,\dotsc,\vcomp_n\) and the latter by \(\ccomp_1,\dotsc,\ccomp_m\).
+We then have \(\vcomp_i : D_i \mapsto \Rminus \cup \{-\infty\}\) and \(\ccomp_k : D^k \mapsto \Rminus \cup \{-\infty\}\), where each \(\ccomp_k\) is associated with a subset of all variable components as well, as shown by \cref{fig:maxsum-components} (we call this subset \(\vcomp^j\)).
 
-The basic framework is shown by \cref{alg:itm-maxsum}: first, the (reduced) costs are initialized along with other required variables, then the actual algorithm iterates repeatedly over all constraint components.
-Note that the formulation used here differs in that \textcite{Wedelin08} consider changes to the solution \(x\) as a termination criterium, while the variant used in this thesis is constructed so that the sign change termination criterium can be kept.
+\begin{figure}[tp]
+	\centering
+	\input{figs/max-sum-table.tikz}
+	\caption{A single constraint of two variables \(x_i,x_j\) with \(\abs{D}=3\), and consequently a cost table \(g_k(x_i,x_j)\) with nine values. This particular constraint is a hard \emph{all-different} constraint \(x_i\neq x_j\).}
+	\label{fig:maxsum-components}
+\end{figure}
+
+With this in mind, we can layout the basic framework of the algorithm (\cref{alg:itm-maxsum}), which intentionally is very similar to that of the \gls{lp} formulation.
+Note especially the \emph{modified} variable components \(\hat{\vcomp}_i\), which roughly correspond to the reduced costs \(\bar{c}\) of the \gls{lp} formulation (in the same way that the actual variable components \(\vcomp_i\) roughly correspond to the actual cost vector \(c\)).
+We will now describe the constraint updates used in the algorithm, connect them theoretically to the updates used in the \gls{lp} formulation and point out some important theoretical results.
+Then, two specific updates will be described.
 
 \begin{algorithm}[tbp]
 	\SetKwFunction{UpdateConstraint}{UpdateConstraint}
-	\KwIn{Variable components \(g_1,\dotsc,g_n\), constraint components \(g_{n+1},\dotsc,m\)}
+	\KwIn{Variable components \(\vcomp_1,\dotsc,\vcomp_n\), constraint components \(\ccomp_1,\dotsc,\ccomp_m\)}
 	\KwOut{Optimal solution \(\hat{x}\in X\) to \eqref{eq:maxsum} \KwOr{} \(\emptyset\)}
-	\For{\(i=1,\dotsc,n\)}{
-		\lForEach{\(d_j\in D_i\)}{
-			\(\bar{c}_{i+(n-1)j} \leftarrow g_i(d_j)\) \; % [review] - unclear?
-		}
-	}
-	\(s^j \leftarrow 0\) \;
-	\Repeat{no sign changes in \(\bar{c}\)}{
+	\lFor{\(i=1,\dotsc,n\)}{\(\bar{\vcomp}_i \leftarrow \vcomp_i\)}
+	\lFor{\(j=1,\dotsc,m\)}{\(s^j_i \leftarrow 0\)}
+	\Repeat{\(\argmax[x_i]{\vcomp_i(x_i)}\) did not change for any \(i\)}{
 		\For{\(j=1,\dotsc,m\)}{
-			\UpdateConstraint{\(g_{n+j}\), \(\bar{c}^j\)}
+			\(\bar{\vcomp^j}, s^j \leftarrow \text{\UpdateConstraint{\(\ccomp_j\), \(\bar{\vcomp}^j\), \(s^j\)}}\)
 		}
 	}
 	% [todo] - fix the strange empty line occurring below
-	\eIf{\(\bar{c} \neq 0\)}{%
-		\lForEach{\(d_j\in D_i\)}{
-			\lIf{\(\bar{c}_{i+(n-1)j} < 0\)}{\(\hat{x}_i\leftarrow d_j\)} % [review] - unclear?
-		}
+	\eIf{\(\argmax[x_i]{\vcomp_i(x_i)}\) is unique for all \(i\)}{%
+		\lForEach{\(i=1,\dotsc,n\)}{\(\hat{x}_i \leftarrow \argmax[x_i]{\vcomp_i(x_i)}\)}
 	}{%
 		\KwRet{\(\emptyset\)}%
 	}
 
 	\caption{
-		The max-sum in-the-middle algorithm without its heuristic.
+		The basic framework of the max-sum in-the-middle algorithm.
 	}
 	\label{alg:itm-maxsum}
 \end{algorithm}
 
+The basic idea of the constraint update, as with the \gls{lp} formulation, is to modify the variable components in an invariant manner to uniquely identify the (optimal) solution given the constraint component.
+This is done by considering only the subproblem consisting of the constraint component \(\ccomp_j\) along with its associated variable components \(\vcomp^j\) and performing a local optimization.
+While \textcite[\pno~100\psq]{Wedelin08} present a framework for updates defining a few sought-after properties, we will only consider what they call \emph{consistent} and \emph{locally optimal} updates which guarantee that any solution found by \cref{alg:itm-maxsum} will be feasible.
+Some updates (in particular the fractional DP update described later, for some parameter values) are additionally \emph{non-conflicting}, which guarantees that any feasible solution found is also optimal.
+
+Each update, as illustrated by \cref{fig:itm-update}, first \emph{moves in} the costs of the variable components into the constraint component (\cref{fig:itm-update:in}, \emph{i.e.} a temporary constraint component \(h_k(x^k) = \ccomp_k(x^k) + \sum_{\vcomp_j \in \vcomp^k} \vcomp_j(x_j)\) is constructed).
+% [review] - formula terminology above unclear?
+Then, costs from the temporary constraint component \(h_k\) are moved out again (\cref{fig:itm-update:out}).
+It is mainly this last step that varies between different updates --- it is desireable to move out as much as possible (this improves the convergence rate of the algorithm), but if one moves out too much the \emph{non-conflicting} property is lost and optimality is no longer guaranteed \parencites[\pno~105]{Wedelin08}[\pno~15]{Wedelin13}.
+
+\begin{figure}[tbp]
+	\centering
+	\subfloat[Initial constraint\label{fig:itm-update:start}]{\input{figs/cost-function-update-1.tikz}}
+	\hfil
+	\subfloat[The \enquote{move in} operation\label{fig:itm-update:in}]{\input{figs/cost-function-update-2.tikz}}
+	\hfil
+	\subfloat[The \enquote{move out} operation\label{fig:itm-update:out}]{\input{figs/cost-function-update-4.tikz}}
+	\caption{An illustration of a constraint update (in this case a DP update). Note that this particular update is \emph{conflicting}, which results in a lost optimality guarantee.}
+	\label{fig:itm-update}
+\end{figure}
+
 \subsubsection{The DP constraint update}
-\Cref{proc:dp-update}
-\begin{algorithm}
+The first update we will consider is the DP update (\cref{proc:dp-update,fig:itm-update}).
+It is a fairly unsophisticated update, which exctracts the max-marginals along each dimension of the constraint component \(\ccomp_k\) and moves this amount into the corresponding variable component \(\vcomp_i(x_i)\) (\emph{i.e.} the new variable component value becomes \(\bar{\vcomp}'_i(x_i) = \max*[x\in x^k\setminus x_i]{h(x)}\) for every variable component \(\vcomp_i\) and value \(x_i\in D_i\)).
+While this should ensure quick convergence since it in effect moves out as much as possible, the update isn't non-conflicting \parencite[\pno~105]{Wedelin08}, which means we cannot guarantee optimality.
+
+\begin{algorithm}[tbp]
 	\SetKwFunction{UpdateConstraint}{UpdateConstraint}
-	\Fn{\UpdateConstraint{\(g_k\), \(\bar{c}^j\)}}{
-		\KwData{???}
-		\KwResult{???}
+	\Fn{\UpdateConstraint{\(\ccomp_k\), \(\bar{\vcomp}^k\), \(s^k\)}}{
+		\KwData{A constraint component \(\ccomp_k\), variable components \(\bar{\vcomp}^k\) and offsets \(s^k\)}
+		\KwResult{Updated variable components \(\bar{\vcomp}'^k\) and offsets \(s'^k\)}
+		\lForAll{\(\bar{\vcomp}_j\in \bar{\vcomp}^k\)}{\(r^k_j \leftarrow \bar{\vcomp}_j - s^k_j\)}
+		\(h_k(x^k) \leftarrow \ccomp_k(x^k) + \sum_{r_j \in r^k} r_j(x_j)\) \;
+		\lForAll{\(\bar{\vcomp}_j\in \bar{\vcomp}^k\)}{\(\bar{\vcomp}'_j(x_j) \leftarrow \max*[x\in x^k\setminus x_j]{h(x)}\)}
+		\lForAll{\(\bar{\vcomp}'_j\in \bar{\vcomp}'^k\)}{\(s'^k_j \leftarrow \bar{\vcomp}'_j - r^k_j\)}
+		\Return{\(\bar{\vcomp}'^k,s'^k\)}
 	}
-	\(x\)
 	
 	\caption{
 		The DP constraint update.
@@ -153,16 +184,51 @@ Note that the formulation used here differs in that \textcite{Wedelin08} conside
 \end{algorithm}
 
 \subsubsection{The fractional DP constraint update}
+Since the regular DP update cannot guarantee optimaly, it is interesting to see if it may be modified to provide such a guarantee.
+\Textcite[\pno~105\psqq]{Wedelin08} provide some theory useful in the construction of non-conflicting updates, in particular a weak upper bound on the amount possible to move out.
+They also introduce the \emph{fractional} DP update (\cref{proc:frac-dp-update}), which is very similar to the regular DP update --- instead of moving out the max-marginals of the constraint component, a fraction \(\alpha\) of the max-marginal is moved out (\emph{i.e.} the new variable component value becomes \(\bar{\vcomp}'_i(x_i) = \alpha\max*[x\in x^k\setminus x_i]{h(x)}\)).
 
-% * long, thorough description referring to Wedelin08 and Wedelin13
-% * explicit algorithm
+It is immediately obvious that \(\alpha=1\) corresponds to the regular DP update, and as such this may be taken as an upper limit of the parameter.
+Additionally, \textcite{Wedelin08} provide an upper bound for \(\alpha\) that guarantee non-conflicting updates \parencite[\pno~107]{Wedelin08}.
+This upper limit is \(\alpha=\sfrac{1}{n}\), where \(n\) is the number of variables associated with the constraint component (\emph{e.g.} \(n=2\) for the constraint component in \cref{fig:itm-update}).
+Interesting values of \(\alpha\) for parameter sweep schemes are thus \(\alpha\in[n^{-1},1]\).
+
+\begin{algorithm}[tbp]
+	\SetKwFunction{UpdateConstraint}{UpdateConstraint}
+	\Fn{\UpdateConstraint{\(\ccomp_k\), \(\bar{\vcomp}^k\), \(s^k\)}}{
+		\KwData{A constraint component \(\ccomp_k\), variable components \(\bar{\vcomp}^k\) and offsets \(s^k\)}
+		\KwResult{Updated variable components \(\bar{\vcomp}'^k\) and offsets \(s'^k\)}
+		\lForAll{\(\bar{\vcomp}_j\in \bar{\vcomp}^k\)}{\(r^k_j \leftarrow \bar{\vcomp}_j - s^k_j\)}
+		\(h_k(x^k) \leftarrow \ccomp_k(x^k) + \sum_{r_j \in r^k} r_j(x_j)\) \;
+		\lForAll{\(\bar{\vcomp}_j\in \bar{\vcomp}^k\)}{\(\bar{\vcomp}'_j(x_j) \leftarrow \alpha\max*[x\in x^k\setminus x_j]{h(x)}\)} \label{proc:frac-dp-update:diffline}
+		\lForAll{\(\bar{\vcomp}'_j\in \bar{\vcomp}'^k\)}{\(s'^k_j \leftarrow \bar{\vcomp}'_j - r^k_j\)}
+		\Return{\(\bar{\vcomp}'^k,s'^k\)}
+	}
+	
+	\caption{
+		The fractional DP constraint update. Note that the only difference between this and \cref{proc:dp-update} is on \cref{proc:frac-dp-update:diffline}.
+	}
+	\label{proc:frac-dp-update}
+\end{algorithm}
+
+% [todo] - continue writing here?
 
 \subsection{Extensions and improvements}
 % * short blurb
 
 \subsubsection{The \enquote{push} operation}
+In their paper examining the in-the-middle algorithm, \textcite{Bastert10} introduce a \enquote{push} operation intended to improve the quality of any non-optimal solutions found by the approximative algorithm \parencite[\pno~99\psq]{Bastert10}.
+The operation is aimed at improving the solution by modifying the reduced costs \(\bar{c}\) to make them \enquote{more similar} to \(c\), contending that the algorithm in fact optimizes with respect to the reduced costs (to which the approximative variant applies non-invariant changes).
+This is done by setting \(\bar{c}\leftarrow\bar{c}+\rho c\) (with \(\rho>0\)) and reducing the parameter \(\kappa\) of the approximative \gls{lp} formulation (\cref{alg:itm-lp}) by a set factor when a feasible solution is found (and \(\kappa>0\)).
+Additionally, a flag is set that makes the algorithm treat all constraints as violated \parencite[\pno~100]{Bastert10}.
+
+Given the favourable results of \textcite{Bastert10}, it is interesting to benchmark the operation for the max-sum algorithm as well.
+Luckily, the \enquote{push} operation is easily translated to apply to the max-sum formulation of the in-the-middle algorithm.
+After encountering a feasible solution (and assuming the optimality guarantee does not apply), the modified variable components \(\bar{\vcomp}_i\) are updated as in the \gls{lp} formulation (\emph{i.e.} \(\bar{\vcomp}_i\leftarrow\bar{\vcomp}_i+\rho\vcomp_i\)), and the parameter \(\alpha\) is reduced in a similar way.
+
 % * description referring to Bastert10
 % * interpretation of functionality and purpose
+% [review] - mention this under implementation instead?
 
 \subsection{Interpretations in other fields}
-% * ???
+% * terminology, guarantees and so on that correspond between Wedelin08's language and that of Allouche/Givry/Schiex
