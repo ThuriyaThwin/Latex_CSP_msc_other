@@ -1,6 +1,8 @@
 \section{Implementation}
+% [review] - "The" three sentences in a row? ugh.
 The algorithm --- including reading routines for the WCSP format \parencite{wcspformat}, parameter sweep strategy and timing facilities --- was implemented in C++11.
-The code was compiled using version 5.1 of the LLVM compiler, with all safe optimizations enabled.
+The implementation is partly based on an existing framework for the original \gls{lp} in-the-middle algorithm.
+The code was compiled using version 5.1 of the LLVM compiler, with all safe optimizations enabled (\emph{i.e.} \texttt{-O3}).
 
 There are several implementation details which are highly relevant to the performance of the algorithm, and this section will explore such details in depth.
 In particular, the choice of data structure for constraint component data as well as implementation of constraint updates makes significant impact on the runtime of the algorithm.
@@ -9,43 +11,65 @@ A parameter sweep strategy used in conjunction with the algorithm, which control
 
 \subsection{Constraint component design decisions}
 Several design decisions in the implementation of the constraint components have significant impact on the performance of the constraint component updates.
-These design decisions mostly relate to the data structure representing costs inside the constraint component.
-The main concern in selecting this data structure is quick access in the update loop.
+These design decisions mostly relate to the data structure representing costs inside the constraint component, and the main concern in selecting this data structure is quick access in the update loop.
 Since the constraint component is kept constant through all iterations, and the temporary cost table \(h\) can be made implicit, this is the only major concern.
 
-% [todo] - remove this, it is not an implementation detail
-Another implementation detail that increases performance is the storage of unary constraint components directly in the cost vector \(c\).
-This is equivalent to including explicit unary constraints, but saves time by reducing the number of virtual method calls.
-% [todo] - mention the choice of normalizing variables to use existing sign change code here
-Additionally, not including the implicit marginalization and normalization constraints \parencite[\pno~12]{Wedelin13} offers similar improvements.
+Another implementation detail to note is the storage of the (modified) variable components \(\bar{\vcomp}_i\).
+Storing these sequentially in memory is a good choice, but care needs to be taken when ordering the variable components in memory --- due to CPU cache characteristics, storing variable components used in the same constraint component next to each other is highly beneficial.
+However, the implementation used here does not reorder variable components in this manner, instead storing them in the order they have been defined in the problem input.
 
-% [todo] - review terminology, remove \bar{c}
-The data structure chosen for the cost table of the constraint component was a vector with a sparse representation of the table costs.
-Entries with cost \(-\infty\) (\emph{i.e.} infeasible combinations) were omitted and represented implicitly by the initialization of the intermediary variable \(s\) in \cref{alg:itm-maxsum-fast}.
-The vector representation, consisting of a list of variable values (or rather, a list of indices pointing to the cost in \(\bar{c}\) corresponding to that variable value) followed by the cost of that combination (repeated for each table entry) lends itself well to the algorithm described in \cref{alg:itm-maxsum-fast}.
-Depending on problem structure and processor specifications, this implementation may make extensive use of low-level processor caches which improves performance significantly.
+A good data structure for the constraint components \(\ccomp_k\) is a vector with a sparse representation of the table costs (omitting infeasible values, \emph{i.e.} \(\ccomp_k(x^k) = -\infty\)).
+These values may be implicitly represented by proper initialization of variables in the constraint update.
+The vector representation may be described as a list of pairs \(\langle x^k, \ccomp_k(x^k)\rangle\), where the (fixed) variable values \(x^k\) additionally may be used to access corresponding variable component values \(\bar{\vcomp}_i(x^k_i)\).
+In the actual implementation, \(x^k_i\) are represented as pointers to the values \(\bar{\vcomp}_i(x^k_i)\).
+
+\Cref{proc:frac-dp-update-fast} highlights these implementation details, and also shows the use of an invariant transformation of the variable components \(\bar{\vcomp}_i(x^k_i)\) that allows the use of existing code to detect solution changes by counting sign changes.
+% [review] - include actual c code somewhere? maybe appendix?
 
 \begin{algorithm}[tbp]
-	% [todo] - make this a procedure like proc:dp-update?
-	% [review] - this is horrible, use terminology from earlier and mention the data structures used in text, this listing should showcase mainly the normalization, maybe something more
-	% [review] - should we include a real code listing instead? or as well? or in an appendix?
-	\(r \leftarrow \bar{c} - s\) \;
-	\(s \leftarrow -\infty\) \;
-	\For{\(i\leftarrow 0\) \KwTo{} number of entries in cost table \(T\)}{
-		\(v \leftarrow 0\) \;
-		\lFor{\(j\leftarrow 0\) \KwTo{} arity}{\(v \leftarrow v + \bar{c}_{T_{i+j}}\)}
-		\(v \leftarrow \alpha (v + T_{i+\text{arity}})\) \;
-		\For{\(j\leftarrow 0\) \KwTo{} arity}{
-			\(s_{T_{i+j}} \leftarrow \max{s_{T_{i+j}}, v}\) \;
+	\SetKwFunction{UpdateConstraint}{UpdateConstraint}
+	\Fn{\UpdateConstraint{\(\ccomp_k\), \(\bar{\vcomp}^k\), \(s^k\)}}{
+		\KwData{A constraint component \(\ccomp_k\), (pointers to) variable components \(\bar{\vcomp}^k\) and offsets \(s^k\)}
+		\KwResult{Updated variable components \(\bar{\vcomp}^k\) and offsets \(s^k\), number of sign changes \(c\)}
+		\(c \leftarrow 0\)
+		\ForAll{\(\bar{\vcomp}_j\in \bar{\vcomp}^k\)}{
+			\(r^k_j \leftarrow \bar{\vcomp}_j - s^k_j\) \;
+			\(s^k_j \leftarrow -\infty\) \tct*[r]{Allows omitting \(\ccomp_k(x^k) = -\infty\)}
+			\(\vcomp^+_j, \vcomp^-_j \leftarrow -\infty\) \tct*[r]{Used in transforming \(\bar{\vcomp}_j\)}
 		}
+		\ForAll{pairs \(\langle x^k, \ccomp_k(x^k)\rangle\)}{
+			\(v \leftarrow \sum_{x^k_i \in x^k} \vcomp_i(x^k_i)\) \;
+			\(v \leftarrow \alpha(v + \ccomp_k(x^k))\) \;
+			\ForAll{\(x_j\in x^k\)}{
+				\(s^k_j \leftarrow \max{s^k_j, v}\) \;
+				\uIf{\(v > \vcomp^+_j\)}{
+					\(\vcomp^-_j \leftarrow \vcomp^+_j\) \;
+					\(\vcomp^+_j \leftarrow v\) \;
+				}
+				\ElseIf{\(v > \vcomp^-_j\)}{
+					\(\vcomp^-_j \leftarrow v\) \;
+				}
+			}
+		}
+		\lForAll(\tct*[r]{Transforms \(\bar{\vcomp}_j\)}){\(\bar{\vcomp}_j\in \bar{\vcomp}^k\)}{
+			\(\bar{\vcomp}_j \leftarrow \bar{\vcomp}_j - (\vcomp^+_j + \vcomp^-_j)/2\)
+		}
+		\ForAll{\(\bar{\vcomp}_j\in \bar{\vcomp}^k\)}{
+			Increment \(c\) by \(\#\{\bar{\vcomp}_j : \bar{\vcomp}_j \cdot s^k_j \leq 0\}\) \tct*[r]{Counts number of variable components changed by this update} % [review] - unclear notation?
+			\(\bar{\vcomp}_j \leftarrow s^k_j\) \;
+			\(s^k_j \leftarrow s^k_j - r^k_j\) \;
+		}
+		\Return{\(\bar{\vcomp}^k,s^k,c\)}
 	}
-	\(\bar{c} \leftarrow s\) \;
-	\(s \leftarrow s - r\) \;
-	\caption{Fast implementation of the fractional DP update described in \cref{proc:dp-update}. This does not include the sign change count mechanism. Here, \(T\) is a vector of unions which may be interpreted as integers (\(T_{i+j}, j < \text{arity}\)) or double-precision numbers (when \(j = \text{arity}\)).}
-	\label{alg:itm-maxsum-fast}
+	
+	\caption{
+		Fast implementation of the fractional DP update described in \cref{proc:dp-update}.
+	}
+	\label{proc:frac-dp-update-fast}
 \end{algorithm}
 
 \subsection{Parameter sweep strategy}
+% [todo] - review this section
 As explained earlier, the fractional DP update of constraint components depends on a parameter \(\alpha\), which dictates the amount \enquote{moved out} of the constraint component.
 Choosing this parameter is difficult, but some of the results discussed earlier may be used to create a strategy for a parameter sweep.
 Knowing that values \(\alpha=n^{-1}\) --- where \(n\) is the arity of a constraint --- guarantee that any solution found is optimal, we may take \(n^{-1}\) as a lower limit for the parameter.
