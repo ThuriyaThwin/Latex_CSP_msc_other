@@ -1,4 +1,8 @@
 \section{Extensions and improvements}
+Two variants of the algorithm have been discussed earlier in the thesis, with different purpose and functionality.
+Benchmark data was produced for these variants as well, but on a limited subset of the problems tailored for the purpose of the specific variant.
+These results will be reviewed to determine if the particular variant offers the expected improvement.
+
 % [todo] - review and rewrite this
 % [todo] - explaining why sets were chosen
 % [todo] - analyzing the results
@@ -6,6 +10,19 @@
 % [todo] - is a given improvement useful?
 
 \subsection{The \enquote{push} operation}
+The purpose of the \enquote{push} operation is to increase solution quality of the approximative algorithm once a feasible solution has been found.
+Six problem sets from \cref{tab:comparative-results} were therefore chosen for this benchmark, all with comparatively bad solutions (with solution differences close to or above \SI{1}{\percent}) and competitive runtimes.
+The expectation was to obtain better solutions while maintaining competitive runtimes.
+
+\Cref{tab:push-results} shows the results of benchmarking the \enquote{push} operation on the selected problems.
+Surprisingly, the solution quality did not improve for a majority of the problems.
+In fact, for some sets the solution quality was decreased, and the runtime of the algorithm improved instead (which, given the already competitive runtime of the standard algorithm, is an unwanted result).
+In fact, the only problem set for which the excpected result was obained is the \gls{cfn} \emph{Pedigree} set.
+
+
+
+Due to these results, the \enquote{push} operation is not as interesting when applied to the max-sum algorithm as it is in the original \gls{lp} formulation.
+% [todo] - analyze reason of unexpected results!
 
 % Interesting cactus plots: Mainly MaxCSP/BlackHole when compared to standard
 
@@ -14,12 +31,12 @@
 	% Updated 2014-05-24
 	\caption{
 		Solution quality and runtime using the \enquote{push} operation.
-		For several chosen problem sets, the in-the-middle solver runtime and objective value is compared to the results obtained by the standard algorithm (see \cref{tab:comparative-results}).
+		For several chosen problem sets, the \enquote{push} variant runtime is compared to the results obtained by the standard algorithm (see \cref{tab:comparative-results}).
 	}
-	% [review] - are there CP or WPMS problems we should include here?
+	% [todo] - double-check all table data!
 	\label{tab:push-results}
 	\begin{figcenter}
-	\begin{tabu}{xySSS[round-mode=places,round-precision=3,scientific-notation=fixed,fixed-exponent=0]
+	\begin{tabular}{xySSS[round-mode=places,round-precision=3,scientific-notation=fixed,fixed-exponent=0]
 				     S[round-mode=places,round-precision=3,scientific-notation=fixed,fixed-exponent=0]
 				     S[round-mode=places,round-precision=2,scientific-notation=fixed,fixed-exponent=0]
 				     S[round-mode=places,round-precision=2,scientific-notation=fixed,fixed-exponent=0]}
@@ -28,20 +45,38 @@
 			\cmidrule(rl){3-4} \cmidrule(rl){5-6} \cmidrule(rl){7-8}
 			{\normalsize Category} & {\normalsize Set} & {Std.} & {\enquote{Push}} & {Std.} & {\enquote{Push}} & {Std.} & {\enquote{Push}} \\
 		\midrule
-\acrshort{cfn}	&	Pedigree	&	10	&	10	&	1.804874e-02	&	0.01512494	&	2.3750	&	5.6070 \\
-\acrshort{cvpr}	&	GeomSurf	&	600	&	600	&	2.091307e-02	&	0.02091307	&	0.0460	&	0.0425 \\
-				&	SceneDecomp	&	715	&	715	&	7.545481e-01	&	0.75454789	&	0.0210	&	0.0170 \\
-Max-\acrshort{csp}	&	BlackHole	&	37	&	37	&	9.009009e-03	&	0.01081081	&	58.8900	&	31.3310 \\
-				&	Langford	&	4	&	4	&	1.311265e-02	&	0.01554176	&	70.7775	&	56.2925 \\
-				&	QCP	&	60	&	60	&	1.292034e-02	&	0.01303595	&	43.2575	&	38.0705 \\
+\acrshort{cfn}	&	Pedigree	&	10	&	10	&	1.804874e-00	&	1.51249400	&	2.3750	&	5.6070 \\
+\acrshort{cvpr}	&	GeomSurf	&	600	&	600	&	2.091307e-00	&	2.09130700	&	0.0460	&	0.0425 \\
+				&	SceneDecomp	&	715	&	715	&	7.545481e+01	&	75.4547890	&	0.0210	&	0.0170 \\
+Max-\acrshort{csp}	&	BlackHole	&	37	&	37	&	9.009009e-01	&	1.08108100	&	58.8900	&	31.3310 \\
+				&	Langford	&	4	&	4	&	1.311265e-00	&	1.55417600	&	70.7775	&	56.2925 \\
+				&	QCP	&	60	&	60	&	1.292034e-00	&	1.30359500	&	43.2575	&	38.0705 \\
+\acrshort{mrf}	&	ObjectDetection	&	37	&	37	&	6.465565e-00	&	6.46556500	&	279.8620	&	167.0170 \\
 		\bottomrule
-	\end{tabu}
+	\end{tabular}
 	\end{figcenter}
 \end{table}
 
 
 \subsection{The greedy DP update}
+The greedy DP update, obtained by fixing \(\alpha=1\) of the fractional DP update, should theoretically improve convergence at the expense of the optimality guarantee.
+Here, a large number of problems from \cref{tab:comparative-results} were selected, all exhibiting good solution quality and a reasonable but uncompetitive runtime.
+The expectation was to decrease runtime at the expense of solution quality.
+
+\Cref{tab:greedy-dp-results} shows the results of benchmarking the greedy DP algorithm against the selected problems.
+As expected, the runtime of all sets (except the \emph{Auction} set) was improved significantly --- between \num{4} and \num{350} times --- with little or no decrease in solution quality.
+The runtime improvements are most significant for the \gls{cfn} and \gls{mrf} problems, where the greedy DP variant is faster than all three other solvers.
+
+
+% [todo] - analyze reason of CFN/Auction not working!
+
+With these results in mind, the greedy algorithm may be very useful when exact solutions aren't required.
+% [todo] - mention fields where a "good enough" solution is satisfactory and why
+This makes the algorithm with greedy updates extremely competitive in such cases.
+
 % Note: for some problems, including CFN/ProteinDesign, no loss in accuracy but great decrease in time - discuss this!
+
+% Good as part of a broader strategy, to quickly obtain upper bounds?
 
 % Interesting cactus plots: MaxCSP/BlackHole, MaxCSP/QCP, MRF/DBN
 
@@ -50,13 +85,14 @@ Max-\acrshort{csp}	&	BlackHole	&	37	&	37	&	9.009009e-03	&	0.01081081	&	58.8900	&
 	% Updated 2014-05-24
 	\caption{
 		Solution quality and runtime using the greedy DP update (setting \(\alpha=1\)).
-		For several chosen problem sets, the in-the-middle solver runtime and objective value is compared to the results obtained by the standard algorithm (see \cref{tab:comparative-results}).
+		For several chosen problem sets, the greedy DP runtime is compared to the results obtained by the standard algorithm (see \cref{tab:comparative-results}).
 		Problem sets marked with \textdagger{} include unsolved problems (no feasible solution found by the greedy DP update), and n/a values indicate that none of the problems in the set were solved.
 	}
-	% [review] - are there CP or WPMS problems we should include here?
+	% [todo] - double-check all table data!
+	% [todo] - include CP/ParityLearning here?
 	\label{tab:greedy-dp-results}
 	\begin{figcenter}
-	\begin{tabu}{xySSS[round-mode=places,round-precision=3,scientific-notation=fixed,fixed-exponent=0]
+	\begin{tabular}{xySSS[round-mode=places,round-precision=3,scientific-notation=fixed,fixed-exponent=0]
 				     S[round-mode=places,round-precision=3,scientific-notation=fixed,fixed-exponent=0]
 				     S[round-mode=places,round-precision=2,scientific-notation=fixed,fixed-exponent=0]
 				     S[round-mode=places,round-precision=2,scientific-notation=fixed,fixed-exponent=0]}
@@ -66,19 +102,19 @@ Max-\acrshort{csp}	&	BlackHole	&	37	&	37	&	9.009009e-03	&	0.01081081	&	58.8900	&
 			{\normalsize Category} & {\normalsize Set} & {Std.} & {\(\alpha=1\)} & {Std.} & {\(\alpha=1\)} & {Std.} & {\(\alpha=1\)} \\
 		\midrule
 \acrshort{cfn}	&	Auction\textdagger	&	102	&	0	&	0.000000e+00	&	{\textcolor{gray}{n/a}}	&	82.8575	&	{\textcolor{gray}{n/a}} \\
-				&	CELAR\textdagger	&	10	&	4	&	1.067174e-09	&	0.00000000	&	193.3445	&	3.8775 \\
+				&	CELAR\textdagger	&	10	&	4	&	9.081260e-07	&	0.00000000	&	193.3445	&	3.8775 \\
 				&	ProteinDesign\textdagger	&	10	&	9	&	0.000000e+00	&	0.00000000	&	43.3995	&	0.7220 \\
 				&	Warehouse\textdagger	&	38	&	53	&	0.000000e+00	&	0.00000000	&	55.8550	&	0.6780 \\
 \acrshort{cvpr}	&	Matching	&	4	&	4	&	0.000000e+00	&	0.00000000	&	17.9275	&	4.5525 \\
-Max-\acrshort{csp}	&	BlackHole\textdagger	&	37	&	36	&	9.009009e-03	&	0.01081081	&	58.8900	&	13.1665 \\
-				&	Composed	&	80	&	80	&	1.342282e-03	&	0.00000000	&	20.3400	&	0.9980 \\
-				&	Geometric	&	100	&	100	&	1.082434e-02	&	0.00940821	&	98.9760	&	13.3705 \\
-				&	Langford	&	4	&	4	&	1.311265e-02	&	0.00733559	&	70.7775	&	7.3910 \\
-				&	QCP	&	60	&	60	&	1.292034e-02	&	0.02122605	&	43.2575	&	4.4240 \\
+Max-\acrshort{csp}	&	BlackHole\textdagger	&	37	&	36	&	9.009009e-01	&	0.01081081	&	58.8900	&	13.1665 \\
+				&	Composed	&	80	&	80	&	1.342282e-01	&	0.00000000	&	20.3400	&	0.9980 \\
+				&	Geometric	&	100	&	100	&	1.082434e-00	&	0.94082100	&	98.9760	&	13.3705 \\
+				&	Langford	&	4	&	4	&	1.311265e-00	&	0.96711800	&	70.7775	&	7.3910 \\
+				&	QCP	&	60	&	60	&	1.292034e-00	&	2.12260500	&	43.2575	&	4.4240 \\
 \acrshort{mrf}	&	DBN	&	108	&	108	&	0.000000e+00	&	0.00000000	&	37.9040	&	0.4465 \\
 				&	Linkage\textdagger	&	8	&	10	&	0.000000e+00	&	0.00000000	&	41.0700	&	3.6005 \\
-				&	ObjectDetection	&	37	&	37	&	6.465565e-02	&	0.06465565	&		279.8620	&	0.8380 \\
+				&	ObjectDetection	&	37	&	37	&	6.465565e-00	&	6.46556500	&		279.8620	&	0.8380 \\
 		\bottomrule
-	\end{tabu}
+	\end{tabular}
 	\end{figcenter}
 \end{table}

@@ -34,7 +34,8 @@
 % more packages
 \usepackage{chs-msc-thesis}
 \usepackage{csquotes}
-\usepackage{array,tabu}
+\usepackage{array}
+%\usepackage{tabu}
 \usepackage{booktabs}
 \usepackage[algoruled,algochapter,linesnumbered]{algorithm2e}
 \usepackage{ntheorem,xfrac}
@@ -60,7 +61,7 @@
 %\newtheorem{example}{Example}
 
 \DontPrintSemicolon
-\sisetup{locale=DE}
+\sisetup{locale=DE,detect-all}
 
 \makeatletter
 % equivalent to dashed=false in standard biblatex styles
@@ -92,7 +93,8 @@
 \SetupMetadata{
 	% [todo] - make sure all this metadata is correct
 	% Required metadata
-	title = {Solving max-sum problems with the in-the-middle heuristic},
+	%title = {Solving the max-sum problem with the in-the-middle heuristic},
+	title = {Evaluating the in-the-middle heuristic in Graphical Model Discrete Optimization},
 	author = {Simon Sigurdhsson},
 	year = {2014},
 	subject = {Engineering Mathematics},
@@ -121,6 +123,8 @@
 	\tableofcontents
 	
 	% [todo] - check grammatical tense, grammatical person, etc. (check writing guide)
+	% [fix] - use "I" for first-person
+	% [todo] - check overall conformance to writing guide
 
 	\mainmatter
 
@@ -144,6 +148,7 @@
 	\input{results.tex}
 	\input{results/standard.tex}
 	\input{results/improvements.tex}
+	\input{results/discussion.tex}
 
 	% [review] - do we need a separate discussion?
 	% [todo] - things like combining linear constraints with cost functions haven't been tested, need to mention that _somewhere_
