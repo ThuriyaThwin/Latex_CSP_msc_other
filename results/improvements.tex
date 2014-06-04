@@ -1,9 +1,9 @@
 \section{Extensions and improvements}
 Two variants of the algorithm have been discussed earlier in the thesis, with different purpose and functionality.
-Benchmark data was produced for these variants as well, but on a limited subset of the problems tailored for the purpose of the specific variant.
-These results will be reviewed to determine if the particular variant offers the expected improvement.
+Benchmark data was produced for these variants as well, but on a limited subset of the problems, chosen specifically to test the variants and their intended purpose.
+Results for both variants will be reviewed in in order to determine if they have the desired effect, and if their function is satisfactory with respect to the drawbacks they introduce.
+Results will be presented by comparison with the original benchmark only, without the solvers benchmarked by \textcite{deGivry14}.
 
-% [todo] - review and rewrite this
 % [todo] - explaining why sets were chosen
 % [todo] - analyzing the results
 % [todo] - were results as expected?
@@ -11,18 +11,21 @@ These results will be reviewed to determine if the particular variant offers the
 
 \subsection{The \enquote{push} operation}
 The purpose of the \enquote{push} operation is to increase solution quality of the approximative algorithm once a feasible solution has been found.
-Six problem sets from \cref{tab:comparative-results} were therefore chosen for this benchmark, all with comparatively bad solutions (with solution differences close to or above \SI{1}{\percent}) and competitive runtimes.
-The expectation was to obtain better solutions while maintaining competitive runtimes.
+Six problem sets from \cref{tab:comparative-results} were therefore chosen for this benchmark, all with comparatively bad solutions (solution differences close to or above \SI{1}{\percent}) but competitive runtimes.
+The expectation was to obtain better solutions while maintaining good runtimes.
 
 \Cref{tab:push-results} shows the results of benchmarking the \enquote{push} operation on the selected problems.
 Surprisingly, the solution quality did not improve for a majority of the problems.
-In fact, for some sets the solution quality was decreased, and the runtime of the algorithm improved instead (which, given the already competitive runtime of the standard algorithm, is an unwanted result).
+In fact, for some sets the solution quality was decreased, and the runtime of the algorithm improved instead (which given the already competitive runtime of the standard algorithm is an unwanted result).
 In fact, the only problem set for which the excpected result was obained is the \gls{cfn} \emph{Pedigree} set.
 
-
+The reason for this is likely that the algorithm, in trials after the \enquote{push} operation has been applied, is more conservative than the original algorithm in that the maximum \(\kappa\) value will be lower. This means more trials fail to force an integer solution, reducing the number of trials and as a consequence reducing the runtime as well as the solution quality.
+A more correct implementation would take into consideration the reduction of \(\kappa\) caused by the push operation when calculating the maximum \(\kappa\) value of subsequent trials.
+% [review] - maybe not true
+% [fix] - introduce this fix and re-run trials?
 
 Due to these results, the \enquote{push} operation is not as interesting when applied to the max-sum algorithm as it is in the original \gls{lp} formulation.
-% [todo] - analyze reason of unexpected results!
+% [todo] - analyze why it works on the CFN/Pedigree problem!
 
 % Interesting cactus plots: Mainly MaxCSP/BlackHole when compared to standard
 

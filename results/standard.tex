@@ -30,12 +30,18 @@ Analyzing the shortcomings of the algorithm, it is clear from \cref{tab:comparat
 % [todo] - explain SceneDecomp anomaly? Maybe deGivry14 has something on it?
 
 % [todo] - analyze which problems itm is bad at, an whether specialized updates may solve this
+% [todo] - relate back to presentation of problems, especially the table of values of everything
 
 % Note: problems with many hard clauses are more efficiently solved by the implementation
 
 % Mention: the omitted problems were omitted due to memory issues
 
 % Note: scenedecomp very bad, but same solutions as toulbar2
+
+% Relevant measure?: n*d "size" of problem
+
+% [todo] - relate to pp. 5-6 of deGivry14
+% [review] - discuss specific problem instances (largest solved)?
 
 % For conclusions?: note that a portfolio approach as suggested by deGivry14? may be beneficial, or rather that itm may be useful in such a portfolio
 
@@ -132,7 +138,7 @@ Max-\acrshort{csp}	&	BlackHole	&	\emph{37/37}	&	9.009009e-01	&	\emshape 58.8900	
 	\begin{figcenter}
 	\subfloat[The \emph{Segmentation} set of the \gls{mrf} category.\label{fig:cactus-std:segmentation}]{\input{figs/cactus-MRF-Segmentation.tikz}}
 	\end{figcenter}
-	\caption{Accumulated runtime of the algorithms in four different sets. Note the logarithmic scale of the \(y\) axis.}
+	\caption{Accumulated runtime of the algorithms in three different sets. Note the logarithmic scale of the \(y\) axis.}
 	\label{fig:cactus-std}
 \end{figure}
 
