@@ -20,6 +20,9 @@ While the time may be compared as-is (given the comparable hardware conditions),
 The relative deviation of the obtained solution may be calculated as \((f - \bar{f})/(\mathrm{UB}-\mathrm{LB})\), where \(f\) is the solution found by the algorithm, \(\bar{f}\) is the proven optimum and \(\mathrm{UB}, \mathrm{LB}\) is the trivial upper and lower bound of the problem (the upper bound is specified in the \textsc{wcsp} format, and the lower bound is trivially the lowest cost among all constraints).
 When \(\bar{f}\) is unknown, the lower bound is used instead.
 
+For the \enquote{push} operation, the constrant \(\rho\) was set to \num{5}, the reduction of \(\kappa\) was set to \num{0.8} and the algorithm was run for at most \num{100} additional iterations.
+This matches the parameters used by \textcite{Bastert10}.
+
 \subsection{Problem sets}
 The problem sets obtained from \textcite{deGivry14} belong to a number of different domains and represent different types of problems from industry, academia and random generation.
 This section will briefly review each problem set used in the benchmark, and review both problem source, interpretation and size.
@@ -31,6 +34,74 @@ This is because the in-the-middle algorithm wasn't able to solve any instances i
 The omitted problem sets are mostly from the \gls{cp} and \gls{wpms} categories (where only two resp. one problem(s) were kept), but the \emph{Chinese Characters}, \emph{Color Segmentation}, \emph{Matching Stereo} and \emph{Photo Montage} sets from \gls{cvpr} are also omitted from the benchmark.
 % [todo] - review briefly the different fields?
 % [todo] - mention mean/median number of hard/soft constraints in each problem set? use c program to find out! 
+
+% [review] - table with problem data instead? #vars, #constrs, domain, arity, graph connectivity/fullness, %hard constr., %zero constr, reference? (+size = n*d?)
+% [todo] - calculate graph girth/diameter if possible? could be a good measure of graph completeness
+% [todo] - Calculate connectivity? The connectivity or vertex connectivity κ(G) (where G is not a complete graph) is the size of a minimal vertex cut. http://en.wikipedia.org/wiki/Connectivity_(graph_theory)
+% [todo] - calculate density? D = 2 * e / (n^2 - n) when r = 2
+
+% \begin{table}
+% 	\centering
+% 	% Updated 2014-05-25
+% 	\caption{
+% 		Representative properties of each problem set included in the benchmark.
+% 		The number of variables \(n\), domain size \(D\), number of cost functions \(e\) and overall size \(n\times D\) of every set is represented by the maximum value in that set.
+% 		The properties of the problem graph (diameter \(d\) and girth \(g\)) are represented by the mode of that variable in every set.
+% 		The constraint type values are represented by their median in every set.
+% 		%Finally, the original source of each problem set is presented.
+% 	}
+% 	% [review] - decide between this table and just writing stuff in text instead. or do this in results for the relevant problems when discussing good/bad problems?
+% 	\label{tab:problem-properties}
+% 	\begin{figcenter}
+% 	\begin{tabular}{xy S[table-figures-decimal=0,table-figures-exponent=0,table-figures-integer=6,table-figures-uncertainty=0]
+% 					   S[table-figures-decimal=0,table-figures-exponent=0,table-figures-integer=3,table-figures-uncertainty=0]
+% 					   S[table-figures-decimal=0,table-figures-exponent=0,table-figures-integer=6,table-figures-uncertainty=0]
+% 					   H%S[table-figures-decimal=0,table-figures-exponent=0,table-figures-integer=1,table-figures-uncertainty=0]
+% 					   S[table-figures-decimal=0,table-figures-exponent=0,table-figures-integer=0,table-figures-uncertainty=0]% may need special attention to force exponents
+% 					   S[table-figures-decimal=0,table-figures-exponent=0,table-figures-integer=0,table-figures-uncertainty=0]
+% 					   S[table-figures-decimal=0,table-figures-exponent=0,table-figures-integer=0,table-figures-uncertainty=0]
+% 					   S[table-figures-decimal=0,table-figures-exponent=0,table-figures-integer=0,table-figures-uncertainty=0]
+% 					   S[table-figures-decimal=0,table-figures-exponent=0,table-figures-integer=0,table-figures-uncertainty=0]
+% 					   S[table-figures-decimal=0,table-figures-exponent=0,table-figures-integer=0,table-figures-uncertainty=0]
+% 					   H}
+% 		\toprule
+% 			{} & {} & \multicolumn{5}{c}{Problem size} & \multicolumn{2}{c}{Graph} & \multicolumn{3}{c}{Constr.~type (\si{\percent})} & {} \\
+% 			\cmidrule(rl){3-7} \cmidrule(rl){8-9} \cmidrule(rl){10-12}
+% 			% #vars, domain, #constr., constr arity, n*d, graph diameter, graph girth, ...
+% 			{\normalsize Category} & {\normalsize Set} & {\(n\)} & {\(D\)} & {\(e\)} & {\(r\)} & {\(n\times D\)} & {\(d\)} & {\(g\)} & {Hard} & {Soft} & {Zero} & {\normalsize Source} \\
+% 		\midrule
+% \acrshort{cfn}	&	Auction			&    246 &   2 &  11528 & 2 & ? & ? & ? & \\
+% 				&	CELAR			&    458 &  44 &   2335 & 2 & ? & ? & ? & \\
+% 				&	Pedigree		&  10017 &  28 &  18875 & 3 & ? & ? & ? & \\
+% 				&	ProteinDesign	&     18 & 198 &    171 & 2 & ? & ? & ? & \\
+% 				&	SPOT5			&   1057 &   4 &  21786 & 3 & ? & ? & ? & \\
+% 				&	Warehouse		&   1100 & 300 & 101100 & 2 & ? & ? & ? & \\
+% \acrshort{cp}	&	OnCallRostering	&   2205 &  89 &   4513 & 4 & ? & ? & ? & \\
+% 				&	ParityLearning	&    759 &  20 &   1440 & 4 & ? & ? & ? & \\
+% \acrshort{cvpr}	&	GeomSurf		&   1133 &   7 &   5039 & 3 & ? & ? & ? & \\
+% 				&	InPainting		&  14400 &   4 &  71282 & 2 & ? & ? & ? & \\
+% 				&	Matching		&     20 &  20 &    210 & 2 & ? & ? & ? & \\
+% 				&	ObjectSeg		& 166222 &  20 & 497849 & 2 & ? & ? & ? & \\
+% 				&	SceneDecomp		&    208 &   8 &    769 & 2 & ? & ? & ? & \\
+% Max-\acrshort{csp}	&	BlackHole	&    205 &  50 &   1651 & 2 & ? & ? & ? & \\
+% 				&	Coloring		&    450 &   6 &   6164 & 2 & ? & ? & ? & \\
+% 				&	Composed		&     83 &  10 &    785 & 2 & ? & ? & ? & \\
+% 				&	EHI				&    315 &   7 &   4715 & 2 & ? & ? & ? & \\
+% 				&	Geometric		&     50 &  20 &    605 & 2 & ? & ? & ? & \\
+% 				&	Langford		&     33 &  29 &    517 & 2 & ? & ? & ? & \\
+% 				&	QCP				&    264 &   9 &   2662 & 2 & ? & ? & ? & \\
+% \acrshort{mrf}	&	DBN				&   1094 &   2 &  22793 & 2 & ? & ? & ? & \\
+% 				&	Grid			&   6400 &   2 &  19200 & 2 & ? & ? & ? & \\
+% 				&	ImageAlignment	&    400 &  93 &   3563 & 2 & ? & ? & ? & \\
+% 				&	Linkage			&   1289 &   7 &   2184 & 5 & ? & ? & ? & \\
+% 				&	ObjectDetection	&     60 &  21 &   1830 & 2 & ? & ? & ? & \\
+% 				&	ProteinFolding	&   1972 & 503 &   8816 & 2 & ? & ? & ? & \\
+% 				&	Segmentation	&    237 &  21 &    886 & 2 & ? & ? & ? & \\
+% \acrshort{wpms}	&	MaxClique		&   3321 &   2 & 378247 & 2 & ? & ? & ? & \\
+% 		\bottomrule
+% 	\end{tabular}
+% 	\end{figcenter}
+% \end{table}
 
 \subsubsection{Constraint Function Network (CFN)}
 This category contains six problem sets, all from the CFLib collection mentioned by \textcite[\pno~3]{deGivry14}.
@@ -110,41 +181,36 @@ The problems have been collected from various sources \parencite[\pno~1330]{Kapp
 
 The size of these problems vary, with \numrange{20}{500000} variables, \numrange{210}{2000000} constraints and variable domains reaching \num{20} for some sets.
 
-% [review] - omitted: ChineseChars, ColorSeg, MatchingStereo, PhotoMontage
-
 % [review] - explain every set?
 
 \subsubsection{Max-CSP}
 The seven max-\gls{csp} sets are restated binary \gls{csp} instances such that the optimal solution of each instance is the minimal number of unsatisfiable constraints in the original \gls{csp} problem.
 The instances are from the 2008 max-\gls{csp} competition\multfootnote{\url{http://www.cril.univ-artois.fr/~lecoutre/benchmarks.html};\url{http://www.cril.univ-artois.fr/CPAI08/}}.
-
-% [todo] - describe problems!
-
-% descriptions from http://www.cril.univ-artois.fr/~lecoutre/benchmarks.html
+The problems are mostly academic and random, with a relatively small number of variables and constraints (below \num{450} and \num{6500}, respectively).
 
 \begin{description}
 	\item[Black Hole]
-% The Black Hole problem is the task of moving all cards of 17 fans of 3 cards each to the center pile, the Black hole, which initially only contains the Ace of Spades. Three series of instances (which correspond to a simplification of the original problem) have been generated by Radoslaw Szymanek for the 2005 CSP Solver Competition. They are denoted by blackHole-4-n with n in {4,7,13}. (Academic problem)
-% I. Gent, C. Jefferson, I. Lynce, I. Miguel, P. Nightingale, B. Smith, and A. Tarim. Search in the patience game ’black hole’. Technical report, Cork Constraint Com- putation Centre, 2005.
-		\parencite{Gent07}
+		\enquote{Black Hole} is a solitaire card game in which card from 17 piles are moved to a center pile according to certain rules.
+		The instances in this set correspond to a simplification of this solitaire game, and were used in the 2005 \gls{csp} Solver Competition.
+		\Textcite{Gent07} provide a theoretical background to the \gls{csp} formulation of this problem.
 	\item[Coloring]
-% The graph coloring problem can be stated as follows: given a graph G=(V,E), the objective is to find the minimum number of colors k such that there exists a mapping r from V to 1..k with r(i) <> r(j) for every edge (i,j) of G. The decision problem associated with this optimization problem involves determining if the graph can be colored when using a given number of colors k. All CSP instances given here have been built from resources that can be found here . We would like to thank very much Mickael Trick for kindly authorizing us to exploit the resources he has collected. Concerning the instances, some interesting results can be found in [Benhamou and Saidi, Local Symmetry Breaking During Search in CSPs, CP'07].
-		DIMACS and \parencite{Benhamou07}
+		In the well-known graph coloring (decision) problem, the objective is to decide whether a given graph is \(k\)-colorable, \emph{i.e.} whether each edge can be assigned one of \(k\) distinct colors such that no adjacent (connected) nodes have the same color.
+		As such, the instances are crafted academic problems.
+		The instances in this set originate from the \emph{Center for Discrete Mathematics and Theoretical Computer Science} (DIMACS), and have been previously studied by \textcite{Benhamou07}.
 	\item[Composed]
-% Here are 9 classes of 10 random CSP instances such that each generated instance is composed of a main (under-constrained, here) fragment and some auxiliary fragments, each of which being grafted to the main one by introducing some binary constraints. Such classes have been introduced in: [Lecoutre-Boussemart-Hemery, Backjump-based techniques versus conflict-directed heuristics, ICTAI'04]. Related instances have been experimented in [Jussien-Debruyne-Boizumault, Maintaining arc consistency within dynamic backtracking, CP'00] (Random problem)
-		\parencite{Lecoutre04}
+		These are random instances composed of an unconstrained \gls{csp} core combined using binary constraints with auxillary fragments.
+		Such problems have been previously used by \textcite{Lecoutre04,Jussien00}.
 	\item[EHI]
-% A 3-SAT instance is a SAT instance such that each clause contains exactly 3 literals. Two series of 3-SAT unsatisfiable instances have been converted into CSP instances using the dual method as described in [Bacchus, Extending forward checking, CP'00]. See [Lecoutre-Boussemart-Hemery, Backjump-based techniques versus conflict-directed heuristics, ICTAI'04]. These series are denoted by ehi-85 and ehi-90. (Random problem)
-		\parencite{Lecoutre04}
+		The EHI problem instances are random 3-\gls{sat} (\gls{sat} problems where every clause consists of exactly three literals) converted into \gls{csp} instances with binary constraints, then further restated as max-\gls{csp} problems. They have previously been considered by \textcite{Lecoutre04}.
 	\item[Geometric]
-% The Geometric problem has been proposed by Rick Wallace. The geometric instances are a kind of random instances generated as follows. Instead of a density parameter, a "distance" parameter, dst, is used such that dst <= sqrt(2). For each variable, two coordinates are chosen at random so the associated point lies in the unit square. Then for each variable pair, (x,y), if the distance between their associated points is less than or equal to dst, the arc (x,y) is added to the constraint graph. Constraint relations are created in the same way as they are for homogeneous random CSP instances. Each instance is prefixed by geom. (Random problem)
+		This set contains problems generated from random points in the unit square. For every pair of points, a hard constraint forbidding the pair is added if they are within a certain distance from each other.
+		These instances were used in the 2005 max-\gls{csp} competition \parencite{Boussemart05}.
 	\item[Langford]
-% The (generalized version of the) problem is to arrange k sets of numbers ranging from 1 to n, so that each appearance of the number m is m numbers on from the last. See prob024 at CSPLib. Each instance is denoted by langford-k-n. (Academic problem)
+		The Langford instances are academic instances solving the problem of arranging \(k\) sets of numbers ranging from \(1\) to \(n\) so that appearances of the number \(m\) are exactly \(m\) places apart.
+		A general formulation of the problem has been presented by \textcite{Linek03}.
 	\item[QCP]
-% The Quasi-group Completion problem (QCP) is the task of determining whether the remaining entries of the partial Latin square can be filled in such a way that we obtain a complete Latin square, ie. a full multiplication table of a quasi-group. The Quasi-group With Holes problem (QWH) is a variant of the QCP as instances are generated in such a way that they are guaranteed to be satisfiable. These 8 series of instances have been generated by Radoslaw Szymanek for the 2005 CSP Solver Competition. (Academic problem)
-% C.P. Gomez and D. Shmoys. Completing quasigroups or latin squares: a structured graph coloring problem. In Proceedings of Computational Symposium on Graph Coloring and Generalization, 2002.
-		\parencite{Gomes02}
-		% [review] - Gomes02 is an incomplete reference
+		The Quasi-group Completion problems (QCP) are concerned with deciding if a partial Latin square can be filled in order to obtain a full Latin square.
+		The set consists of 60 instances previously used in the 2005 \gls{csp} Solver Competition, and the general problem has previously been studied by \textcite{Gomes02}.
 \end{description}
 
 \subsubsection{Markov Random Fields (MRF)}
@@ -183,14 +249,22 @@ The instances were used in the eigth Max-SAT Evaluation\footnote{\url{http://max
 \end{description}
 
 \subsection{Solvers}
-% [todo] - review briefly the method each solver uses, with references to original articles if possible
-
-%\subsubsection{MPLP2}
+Three solvers used by \textcite{deGivry14} are included in this benchmark.
+This section will briefly describe their original field of application, give brief pointers to the method they employ, and relate them to the in-the-middle algorithm.
 
 \subsubsection{Toulbar2}
-Description in \parencite{Allouche10}, first mentioned by \textcite{deGivry05} and later improved (see deGivry14 for more refs) and also mentioned in \parencite{Sanchez08}
+The Toulbar2 solver is an exact anytime solver for \gls{wcsp} based on a depth-first branch-and-bound algorithm \parencite{Allouche10}.
+In addition to using a strong arc consistency property\footnote{Existential directed arc consistency, as presented by \textcite{deGivry05}.}, the solver uses a sizable bag of tricks including variable elimination, dead-end elimination \parencite{deGivry13} and pairwise decomposition \parencite{Favier11}.
+
+The Toulbar2 solver is by far the most advanced solver in the \gls{wcsp} field, with significant amounts of theory behind it especially with respect to strong arc consistency properties (the one implicitly employed by the in-the-middle algorithm, generalized arc consistency, is quite weak in comparison).
+It is therefore an interesting benchmark \enquote{opponent}, and matching it in a benchmark (especially the \gls{mrf}, \gls{cfn} and max-\gls{csp} categories) could indicate potential for the in-the-middle algorithm in those categories.
 
 \subsubsection{CPLEX}
+The well-known CPLEX solver, which is an exact \gls{lp} solver rather than a \gls{wcsp} solver, is also included in the benchmark.
+Using the \emph{direct} encoding described by \textcite[\pno~3]{deGivry14} of \gls{wcsp} into \gls{lp} problems, CPLEX was found to have very good performance for some problem categories an therefore it is also included in this benchmark.
+CPLEX is highly optimized proprietary software, but uses the well-known simplex and barrier interior point methods to solve \gls{lp} problems.
+Even so, previous results \parencite{Mason01,Ernst05} have shown that the \gls{lp} formulation of the in-the-middle algorithm is competitive with CPLEX, and it is therefore interesting to see how the two relate in the \gls{wcsp} field.
 
 \subsubsection{MaxHS}
-Introduced by \textcite{Davies11} and improved by \parencite{Davies13}
+The MaxHS solver is a \gls{maxsat} and \gls{wpms} solver based on decomposing \gls{maxsat} problems into several smaller \gls{sat} instances, solving these using cooperation between an underlying \gls{sat} solver and a \gls{mip} solver \parencite{Davies11}.
+It has been found to perform well in solving non-random \gls{maxsat} instances \parencite{Davies13}, and is therefore a prime candidate for comparison in the \gls{wpms} (and to some extent max-\gls{csp}) categories.
