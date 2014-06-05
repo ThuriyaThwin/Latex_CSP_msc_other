@@ -1,7 +1,7 @@
+% [todo] - move table/figures around
 \section{Standard algorithm}
 Benchmarking the standard algorithm on the large set of problems provided earlier produced mixed results.
-\Cref{tab:number-solved} lists the number of problems (out of the total number available from each set) that were solved by the in-the-middle algorithm.
-The results indicate that the algorithm is able to solve the same types of problem as the \emph{Toulbar} and \emph{CPLEX} solvers, with a few exceptions.
+The number of problems (out of the total number available from each set) that were solved by the in-the-middle algorithm indicate that the algorithm is able to solve the same types of problem as the \emph{Toulbar} and \emph{CPLEX} solvers, with a few exceptions.
 This implies that the algorithm may be useful in most of the fields from which problems were drawn, but does not indicate whether it is useful in its current state, performance-wise.
 
 However, as \cref{tab:comparative-results} shows, the algorithm performed very well when comparing runtime to other solvers and in fact it was the fastest for almost half of the sets after removing incomplete data (runtimes based on data where less than \SI{70}{\percent} of the problems were solved).
@@ -13,13 +13,9 @@ Results from the \gls{cp} category are also promising, but these problem sets ar
 
 \Cref{fig:cactus-std} shows accumulated runtimes for three of the sets in which the algorithm performed well.
 The algorithm has a consistent advantage in the \emph{Segmentation} set (\cref{fig:cactus-std:segmentation}), which is reflected by the mean runtime in \cref{tab:comparative-results}.
-\Cref{fig:cactus-std:blackhole,fig:cactus-std:dbn} highlight more interesting situations.
-The former illustrates performance in the \emph{Black Hole} set and indicates a clear advantage in the second half of the set, which contains larger and more difficult problems.
-% [fix] - the above says almost nothing. try to figure out why results are that way!
-
-The latter instead shows an apparent advantage throughout the whole set, which is contradicted by \cref{tab:comparative-results}.
-This has an explanation: while the in-the-middle algorithm has a lower runtime (by \SIrange{60}{80}{\percent}) for difficult problems, where Toulbar2 reaches the benchmark time limit, the situation is reversed for the less difficult problems where Toulbar2 is roughly \SI{99}{\percent} faster.
-The bulk of the set consists of less difficult problems, which explains the median value.
+\Cref{fig:cactus-std:dbn} highlight a more interesting situation.
+The former shows performance in the \emph{DBN} set, in which the algorithm has an advantage in total runtime across the whole set, almost entirely due to good performance on the more difficult problems.
+In fact, the runtimes are fairly evenly distributed whereas the runtimes for CPLEX and Toulbar vary significantly between the difficult and easy problems of the set.
 % [todo] - justify choice of median for the values (goes in method?)
 
 Analyzing the shortcomings of the algorithm, it is clear from \cref{tab:comparative-results} that it had significant difficulties in solving the problems from the \gls{cfn} category.
@@ -42,6 +38,8 @@ Analyzing the shortcomings of the algorithm, it is clear from \cref{tab:comparat
 
 % [todo] - relate to pp. 5-6 of deGivry14
 % [review] - discuss specific problem instances (largest solved)?
+% 
+% [todo] - discuss the fact that CPLEX and MaxHS are LP solvers, and that the LP formulation of ITM might be competitive in the same areas due to problem structure
 
 % For conclusions?: note that a portfolio approach as suggested by deGivry14? may be beneficial, or rather that itm may be useful in such a portfolio
 
@@ -126,82 +124,82 @@ Max-\acrshort{csp}	&	BlackHole	&	\emph{37/37}	&	9.009009e-01	&	\emshape 58.8900	
 	\end{figcenter}
 \end{table}
 
-\begin{figure}
+\begin{figure}[tp]
 	\begin{figcenter}
-	\subfloat[The \emph{Black Hole} set of the Max-\gls{csp} category.\label{fig:cactus-std:blackhole}]{\input{figs/cactus-MaxCSP-BlackHole.tikz}}
+	\subfloat[The \emph{Segmentation} set of the \gls{mrf} category.\label{fig:cactus-std:segmentation}]{\input{figs/cactus-MRF-Segmentation.tikz}}
 	\end{figcenter}
 	\\
 	\begin{figcenter}
 	\subfloat[The \emph{DBN} set of the \gls{mrf} category.\label{fig:cactus-std:dbn}]{\input{figs/cactus-MRF-DBN.tikz}}
 	\end{figcenter}
-	\\
-	\begin{figcenter}
-	\subfloat[The \emph{Segmentation} set of the \gls{mrf} category.\label{fig:cactus-std:segmentation}]{\input{figs/cactus-MRF-Segmentation.tikz}}
-	\end{figcenter}
-	\caption{Accumulated runtime of the algorithms in three different sets. Note the logarithmic scale of the \(y\) axis.}
+	%\\
+	%\begin{figcenter}
+	%\subfloat[The \emph{Black Hole} set of the Max-\gls{csp} category.\label{fig:cactus-std:blackhole}]{\input{figs/cactus-MaxCSP-BlackHole.tikz}}
+	%\end{figcenter}
+	\caption{Accumulated runtime of the algorithms in three different sets, sorted by runtime individually for every solver. Note the logarithmic scale of the \(y\) axis.}
 	\label{fig:cactus-std}
 \end{figure}
 
-\begin{table}
-	\centering
-	% Updated 2014-05-25
-	\caption{
-		Solved problems.
-		For each problem instance used in the benchmark, the number of problems solved by each solver is listed.
-		%Some problem sets have been omitted.
-	}
-	% [review] - should this be in an appendix?
-	\label{tab:number-solved}
-	\begin{figcenter}
-	\begin{tabular}{xyccHccc}
-		\toprule
-			{} & {} & {} & \multicolumn{5}{c}{\(\#\) solved} \\
-			\cmidrule(rl){4-8}
-			{\normalsize Category} & {\normalsize Set} & {\(\#\) of problems} & {ITM} & {MPLP2} & {Toulbar2} & {CPLEX} & {MaxHS} \\
-		\midrule
-\acrshort{cfn}	&	Auction	&	170	&	102	&	97	&	170	&	170	&	170 \\
-				&	CELAR	&	16	&	10	&	16	&	16	&	16	&	0 \\
-				&	Pedigree	&	10	&	10	&	0	&	10	&	5	&	5 \\
-				&	ProteinDesign	&	10	&	10	&	9	&	10	&	10	&	0 \\
-				&	SPOT5	&	20	&	5	&	1	&	20	&	20	&	5 \\
-				&	Warehouse	&	55	&	38	&	54	&	55	&	55	&	47 \\
-%\acrshort{cp}	&	AMaze	&	6	&	0	&	0	&	2	&	0	&	6 \\
-%				&	FastFood	&	6	&	1	&	0	&	1	&	1	&	1 \\
-%\acrshort{cp}	&	Golomb	&	6	&	0	&	0	&	3	&	0	&	3 \\
-\acrshort{cp}	&	OnCallRostering	&	5	&	3	&	0	&	3	&	3	&	3 \\
-				&	ParityLearning	&	7	&	7	&	0	&	7	&	7	&	3 \\
-%				&	VRP	&	5	&	0	&	0	&	5	&	0	&	0 \\
-%\acrshort{cvpr}	&	ChineseChars	&	100	&	0	&	100	&	100	&	100	&	0 \\
-%				&	ColorSeg	&	21	&	0	&	16	&	21	&	5	&	0 \\
-\acrshort{cvpr}	&	GeomSurf	&	600	&	600	&	324	&	600	&	600	&	310 \\
-				&	InPainting	&	4	&	4	&	4	&	4	&	3	&	0 \\
-				&	Matching	&	4	&	4	&	1	&	4	&	4	&	0 \\
-%				&	MatchingStereo	&	2	&	0	&	2	&	2	&	0	&	0 \\
-				&	ObjectSeg	&	5	&	5	&	5	&	5	&	4	&	0 \\
-%				&	PhotoMontage	&	2	&	0	&	0	&	0	&	0	&	0 \\
-				&	SceneDecomp	&	715	&	715	&	715	&	715	&	715	&	1 \\
-Max-\acrshort{csp}	&	BlackHole	&	37	&	37	&	0	&	37	&	37	&	10 \\
-				&	Coloring	&	22	&	22	&	0	&	20	&	22	&	12 \\
-				&	Composed	&	80	&	80	&	80	&	80	&	80	&	80 \\
-				&	EHI	&	200	&	200	&	0	&	200	&	200	&	0 \\
-				&	Geometric	&	100	&	100	&	0	&	100	&	100	&	88 \\
-				&	Langford	&	4	&	4	&	1	&	4	&	4	&	2 \\
-				&	QCP	&	60	&	60	&	4	&	60	&	60	&	46 \\
-\acrshort{mrf}	&	DBN	&	108	&	108	&	108	&	108	&	108	&	30 \\
-				&	Grid	&	21	&	0	&	21	&	21	&	21	&	4 \\
-				&	ImageAlignment	&	10	&	10	&	10	&	10	&	8	&	0 \\
-				&	Linkage	&	22	&	8	&	5	&	22	&	22	&	20 \\
-				&	ObjectDetection	&	37	&	37	&	23	&	37	&	37	&	0 \\
-				&	ProteinFolding	&	21	&	20	&	21	&	21	&	10	&	0 \\
-				&	Segmentation	&	100	&	100	&	100	&	100	&	100	&	50 \\
-%\acrshort{wpms}	&	Haplotyping	&	100	&	0	&	0	&	100	&	96	&	25 \\
-\acrshort{wpms}	&	MaxClique	&	62	&	46	&	56	&	62	&	62	&	36 \\
-%				&	MIPLib	&	12	&	0	&	0	&	5	&	5	&	3 \\
-%				&	PackupWeighted	&	99	&	0	&	0	&	98	&	99	&	85 \\
-%				&	PlanningWithPref	&	29	&	0	&	0	&	24	&	21	&	27 \\
-%				&	TimeTabling	&	25	&	0	&	0	&	1	&	1	&	1 \\
-%				&	Upgradeability	&	100	&	0	&	0	&	100	&	100	&	100 \\
-		\bottomrule
-	\end{tabular}
-	\end{figcenter}
-\end{table}
+% \begin{table}
+% 	\centering
+% 	% Updated 2014-05-25
+% 	\caption{
+% 		Solved problems.
+% 		For each problem instance used in the benchmark, the number of problems solved by each solver is listed.
+% 		%Some problem sets have been omitted.
+% 	}
+% 	% [review] - should this be in an appendix?
+% 	\label{tab:number-solved}
+% 	\begin{figcenter}
+% 	\begin{tabular}{xyccHccc}
+% 		\toprule
+% 			{} & {} & {} & \multicolumn{5}{c}{\(\#\) solved} \\
+% 			\cmidrule(rl){4-8}
+% 			{\normalsize Category} & {\normalsize Set} & {\(\#\) of problems} & {ITM} & {MPLP2} & {Toulbar2} & {CPLEX} & {MaxHS} \\
+% 		\midrule
+% \acrshort{cfn}	&	Auction	&	170	&	102	&	97	&	170	&	170	&	170 \\
+% 				&	CELAR	&	16	&	10	&	16	&	16	&	16	&	0 \\
+% 				&	Pedigree	&	10	&	10	&	0	&	10	&	5	&	5 \\
+% 				&	ProteinDesign	&	10	&	10	&	9	&	10	&	10	&	0 \\
+% 				&	SPOT5	&	20	&	5	&	1	&	20	&	20	&	5 \\
+% 				&	Warehouse	&	55	&	38	&	54	&	55	&	55	&	47 \\
+% %\acrshort{cp}	&	AMaze	&	6	&	0	&	0	&	2	&	0	&	6 \\
+% %				&	FastFood	&	6	&	1	&	0	&	1	&	1	&	1 \\
+% %\acrshort{cp}	&	Golomb	&	6	&	0	&	0	&	3	&	0	&	3 \\
+% \acrshort{cp}	&	OnCallRostering	&	5	&	3	&	0	&	3	&	3	&	3 \\
+% 				&	ParityLearning	&	7	&	7	&	0	&	7	&	7	&	3 \\
+% %				&	VRP	&	5	&	0	&	0	&	5	&	0	&	0 \\
+% %\acrshort{cvpr}	&	ChineseChars	&	100	&	0	&	100	&	100	&	100	&	0 \\
+% %				&	ColorSeg	&	21	&	0	&	16	&	21	&	5	&	0 \\
+% \acrshort{cvpr}	&	GeomSurf	&	600	&	600	&	324	&	600	&	600	&	310 \\
+% 				&	InPainting	&	4	&	4	&	4	&	4	&	3	&	0 \\
+% 				&	Matching	&	4	&	4	&	1	&	4	&	4	&	0 \\
+% %				&	MatchingStereo	&	2	&	0	&	2	&	2	&	0	&	0 \\
+% 				&	ObjectSeg	&	5	&	5	&	5	&	5	&	4	&	0 \\
+% %				&	PhotoMontage	&	2	&	0	&	0	&	0	&	0	&	0 \\
+% 				&	SceneDecomp	&	715	&	715	&	715	&	715	&	715	&	1 \\
+% Max-\acrshort{csp}	&	BlackHole	&	37	&	37	&	0	&	37	&	37	&	10 \\
+% 				&	Coloring	&	22	&	22	&	0	&	20	&	22	&	12 \\
+% 				&	Composed	&	80	&	80	&	80	&	80	&	80	&	80 \\
+% 				&	EHI	&	200	&	200	&	0	&	200	&	200	&	0 \\
+% 				&	Geometric	&	100	&	100	&	0	&	100	&	100	&	88 \\
+% 				&	Langford	&	4	&	4	&	1	&	4	&	4	&	2 \\
+% 				&	QCP	&	60	&	60	&	4	&	60	&	60	&	46 \\
+% \acrshort{mrf}	&	DBN	&	108	&	108	&	108	&	108	&	108	&	30 \\
+% 				&	Grid	&	21	&	0	&	21	&	21	&	21	&	4 \\
+% 				&	ImageAlignment	&	10	&	10	&	10	&	10	&	8	&	0 \\
+% 				&	Linkage	&	22	&	8	&	5	&	22	&	22	&	20 \\
+% 				&	ObjectDetection	&	37	&	37	&	23	&	37	&	37	&	0 \\
+% 				&	ProteinFolding	&	21	&	20	&	21	&	21	&	10	&	0 \\
+% 				&	Segmentation	&	100	&	100	&	100	&	100	&	100	&	50 \\
+% %\acrshort{wpms}	&	Haplotyping	&	100	&	0	&	0	&	100	&	96	&	25 \\
+% \acrshort{wpms}	&	MaxClique	&	62	&	46	&	56	&	62	&	62	&	36 \\
+% %				&	MIPLib	&	12	&	0	&	0	&	5	&	5	&	3 \\
+% %				&	PackupWeighted	&	99	&	0	&	0	&	98	&	99	&	85 \\
+% %				&	PlanningWithPref	&	29	&	0	&	0	&	24	&	21	&	27 \\
+% %				&	TimeTabling	&	25	&	0	&	0	&	1	&	1	&	1 \\
+% %				&	Upgradeability	&	100	&	0	&	0	&	100	&	100	&	100 \\
+% 		\bottomrule
+% 	\end{tabular}
+% 	\end{figcenter}
+% \end{table}

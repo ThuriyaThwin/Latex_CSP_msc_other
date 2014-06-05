@@ -1,3 +1,4 @@
+% [todo] - move table/figures around
 \section{Extensions and improvements}
 Two variants of the algorithm have been discussed earlier in the thesis, with different purpose and functionality.
 Benchmark data was produced for these variants as well, but on a limited subset of the problems, chosen specifically to test the variants and their intended purpose.
@@ -65,17 +66,26 @@ Max-\acrshort{csp}	&	BlackHole	&	37	&	37	&	9.009009e-01	&	1.08108100	&	58.8900	&
 The greedy DP update, obtained by fixing \(\alpha=1\) of the fractional DP update, should theoretically improve convergence at the expense of the optimality guarantee.
 Here, a large number of problems from \cref{tab:comparative-results} were selected, all exhibiting good solution quality and a reasonable but uncompetitive runtime.
 The expectation was to decrease runtime at the expense of solution quality.
+Additionally, some sets with perfect solution quality and competitive runtime were also included, to observe the effects of this variant on already well-performing problem sets.
 
 \Cref{tab:greedy-dp-results} shows the results of benchmarking the greedy DP algorithm against the selected problems.
 As expected, the runtime of all sets (except the \emph{Auction} set) was improved significantly --- between \num{4} and \num{350} times --- with little or no decrease in solution quality.
-The runtime improvements are most significant for the \gls{cfn} and \gls{mrf} problems, where the greedy DP variant is faster than all three other solvers.
+The runtime improvements are most significant for the \gls{cfn} and \gls{mrf} problems, where the greedy DP variant is competitive with all three other solvers.
 
+In situations where finding a solution quickly is more important than finding a guaranteed optimal solution, the greedy DP update is therefore a viable alternative.
+There is no problem set where solution quality is significantly lowered, and only three sets contain problems which could be solved by the standard algorithm but not using greedy DP updates.
+Three problem sets from the max-\gls{csp} category additionally show improved solution quality as well as better runtimes.
 
-% [todo] - analyze reason of CFN/Auction not working!
+\Cref{fig:cactus-greedy} illustrates the utility of the greedy DP update.
+While it is slower for very small problems in the \emph{Black Hole} set, it is significantly faster in solving the more difficult problems.
+
+% [todo] - theorize on reason of CFN/Auction not working!
 
 With these results in mind, the greedy algorithm may be very useful when exact solutions aren't required.
 % [todo] - mention fields where a "good enough" solution is satisfactory and why
 This makes the algorithm with greedy updates extremely competitive in such cases.
+The greedy update variant may also be useful as part of a broader strategy, by for instance providing fast and good upper bounds or by providing fast unproven solutions while waiting for exact solvers.
+Another interesting direction for the greedy DP update could be to run it in parallel with the standard algorithm (sharing the immutable constraint components in memory), again providing quick approximative solutions as well as good solutions.
 
 % Note: for some problems, including CFN/ProteinDesign, no loss in accuracy but great decrease in time - discuss this!
 
@@ -90,9 +100,8 @@ This makes the algorithm with greedy updates extremely competitive in such cases
 		Solution quality and runtime using the greedy DP update (setting \(\alpha=1\)).
 		For several chosen problem sets, the greedy DP runtime is compared to the results obtained by the standard algorithm (see \cref{tab:comparative-results}).
 		Problem sets marked with \textdagger{} include unsolved problems (no feasible solution found by the greedy DP update), and n/a values indicate that none of the problems in the set were solved.
+		Runtimes based on less than \SI{70}{\percent} of the problems are faded.
 	}
-	% [todo] - double-check all table data!
-	% [todo] - include CP/ParityLearning here?
 	\label{tab:greedy-dp-results}
 	\begin{figcenter}
 	\begin{tabular}{xySSS[round-mode=places,round-precision=3,scientific-notation=fixed,fixed-exponent=0]
@@ -105,19 +114,30 @@ This makes the algorithm with greedy updates extremely competitive in such cases
 			{\normalsize Category} & {\normalsize Set} & {Std.} & {\(\alpha=1\)} & {Std.} & {\(\alpha=1\)} & {Std.} & {\(\alpha=1\)} \\
 		\midrule
 \acrshort{cfn}	&	Auction\textdagger	&	102	&	0	&	0.000000e+00	&	{\textcolor{gray}{n/a}}	&	82.8575	&	{\textcolor{gray}{n/a}} \\
-				&	CELAR\textdagger	&	10	&	4	&	9.081260e-07	&	0.00000000	&	193.3445	&	3.8775 \\
+%				&	CELAR\textdagger	&	10	&	4	&	9.081260e-07	&	0.00000000	&	\color{gray}193.3445	&	\color{gray}3.8775 \\
 				&	ProteinDesign\textdagger	&	10	&	9	&	0.000000e+00	&	0.00000000	&	43.3995	&	0.7220 \\
-				&	Warehouse\textdagger	&	38	&	53	&	0.000000e+00	&	0.00000000	&	55.8550	&	0.6780 \\
+				&	Warehouse\textdagger	&	38	&	53	&	0.000000e+00	&	0.00000000	&	\color{gray}55.8550	&	0.6780 \\
+\acrshort{cp}	&	ParityLearning	&	7	&	7	&	1.800000e-05	&	0.000013	&	34.5300	&	3.1260 \\
 \acrshort{cvpr}	&	Matching	&	4	&	4	&	0.000000e+00	&	0.00000000	&	17.9275	&	4.5525 \\
-Max-\acrshort{csp}	&	BlackHole\textdagger	&	37	&	36	&	9.009009e-01	&	0.01081081	&	58.8900	&	13.1665 \\
+Max-\acrshort{csp}	&	BlackHole\textdagger	&	37	&	36	&	9.009009e-01	&	1.081081	&	58.8900	&	13.1665 \\
+				&	Coloring	&	22	&	22	&	0.000000e+00	&	0.000000	&	1.6860	&	0.2080 \\
 				&	Composed	&	80	&	80	&	1.342282e-01	&	0.00000000	&	20.3400	&	0.9980 \\
 				&	Geometric	&	100	&	100	&	1.082434e-00	&	0.94082100	&	98.9760	&	13.3705 \\
 				&	Langford	&	4	&	4	&	1.311265e-00	&	0.96711800	&	70.7775	&	7.3910 \\
 				&	QCP	&	60	&	60	&	1.292034e-00	&	2.12260500	&	43.2575	&	4.4240 \\
 \acrshort{mrf}	&	DBN	&	108	&	108	&	0.000000e+00	&	0.00000000	&	37.9040	&	0.4465 \\
-				&	Linkage\textdagger	&	8	&	10	&	0.000000e+00	&	0.00000000	&	41.0700	&	3.6005 \\
+%				&	Linkage\textdagger	&	8	&	10	&	0.000000e+00	&	0.00000000	&	\color{gray}41.0700	&	\color{gray}3.6005 \\
 				&	ObjectDetection	&	37	&	37	&	6.465565e-00	&	6.46556500	&		279.8620	&	0.8380 \\
+				&	Segmentation	&	100	&	100	&	0.000000e+00	&	0.000000	&	0.0310	&	0.1295 \\
 		\bottomrule
 	\end{tabular}
 	\end{figcenter}
 \end{table}
+
+\begin{figure}[tp]
+	\begin{figcenter}
+	\input{figs/khappa1-cactus-MaxCSP-BlackHole.tikz}
+	\end{figcenter}
+	\caption{Accumulated runtime of the standard and greedy algorithm in the \emph{Black Hole} set, sorted by runtime individually for each variant. Note the logarithmic scale of the \(y\) axis.}
+	\label{fig:cactus-greedy}
+\end{figure}
