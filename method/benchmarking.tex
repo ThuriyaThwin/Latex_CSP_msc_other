@@ -23,6 +23,9 @@ When \(\bar{f}\) is unknown, the lower bound is used instead.
 For the \enquote{push} operation, the constant \(\rho\) was set to \num{5}, the reduction of \(\kappa\) was set to \num{0.8} and the algorithm was run for at most \num{100} additional iterations.
 This matches the parameters used by \textcite{Bastert10}.
 
+The stochastic tie-breaking mechanism was included in all benchmark runs, with threshold \(\epsilon=\num{0.01}\) and noise amplitude \(\zeta=1\).
+Since all constraint clauses of the problems used in the benchmark have integer costs, having \(\zeta\leq1\) ensures that the tie-breaking noise will never promote tied variables above better, non-tied solutions.
+
 \subsection{Problem sets}
 The problem sets obtained from \textcite{deGivry14} belong to a number of different domains and represent different types of problems from industry, academia and random generation.
 This section will briefly review each problem set used in the benchmark, and review both problem source, interpretation and size.

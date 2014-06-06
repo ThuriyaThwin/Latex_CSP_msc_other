@@ -1,5 +1,8 @@
 \section{The in-the-middle algorithm}
-% [todo] - short introductory blurb
+This section will present the in-the-middle algorithm for max-sum problems, and the framework of \emph{variable components}, \emph{constraint components} and \emph{constraint updates} employed by the algorithm.
+It will provide theoretical results on the feasibility and optimality guarantees provided by the algorithm, and will present two variations of the update procedure used in the algorithm.
+Previous improvements to the \gls{lp} formulation will also be applied to the max-sum version.
+First, however, the original \gls{lp} algorithm will be reviewed.
 % [review] - previous utility in industry? (is in introduction already)
 
 \subsection{Original LP formulation}
@@ -33,7 +36,7 @@ If no sign changes occur after visiting each constraint once, the algorithm has 
 
 \begin{algorithm}[tp]
 	\KwIn{\(A \in \{-1,0,1\}^{m\times n}\), \(b\in\N^m\), \(c\in\R^n\)}
-	\KwOut{Optimal solution \(\hat{x}\in\{0,1\}^n\) to \eqref{eq:ilp} \KwOr{} \(\emptyset\)}
+	\KwOut{Optimal solution \(\hat{x}\in\{0,1\}^n\) to \cref{eq:ilp} \KwOr{} \(\emptyset\)}
 	\(\bar{c} \leftarrow c\) \;
 	\(s^j \leftarrow 0\) \;
 	\Repeat{no sign changes in \(\bar{c}\)}{
@@ -118,23 +121,24 @@ Then, two specific updates will be described.
 \begin{algorithm}[tbp]
 	\SetKwFunction{UpdateConstraint}{UpdateConstraint}
 	\KwIn{Variable components \(\vcomp_1,\dotsc,\vcomp_n\), constraint components \(\ccomp_1,\dotsc,\ccomp_m\)}
-	\KwOut{Optimal solution \(\hat{x}\in X\) to \eqref{eq:maxsum} \KwOr{} \(\emptyset\)}
+	\KwOut{Feasible solution \(\hat{x}\in X\) to \cref{eq:maxsum} \KwOr{} \(\emptyset\)}
 	\lFor{\(i=1,\dotsc,n\)}{\(\bar{\vcomp}_i \leftarrow \vcomp_i\)}
 	\lFor{\(j=1,\dotsc,m\)}{\(s^j_i \leftarrow 0\)}
-	\Repeat{\(\argmax[x_i]{\vcomp_i(x_i)}\) did not change for any \(i\)}{
+	\Repeat{\(\argmax*[x_i]{\bar{\vcomp}_i(x_i)}\) did not change for any \(i\)}{
 		\For{\(j=1,\dotsc,m\)}{
 			\(\bar{\vcomp^j}, s^j \leftarrow \text{\UpdateConstraint{\(\ccomp_j\), \(\bar{\vcomp}^j\), \(s^j\)}}\)
 		}
 	}
 	% [todo] - fix the strange empty line occurring below
-	\eIf{\(\argmax[x_i]{\vcomp_i(x_i)}\) is unique for all \(i\)}{%
-		\lForEach{\(i=1,\dotsc,n\)}{\(\hat{x}_i \leftarrow \argmax[x_i]{\vcomp_i(x_i)}\)}
+	\eIf{\(\argmax*[x_i]{\bar{\vcomp}_i(x_i)}\) is unique for all \(i\)}{%
+		\lForEach{\(i=1,\dotsc,n\)}{\(\hat{x}_i \leftarrow \argmax*[x_i]{\bar{\vcomp}_i(x_i)}\)}
 	}{%
 		\KwRet{\(\emptyset\)}%
 	}
 
 	\caption{
 		The basic framework of the max-sum in-the-middle algorithm.
+		If the constraint updates are non-conflicting, the output is an optimal solution to \cref{eq:maxsum}.
 	}
 	\label{alg:itm-maxsum}
 \end{algorithm}
@@ -214,7 +218,11 @@ Interesting values of \(\alpha\) for parameter sweep schemes are thus \(\alpha\i
 % [todo] - continue writing here?
 
 \subsection{Extensions and improvements}
-% [todo] - short blurb
+Previous work on the \gls{lp} formulation of the in-the-middle algorithm has yielded useful improvements in performance, and it is therefore interesting to apply these variants to the max-sum variant as well.
+We present two such improvements.
+
+First, a modification of the \gls{lp} algorithm introduced by \textcite{Bastert10} is considered.
+Then, an important addition to the algorithm designed to break ties in variables is introduced.
 
 \subsubsection{The \enquote{push} operation}
 In their paper examining the in-the-middle algorithm, \textcite{Bastert10} introduce a \enquote{push} operation intended to improve the quality of any non-optimal solutions found by the approximative algorithm \parencite[\pno~99\psq]{Bastert10}.
@@ -226,7 +234,27 @@ Given the favourable results of \textcite{Bastert10}, it is interesting to bench
 Luckily, the \enquote{push} operation is easily translated to apply to the max-sum formulation of the in-the-middle algorithm.
 After encountering a feasible solution (and assuming the optimality guarantee does not apply), the modified variable components \(\bar{\vcomp}_i\) are updated as in the \gls{lp} formulation (\emph{i.e.} \(\bar{\vcomp}_i\leftarrow\bar{\vcomp}_i+\rho\vcomp_i\)), and the parameter \(\alpha\) is reduced in a similar way.
 
-% [review] - mention this under implementation instead?
+\subsubsection{Tie-breaking using noise}
+In some problems --- especially those with few hard constraints --- there may be several solutions in a neighbourhood which have the same objective value.
+Such situations may result in the modified variables components \(\bar{\vcomp}_j\) being tied for some variables \(j\), which means the algorithm cannot determine a feasible solution (since the corresponding variable value \(\hat{x}_j\) is ambiguous).
+To address this issue, a stochastic tie-breaking mechanism is introduced.
+
+The tie-breaking mechanism considers the modified variable components \(\bar{\vcomp}_j\), in which \(\argmax*[x_j]{\bar{\vcomp_j}(x_j)}\) is non-unique if variable \(x_j\) is ambiguous.
+Moving through all the variable components \(\bar{\vcomp}_j\), any element whose value \enquote{too close} (determined by a threshold value \(\epsilon\)) to the maximum value \(M = \max*[x_j]{\bar{\vcomp_j}(x_j)}\) is modified by adding uniformly distributed random noise of magnitude \(\zeta\), \emph{i.e.}
+\begin{equation*}
+	\bar{\vcomp}'_j(x_j) = \bar{\vcomp}_j(x_j) + \begin{cases}
+		u \sgn{\bar{\vcomp}_j(x_j) - M} \quad & \text{if \(\abs{\bar{\vcomp}_j(x_j) - M} \leq \epsilon\)} \\
+		0 & \text{otherwise}
+	\end{cases}, \quad \forall x_j \in D_j,
+\end{equation*}
+where \(u \in \mathcal{U}(-\zeta,\zeta)\) is a random variable taken from a uniform distibution.
+If noise has been added in a previous iteration, that noise is removed from the variable component first.
 
 \subsection{Interpretations in other fields}
 % [todo] - write about terminology, guarantees and so on that correspond between Wedelin08's language and that of Allouche/Givry/Schiex
+% 
+% Arc consistency: (Wedelin08, p.8) corresponds to what kind of consistency? How does EDAC* relate to this? (deGivry05)
+% http://en.wikipedia.org/wiki/Local_consistency#Arc_consistency implies that we have normal AC*, with in-the-middle being a simplistic algorithm
+% But what would EDAC be in our case?
+% 
+% [todo] - check how the algorithm exposes/utilizes the notions in Bordeaux08?
