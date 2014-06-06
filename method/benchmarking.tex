@@ -10,17 +10,17 @@ This section will describe the method used to benchmark the algorithm, including
 It will also briefly present the problems used in the benchmark, to provide background that may explain the performance characteristics of the algorithm, as well as short introductions to other solvers with which the in-the-middle algorithm will be compared.
 
 \subsection{Benchmarking method}
-All problem instances were limited in runtime by the upper time limit \(t_{\text{max}} = \SI{1200}{\second}\), and the benchmarks were run on an Intel~Core~i5 processor at \SI{2.3}{\giga\hertz}, with \SI{8}{\gibi\byte} RAM.
+All problem instances were limited in runtime by the upper time limit \(t_{\text{max}} = \SI{1200}{\second}\), and the benchmarks were run on a single core of an Intel~Core~i5 processor at \SI{2.3}{\giga\hertz}, with \SI{8}{\gibi\byte} RAM.
 This is comparable to the conditions of the benchmark performed by \textcite{deGivry14}, and should ensure that the comparisons are valid.
 
-Since the algorithm, when used with the corresponding heuristic, is an inexact algorithm (while the solvers benchmarked by \textcite{deGivry14} are all exact solvers) the quality of the solution must be compared in addition to the elapsed time per problem.
+Since the algorithm when used with the corresponding heuristic is an inexact algorithm (while the solvers benchmarked by \textcite{deGivry14} are all exact solvers) the quality of the solution must be compared in addition to the elapsed time per problem.
 While the time may be compared as-is (given the comparable hardware conditions), the found solution will have to be compared relative to the proven optimum for each problem.
 
 \label{pg:bench-method}
-The relative deviation of the obtained solution may be calculated as \((f - \bar{f})/(\mathrm{UB}-\mathrm{LB})\), where \(f\) is the solution found by the algorithm, \(\bar{f}\) is the proven optimum and \(\mathrm{UB}, \mathrm{LB}\) is the trivial upper and lower bound of the problem (the upper bound is specified in the \textsc{wcsp} format, and the lower bound is trivially the lowest cost among all constraints).
+The relative deviation of the obtained solution (an \emph{optimality gap}) may be calculated as \((f - \bar{f})/(\mathrm{UB}-\mathrm{LB})\), where \(f\) is the solution found by the algorithm, \(\bar{f}\) is the proven optimum and \(\mathrm{UB}, \mathrm{LB}\) is the trivial upper and lower bound of the problem (the upper bound is specified in the \textsc{wcsp} format, and the lower bound is trivially the lowest cost among all constraints).
 When \(\bar{f}\) is unknown, the lower bound is used instead.
 
-For the \enquote{push} operation, the constrant \(\rho\) was set to \num{5}, the reduction of \(\kappa\) was set to \num{0.8} and the algorithm was run for at most \num{100} additional iterations.
+For the \enquote{push} operation, the constant \(\rho\) was set to \num{5}, the reduction of \(\kappa\) was set to \num{0.8} and the algorithm was run for at most \num{100} additional iterations.
 This matches the parameters used by \textcite{Bastert10}.
 
 \subsection{Problem sets}
@@ -181,8 +181,6 @@ The problems have been collected from various sources \parencite[\pno~1330]{Kapp
 
 The size of these problems vary, with \numrange{20}{500000} variables, \numrange{210}{2000000} constraints and variable domains reaching \num{20} for some sets.
 
-% [review] - explain every set?
-
 \subsubsection{Max-CSP}
 The seven max-\gls{csp} sets are restated binary \gls{csp} instances such that the optimal solution of each instance is the minimal number of unsatisfiable constraints in the original \gls{csp} problem.
 The instances are from the 2008 max-\gls{csp} competition\multfootnote{\url{http://www.cril.univ-artois.fr/~lecoutre/benchmarks.html};\url{http://www.cril.univ-artois.fr/CPAI08/}}.
@@ -217,7 +215,7 @@ The problems are mostly academic and random, with a relatively small number of v
 This category consists of seven sets, where the task is to estimate \gls{map} probabilities on \gls{mrf}. The sets represent different underlying problems such as image alignment, genetic linkage analysis, protein folding and other probabilistic problems.
 
 All of these problems, except those in the \emph{Linkage} set (which was used in the UAI08 probabilistic inference evaluation and later by \textcite{Favier11} in their work on pairwise decomposition), are from the 2011 Probabilistic Inference Challenge\footnote{\url{http://www.cs.huji.ac.il/project/PASCAL/}}.
-The problems were translated into their \gls{wcsp} equivalent using a \(-\log*{}\) transformation \parencite[\pno~4]{deGivry14}.
+The problems were translated into their \gls{wcsp} equivalent using a \(-\log{}\) transformation \parencite[\pno~4]{deGivry14}.
 % [review] - page number above will have to change
 
 Most problems are modest in size, with \numrange{60}{2000} variables and \numrange{1000}{10000} constraints and variable domains below \num{30}. 

@@ -11,16 +11,16 @@ Results will be presented by comparison with the original benchmark only, withou
 % [todo] - is a given improvement useful?
 
 \subsection{The \enquote{push} operation}
-The purpose of the \enquote{push} operation is to increase solution quality of the approximative algorithm once a feasible solution has been found.
+The purpose of the \enquote{push} operation is to decrease the optimality gap of the approximative algorithm once a feasible solution has been found.
 Six problem sets from \cref{tab:comparative-results} were therefore chosen for this benchmark, all with comparatively bad solutions (solution differences close to or above \SI{1}{\percent}) but competitive runtimes.
 The expectation was to obtain better solutions while maintaining good runtimes.
 
 \Cref{tab:push-results} shows the results of benchmarking the \enquote{push} operation on the selected problems.
-Surprisingly, the solution quality did not improve for a majority of the problems.
-In fact, for some sets the solution quality was decreased, and the runtime of the algorithm improved instead (which given the already competitive runtime of the standard algorithm is an unwanted result).
+Surprisingly, the optimality gap did not improve for a majority of the problems.
+In fact, for some sets the optimality gap was increased, and the runtime of the algorithm improved instead (which given the already competitive runtime of the standard algorithm is an unwanted result).
 In fact, the only problem set for which the excpected result was obained is the \gls{cfn} \emph{Pedigree} set.
 
-The reason for this is likely that the algorithm, in trials after the \enquote{push} operation has been applied, is more conservative than the original algorithm in that the maximum \(\kappa\) value will be lower. This means more trials fail to force an integer solution, reducing the number of trials and as a consequence reducing the runtime as well as the solution quality.
+The reason for this is likely that the algorithm, in trials after the \enquote{push} operation has been applied, is more conservative than the original algorithm in that the maximum \(\kappa\) value will be lower. This means more trials fail to force an integer solution, reducing the number of trials and as a consequence reducing the runtime as well as increasing the optimality gap.
 A more correct implementation would take into consideration the reduction of \(\kappa\) caused by the push operation when calculating the maximum \(\kappa\) value of subsequent trials.
 % [review] - maybe not true
 % [fix] - introduce this fix and re-run trials?
@@ -34,7 +34,7 @@ Due to these results, the \enquote{push} operation is not as interesting when ap
 	\centering
 	% Updated 2014-05-24
 	\caption{
-		Solution quality and runtime using the \enquote{push} operation.
+		Optimality gap and runtime using the \enquote{push} operation.
 		For several chosen problem sets, the \enquote{push} variant runtime is compared to the results obtained by the standard algorithm (see \cref{tab:comparative-results}).
 	}
 	% [todo] - double-check all table data!
@@ -45,7 +45,7 @@ Due to these results, the \enquote{push} operation is not as interesting when ap
 				     S[round-mode=places,round-precision=2,scientific-notation=fixed,fixed-exponent=0]
 				     S[round-mode=places,round-precision=2,scientific-notation=fixed,fixed-exponent=0]}
 		\toprule
-			{} & {} & \multicolumn{2}{c}{\(\#\) solved} & \multicolumn{2}{c}{Sol. diff. (\si{\percent})} & \multicolumn{2}{c}{Mean time (\si{\second})} \\
+			{} & {} & \multicolumn{2}{c}{\(\#\) solved} & \multicolumn{2}{c}{Gap (\si{\percent})} & \multicolumn{2}{c}{Mean time (\si{\second})} \\
 			\cmidrule(rl){3-4} \cmidrule(rl){5-6} \cmidrule(rl){7-8}
 			{\normalsize Category} & {\normalsize Set} & {Std.} & {\enquote{Push}} & {Std.} & {\enquote{Push}} & {Std.} & {\enquote{Push}} \\
 		\midrule
@@ -64,17 +64,17 @@ Max-\acrshort{csp}	&	BlackHole	&	37	&	37	&	9.009009e-01	&	1.08108100	&	58.8900	&
 
 \subsection{The greedy DP update}
 The greedy DP update, obtained by fixing \(\alpha=1\) of the fractional DP update, should theoretically improve convergence at the expense of the optimality guarantee.
-Here, a large number of problems from \cref{tab:comparative-results} were selected, all exhibiting good solution quality and a reasonable but uncompetitive runtime.
+Here, a large number of problems from \cref{tab:comparative-results} were selected, all exhibiting low optimality gaps and a reasonable but uncompetitive runtime.
 The expectation was to decrease runtime at the expense of solution quality.
-Additionally, some sets with perfect solution quality and competitive runtime were also included, to observe the effects of this variant on already well-performing problem sets.
+Additionally, some sets with zero optimality gap and competitive runtime were included to observe the effects of this variant on already well-performing problem sets.
 
 \Cref{tab:greedy-dp-results} shows the results of benchmarking the greedy DP algorithm against the selected problems.
-As expected, the runtime of all sets (except the \emph{Auction} set) was improved significantly --- between \num{4} and \num{350} times --- with little or no decrease in solution quality.
+As expected, the runtime of all sets (except the \emph{Auction} set) was improved significantly --- between \num{4} and \num{350} times --- with little or no increase in optimality gap.
 The runtime improvements are most significant for the \gls{cfn} and \gls{mrf} problems, where the greedy DP variant is competitive with all three other solvers.
 
 In situations where finding a solution quickly is more important than finding a guaranteed optimal solution, the greedy DP update is therefore a viable alternative.
-There is no problem set where solution quality is significantly lowered, and only three sets contain problems which could be solved by the standard algorithm but not using greedy DP updates.
-Three problem sets from the max-\gls{csp} category additionally show improved solution quality as well as better runtimes.
+There is no problem set where the optimality gap is significantly increased, and only three sets contain problems which could be solved by the standard algorithm but not using greedy DP updates.
+Three problem sets from the max-\gls{csp} category additionally show improved optimality gaps as well as better runtimes.
 
 \Cref{fig:cactus-greedy} illustrates the utility of the greedy DP update.
 While it is slower for very small problems in the \emph{Black Hole} set, it is significantly faster in solving the more difficult problems.
@@ -97,7 +97,7 @@ Another interesting direction for the greedy DP update could be to run it in par
 	\centering
 	% Updated 2014-05-24
 	\caption{
-		Solution quality and runtime using the greedy DP update (setting \(\alpha=1\)).
+		Optimality gap and runtime using the greedy DP update (setting \(\alpha=1\)).
 		For several chosen problem sets, the greedy DP runtime is compared to the results obtained by the standard algorithm (see \cref{tab:comparative-results}).
 		Problem sets marked with \textdagger{} include unsolved problems (no feasible solution found by the greedy DP update), and n/a values indicate that none of the problems in the set were solved.
 		Runtimes based on less than \SI{70}{\percent} of the problems are faded.
@@ -109,7 +109,7 @@ Another interesting direction for the greedy DP update could be to run it in par
 				     S[round-mode=places,round-precision=2,scientific-notation=fixed,fixed-exponent=0]
 				     S[round-mode=places,round-precision=2,scientific-notation=fixed,fixed-exponent=0]}
 		\toprule
-			{} & {} & \multicolumn{2}{c}{\(\#\) solved} & \multicolumn{2}{c}{Sol. diff. (\si{\percent})} & \multicolumn{2}{c}{Mean time (\si{\second})} \\
+			{} & {} & \multicolumn{2}{c}{\(\#\) solved} & \multicolumn{2}{c}{Gap (\si{\percent})} & \multicolumn{2}{c}{Mean time (\si{\second})} \\
 			\cmidrule(rl){3-4} \cmidrule(rl){5-6} \cmidrule(rl){7-8}
 			{\normalsize Category} & {\normalsize Set} & {Std.} & {\(\alpha=1\)} & {Std.} & {\(\alpha=1\)} & {Std.} & {\(\alpha=1\)} \\
 		\midrule

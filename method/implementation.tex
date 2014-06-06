@@ -1,5 +1,4 @@
 \section{Implementation}
-% [review] - "The" three sentences in a row? ugh.
 The algorithm --- including reading routines for the WCSP format \parencite{wcspformat}, parameter sweep strategy and timing facilities --- was implemented in C++11.
 The implementation is partly based on an existing framework for the original \gls{lp} in-the-middle algorithm.
 The code was compiled using version 5.1 of the LLVM compiler, with all safe optimizations enabled (\emph{i.e.} \texttt{-O3}).
@@ -81,7 +80,6 @@ To vary the parameter between these two values, a sweep strategy is employed.
 
 \begin{figure}[p]
 	\centering
-	% [review] - font size on axis labels too large?
 	\subfloat[\label{fig:khappa-plot:comp}A max-\gls{csp} problem from the \enquote{Composed} set.]{\input{figs/composed-khappa-plot.tikz}}
 	\\
 	\subfloat[\label{fig:khappa-plot:deer}A \gls{mrf} problem from the \enquote{ObjectDetection} set.]{\input{figs/deer-khappa-plot.tikz}}
@@ -99,12 +97,6 @@ This means that in the next trial of the problem shown in \cref{fig:khappa-plot:
 
 The purpose of increasing \(\kappa\) slowly near this value is to increase accuracy by avoiding overshoot, as a lower \(\alpha\) will result in a better approximative solution.
 
-% [todo] - mention the push operation here WITH PARAMETERS (or are parameters mentioned in results?)
-% parameters:
-% \rho = 5
-% khappa factor 0.8
-% 100 iterations after push
-
 \subsubsection{Trials}
 As briefly mentioned above, the optimization involves several \emph{trials}.
 Before each trial all constraints, variables and costs are reset to their original state.
@@ -113,3 +105,22 @@ If \(\kappa=0\) (\emph{i.e.} the solution is optimal), no more trials are run.
 Otherwise, the program moves on to the next trial.
 
 The number of trials is configurable, but the current implementation moves on to a new trial unless the best solution hasn't been improved in the last 4 trials.
+
+\subsection{Tie-breaking using noise}
+In some problems --- especially those with few hard constraints --- there may be several solutions in a neighbourhood which have the same objective value.
+Such situations may result in the modified variables components \(\bar{\vcomp}_j\) being tied for some variables \(j\), which means the algorithm cannot determine a feasible solution (since the corresponding variable value \(\hat{x}_j\) is ambiguous).
+To address this issue, a stochastic tie-breaking mechanism is introduced.
+
+The tie-breaking mechanism considers the transformed variable components \(\bar{\vcomp}_j\), in which some elements will be \(0\) if variable \(x_j\) is ambiguous.
+Moving through all the variable components \(\bar{\vcomp}_j\), any element whose absolute value is below a threshold value \(\epsilon\) is modified by adding random noise of magnitude \(\zeta\), \emph{i.e.}
+\begin{equation*}
+	\bar{\vcomp}'_j(x_j) = \bar{\vcomp}_j(x_j) + \begin{cases}
+		u \sgn{\bar{\vcomp}_j(x_j)} \quad & \text{if \(\bar{\vcomp}_j(x_j) \leq \epsilon\)} \\
+		0 & \text{otherwise}
+	\end{cases}, \quad \forall x_j \in D_j,
+\end{equation*}
+where \(u \in \mathcal{U}(-\zeta,\zeta)\) is a random variable taken from a uniform distibution.
+Each time noise is added, previous noise is removed first.
+
+The implementation used in the benchmark has \(\epsilon=\num{0.01}\) and \(\zeta=1\),
+% [review] - mention this under theory?
