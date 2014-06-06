@@ -1,6 +1,4 @@
 \section{Benchmarking}
-% [todo] - review this section
-% [todo] - explain the conditions of the tests, compare to conditions in deGivry14
 In order to determine the efficiency of the algorithm, and determine what problem paradigm the algorithm is most usefully applied to, extensive benchmark testing will be performed.
 The algorithm was tested against (part of) the large problem set used by \textcite{deGivry14}, which includes problems from the \gls{mrf}, \gls{wpms}, \gls{cfn}, Max-\gls{csp}, \gls{cp} and \gls{cvpr} domains.
 All problems in the set are available in the \textsc{wcsp} file format.
@@ -217,7 +215,7 @@ The problems are mostly academic and random, with a relatively small number of v
 \subsubsection{Markov Random Fields (MRF)}
 This category consists of seven sets, where the task is to estimate \gls{map} probabilities on \gls{mrf}. The sets represent different underlying problems such as image alignment, genetic linkage analysis, protein folding and other probabilistic problems.
 
-All of these problems, except those in the \emph{Linkage} set (which was used in the UAI08 probabilistic inference evaluation and later by \textcite{Favier11} in their work on pairwise decomposition), are from the 2011 Probabilistic Inference Challenge\footnote{\url{http://www.cs.huji.ac.il/project/PASCAL/}}.
+All of these problems, except those in the \emph{Linkage} set (which was used in the UAI08 probabilistic inference evaluation and later by \textcites{Favier11}{Kishimoto13}), are from the 2011 Probabilistic Inference Challenge\footnote{\url{http://www.cs.huji.ac.il/project/PASCAL/}}.
 The problems were translated into their \gls{wcsp} equivalent using a \(-\log{}\) transformation \parencite[\pno~4]{deGivry14}.
 % [review] - page number above will have to change
 

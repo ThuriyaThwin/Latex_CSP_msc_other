@@ -1,4 +1,3 @@
-% [todo] - move table/figures around
 \section{Standard algorithm}
 Benchmarking the standard algorithm on the large set of problems provided earlier produced mixed results.
 The number of problems (out of the total number available from each set) that were solved by the in-the-middle algorithm indicate that the algorithm is able to solve the same types of problem as the \emph{Toulbar} and \emph{CPLEX} solvers, with a few exceptions.
@@ -7,61 +6,15 @@ This implies that the algorithm may be useful in most of the fields from which p
 However, as \cref{tab:comparative-results} shows, the algorithm performed very well when comparing runtime to other solvers and in fact it was the fastest for almost half of the sets after removing incomplete data (runtimes based on data where less than \SI{70}{\percent} of the problems were solved).
 In most problem sets, the optimality gap was small as well --- for several sets optimal solutions were found --- with the notable exception of the \emph{Scene Decomposition} set\footnote{Note however that the Toulbar2 solver finds the same non-optimal solutions in this problem set.}.
 
-The algorithm shows promise especially in the Max-\gls{csp} and \gls{mrf} categories, where overall solution quality is good and the algorithm had the best performance for several sets.
-Compared to both Toulbar2 and CPLEX, the in-the-middle algorithm appears to be a useful complement providing (good) approximative solutions to problems the other solvers have great difficulty in solving.
-Results from the \gls{cp} category are also promising, but these problem sets are small and not all \gls{cp} problems have max-sum formulations.
-
-\Cref{fig:cactus-std} shows accumulated runtimes for three of the sets in which the algorithm performed well.
-The algorithm has a consistent advantage in the \emph{Segmentation} set (\cref{fig:cactus-std:segmentation}), which is reflected by the mean runtime in \cref{tab:comparative-results}.
-\Cref{fig:cactus-std:dbn} highlight a more interesting situation.
-The former shows performance in the \emph{DBN} set, in which the algorithm has an advantage in total runtime across the whole set, almost entirely due to good performance on the more difficult problems.
-In fact, the runtimes are fairly evenly distributed whereas the runtimes for CPLEX and Toulbar vary significantly between the difficult and easy problems of the set.
-% [todo] - justify choice of median for the values (goes in method?)
-
-Analyzing the shortcomings of the algorithm, it is clear from \cref{tab:comparative-results} that it had significant difficulties in solving the problems from the \gls{cfn} category.
-% large domains, large number of cost functions. memory issues? need background on toulbar first?
-% most cost functions have arity 2, would better constraint update be useful?
-% does cfn have a structure toulbar/cplex is using?
-
-% [todo] - explain SceneDecomp anomaly? Maybe deGivry14 has something on it?
-
-% [todo] - analyze which problems itm is bad at, an whether specialized updates may solve this
-% [todo] - relate back to presentation of problems, especially the table of values of everything
-
-% Note: problems with many hard clauses are more efficiently solved by the implementation
-
-% Mention: the omitted problems were omitted due to memory issues
-
-% Note: scenedecomp very bad, but same solutions as toulbar2
-
-% Relevant measure?: n*d "size" of problem
-
-% [todo] - relate to pp. 5-6 of deGivry14
-% [review] - discuss specific problem instances (largest solved)?
-% 
-% [todo] - discuss the fact that CPLEX and MaxHS are LP solvers, and that the LP formulation of ITM might be competitive in the same areas due to problem structure
-
-% For conclusions?: note that a portfolio approach as suggested by deGivry14? may be beneficial, or rather that itm may be useful in such a portfolio
-
-% [todo] - analyzing interesting problem sets
-% [todo] - comparing with other solvers
-% [todo] - identify what problems ITM is good at
-
-% [review] - find a recent test of max-clique solvers on the WPMS-MaxClique set? (not for the table but may be interesting to refer rough timings) Östergård02 might be ok but that hardware is way too old.
-
 \begin{table}
 	\centering
 	% Updated 2014-05-25
 	\caption{
 		Optimality gap and runtime.
 		For each problem instance used in the benchmark, the in-the-middle solver runtime is compared the other solvers included in the benchmark, and the objective value is compared to the best known optimum from \textcite{deGivry14}.
-		%Problem sets marked with \textdagger{} include unsolved problems (no feasible solution found by the in-the-middle solver), and n/a values indicate that none of the problems in the set were solved.
+		Problem sets marked with \textdagger{} include unsolved problems (no feasible solution found by the in-the-middle solver), and n/a values indicate that none of the problems in the set were solved.
 		Runtimes based on less than \SI{70}{\percent} of the problems are faded, while the best runtime of those remaining is emphasised.
-		%Some problem sets have been omitted.
 	}
-	% [review] - present in same way as deGivry14?
-	% [todo] - double-check all table data!
-	% [review] - including number solved may be interesting. additional table or appendix?
 	\label{tab:comparative-results}
 	\begin{figcenter}
 	\begin{tabular}{xyHS[round-mode=places,round-precision=3,scientific-notation=fixed,fixed-exponent=0]
@@ -71,8 +24,6 @@ Analyzing the shortcomings of the algorithm, it is clear from \cref{tab:comparat
 				    S[round-mode=places,round-precision=2,scientific-notation=fixed,fixed-exponent=0]
 				    S[round-mode=places,round-precision=2,scientific-notation=fixed,fixed-exponent=0]}
 		\toprule
-			%{} & {} & \multicolumn{2}{c}{In-the-middle} & \multicolumn{5}{c}{Mean solution time (\si{\second})} \\
-			%\cmidrule(rl){3-4} \cmidrule(rl){5-9}
 			{} & {} & {} & {} & \multicolumn{5}{c}{Mean solution time (\si{\second})} \\
 			\cmidrule(rl){5-9}
 			{\normalsize Category} & {\normalsize Set} & {\(\#\) solved} & {Gap (\si{\percent})} & {ITM} & {MPLP2} & {Toulbar2} & {CPLEX} & {MaxHS} \\
@@ -124,6 +75,17 @@ Max-\acrshort{csp}	&	BlackHole	&	\emph{37/37}	&	9.009009e-01	&	\emshape 58.8900	
 	\end{figcenter}
 \end{table}
 
+The algorithm shows promise especially in the Max-\gls{csp} and \gls{mrf} categories, where overall solution quality is good and the algorithm had the best performance for several sets.
+Compared to both Toulbar2 and CPLEX, the in-the-middle algorithm appears to be a useful complement providing (good) approximative solutions to problems the other solvers have great difficulty in solving.
+Results from the \gls{cp} category are also promising, but these problem sets are small and not all \gls{cp} problems have max-sum formulations.
+
+\Cref{fig:cactus-std} shows accumulated runtimes for three of the sets in which the algorithm performed well.
+The algorithm has a consistent advantage in the \emph{Segmentation} set (\cref{fig:cactus-std:segmentation}), which is reflected by the mean runtime in \cref{tab:comparative-results}.
+\Cref{fig:cactus-std:dbn} highlights a more interesting situation.
+It shows performance in the \emph{DBN} set, in which the algorithm has an advantage in total runtime across the whole set, almost entirely due to good performance on the more difficult problems.
+In fact, the runtimes are fairly evenly distributed whereas the runtimes for CPLEX and Toulbar vary significantly between the difficult and easy problems of the set.
+% [todo] - justify choice of median for the values (goes in method?)
+
 \begin{figure}[tp]
 	\begin{figcenter}
 	\subfloat[The \emph{Segmentation} set of the \gls{mrf} category.\label{fig:cactus-std:segmentation}]{\input{figs/cactus-MRF-Segmentation.tikz}}
@@ -132,13 +94,37 @@ Max-\acrshort{csp}	&	BlackHole	&	\emph{37/37}	&	9.009009e-01	&	\emshape 58.8900	
 	\begin{figcenter}
 	\subfloat[The \emph{DBN} set of the \gls{mrf} category.\label{fig:cactus-std:dbn}]{\input{figs/cactus-MRF-DBN.tikz}}
 	\end{figcenter}
-	%\\
-	%\begin{figcenter}
-	%\subfloat[The \emph{Black Hole} set of the Max-\gls{csp} category.\label{fig:cactus-std:blackhole}]{\input{figs/cactus-MaxCSP-BlackHole.tikz}}
-	%\end{figcenter}
 	\caption{Accumulated runtime of the algorithms in three different sets, sorted by runtime individually for every solver. Note the logarithmic scale of the \(y\) axis.}
 	\label{fig:cactus-std}
 \end{figure}
+
+Analyzing the shortcomings of the algorithm, it is clear from \cref{tab:comparative-results} that it had significant difficulties in solving the problems from the \gls{cfn} category.
+% large domains, large number of cost functions. memory issues? need background on toulbar first?
+% most cost functions have arity 2, would better constraint update be useful?
+% does cfn have a structure toulbar/cplex is using?
+
+% [todo] - explain SceneDecomp anomaly? Maybe deGivry14 has something on it?
+
+% [todo] - analyze which problems itm is bad at, an whether specialized updates may solve this
+% [todo] - identify what problems ITM is good at
+
+Compared to the results of CPLEX, the \gls{lp}-based competitor in the benchmark, the in-the-middle algorithm performs better in most sets.
+This indicates that the translation of the algorithm to a max-sum based approach is a better approach than translating max-sum problems to \gls{lp} instances.
+The only sets in which CPLEX performs decisively better (those from \gls{cfn}) mainly contain problems of an operations research character (resource allocation, planning \emph{etc.}).
+
+The algorithm actually shows some promise in the \gls{wpms} category.
+While most problem sets in this category were omitted due to memory concerns, the algorithm has good runtime performance in the remaining set.
+The current implementation represents binary variables of the problem using two distinct variables internally, which could be improved by representing binary variables using only one variable.
+This could improve both memory use and runtime, making the algorithm more interesting for approximative applications in the \gls{wpms} field.
+The same variable representation issue applies to problems in the \emph{Auction} and \emph{DBN} sets.
+
+One would expect the algorithm to perform well on problems with many hard clauses (due to the sparse representation of constraint components including these implicitly, resulting in fewer clauses to operate on in the constraint update), and this is the case for those sets included in the benchmark.
+The algorithm performs well in all sets where a majority of the clauses are hard (\emph{On Call Rostering}, \emph{Parity Learning} and \emph{Pedigree}), but performs worse in sets where only \SIrange{25}{50}{\percent} of the clauses are hard (\emph{Max-Clique}, \emph{Protein Design} and \emph{Linkage}).
+
+The number of zero-value clauses does not seem to have any effect on the performance of the algorithm, suggesting that the tie-breaking method employed efficiently resolves any resulting ties.
+
+The largest problem solved optimally by the in-the-middle algorithm was an instance of in the \emph{In-Painting} set with search space \(d^n = 4^{\num{14400}}\).
+The smallest unsolved instances are in the \emph{Auction} set, with seach spaces \(d^n \approx 2^{80}\).
 
 % \begin{table}
 % 	\centering

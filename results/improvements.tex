@@ -1,4 +1,3 @@
-% [todo] - move table/figures around
 \section{Extensions and improvements}
 Two variants of the algorithm have been discussed earlier in the thesis, with different purpose and functionality.
 Benchmark data was produced for these variants as well, but on a limited subset of the problems, chosen specifically to test the variants and their intended purpose.
@@ -12,32 +11,16 @@ Results will be presented by comparison with the original benchmark only, withou
 
 \subsection{The \enquote{push} operation}
 The purpose of the \enquote{push} operation is to decrease the optimality gap of the approximative algorithm once a feasible solution has been found.
-Six problem sets from \cref{tab:comparative-results} were therefore chosen for this benchmark, all with comparatively bad solutions (solution differences close to or above \SI{1}{\percent}) but competitive runtimes.
+Six problem sets from \cref{tab:comparative-results} were therefore chosen for this benchmark, all with comparatively bad solutions (optimality gaps close to or above \SI{1}{\percent}) but competitive runtimes.
 The expectation was to obtain better solutions while maintaining good runtimes.
 
-\Cref{tab:push-results} shows the results of benchmarking the \enquote{push} operation on the selected problems.
-Surprisingly, the optimality gap did not improve for a majority of the problems.
-In fact, for some sets the optimality gap was increased, and the runtime of the algorithm improved instead (which given the already competitive runtime of the standard algorithm is an unwanted result).
-In fact, the only problem set for which the excpected result was obained is the \gls{cfn} \emph{Pedigree} set.
-
-The reason for this is likely that the algorithm, in trials after the \enquote{push} operation has been applied, is more conservative than the original algorithm in that the maximum \(\kappa\) value will be lower. This means more trials fail to force an integer solution, reducing the number of trials and as a consequence reducing the runtime as well as increasing the optimality gap.
-A more correct implementation would take into consideration the reduction of \(\kappa\) caused by the push operation when calculating the maximum \(\kappa\) value of subsequent trials.
-% [review] - maybe not true
-% [fix] - introduce this fix and re-run trials?
-
-Due to these results, the \enquote{push} operation is not as interesting when applied to the max-sum algorithm as it is in the original \gls{lp} formulation.
-% [todo] - analyze why it works on the CFN/Pedigree problem!
-
-% Interesting cactus plots: Mainly MaxCSP/BlackHole when compared to standard
-
-\begin{table}
+\begin{table}[b!]
 	\centering
 	% Updated 2014-05-24
 	\caption{
 		Optimality gap and runtime using the \enquote{push} operation.
 		For several chosen problem sets, the \enquote{push} variant runtime is compared to the results obtained by the standard algorithm (see \cref{tab:comparative-results}).
 	}
-	% [todo] - double-check all table data!
 	\label{tab:push-results}
 	\begin{figcenter}
 	\begin{tabular}{xySSS[round-mode=places,round-precision=3,scientific-notation=fixed,fixed-exponent=0]
@@ -61,6 +44,18 @@ Max-\acrshort{csp}	&	BlackHole	&	37	&	37	&	9.009009e-01	&	1.08108100	&	58.8900	&
 	\end{figcenter}
 \end{table}
 
+\Cref{tab:push-results} shows the results of benchmarking the \enquote{push} operation on the selected problems.
+Surprisingly, the optimality gap did not improve for a majority of the problems.
+In fact, for some sets the optimality gap was increased, and the runtime of the algorithm improved instead (which given the already competitive runtime of the standard algorithm is an unwanted result).
+In fact, the only problem set for which the excpected result was obained is the \gls{cfn} \emph{Pedigree} set.
+
+The reason for this is likely that the algorithm, in trials after the \enquote{push} operation has been applied, is more conservative than the original algorithm in that the maximum \(\kappa\) value will be lower. This means more trials fail to force an integer solution, reducing the number of trials and as a consequence reducing the runtime as well as increasing the optimality gap.
+A more correct implementation would take into consideration the reduction of \(\kappa\) caused by the push operation when calculating the maximum \(\kappa\) value of subsequent trials.
+% [review] - maybe not true
+% [fix] - introduce this fix and re-run trials?
+
+Due to these results, the \enquote{push} operation is not as interesting when applied to the max-sum algorithm as it is in the original \gls{lp} formulation.
+% [todo] - analyze why it works on the CFN/Pedigree problem!
 
 \subsection{The greedy DP update}
 The greedy DP update, obtained by fixing \(\alpha=1\) of the fractional DP update, should theoretically improve convergence at the expense of the optimality guarantee.
@@ -68,32 +63,7 @@ Here, a large number of problems from \cref{tab:comparative-results} were select
 The expectation was to decrease runtime at the expense of solution quality.
 Additionally, some sets with zero optimality gap and competitive runtime were included to observe the effects of this variant on already well-performing problem sets.
 
-\Cref{tab:greedy-dp-results} shows the results of benchmarking the greedy DP algorithm against the selected problems.
-As expected, the runtime of all sets (except the \emph{Auction} set) was improved significantly --- between \num{4} and \num{350} times --- with little or no increase in optimality gap.
-The runtime improvements are most significant for the \gls{cfn} and \gls{mrf} problems, where the greedy DP variant is competitive with all three other solvers.
-
-In situations where finding a solution quickly is more important than finding a guaranteed optimal solution, the greedy DP update is therefore a viable alternative.
-There is no problem set where the optimality gap is significantly increased, and only three sets contain problems which could be solved by the standard algorithm but not using greedy DP updates.
-Three problem sets from the max-\gls{csp} category additionally show improved optimality gaps as well as better runtimes.
-
-\Cref{fig:cactus-greedy} illustrates the utility of the greedy DP update.
-While it is slower for very small problems in the \emph{Black Hole} set, it is significantly faster in solving the more difficult problems.
-
-% [todo] - theorize on reason of CFN/Auction not working!
-
-With these results in mind, the greedy algorithm may be very useful when exact solutions aren't required.
-% [todo] - mention fields where a "good enough" solution is satisfactory and why
-This makes the algorithm with greedy updates extremely competitive in such cases.
-The greedy update variant may also be useful as part of a broader strategy, by for instance providing fast and good upper bounds or by providing fast unproven solutions while waiting for exact solvers.
-Another interesting direction for the greedy DP update could be to run it in parallel with the standard algorithm (sharing the immutable constraint components in memory), again providing quick approximative solutions as well as good solutions.
-
-% Note: for some problems, including CFN/ProteinDesign, no loss in accuracy but great decrease in time - discuss this!
-
-% Good as part of a broader strategy, to quickly obtain upper bounds?
-
-% Interesting cactus plots: MaxCSP/BlackHole, MaxCSP/QCP, MRF/DBN
-
-\begin{table}
+\begin{table}[tp]
 	\centering
 	% Updated 2014-05-24
 	\caption{
@@ -134,10 +104,33 @@ Max-\acrshort{csp}	&	BlackHole\textdagger	&	37	&	36	&	9.009009e-01	&	1.081081	&	
 	\end{figcenter}
 \end{table}
 
-\begin{figure}[tp]
+\Cref{tab:greedy-dp-results} shows the results of benchmarking the greedy DP algorithm against the selected problems.
+As expected, the runtime of all sets (except the \emph{Auction} set) was improved significantly --- between \num{4} and \num{350} times --- with little or no increase in optimality gap.
+The runtime improvements are most significant for the \gls{cfn} and \gls{mrf} problems, where the greedy DP variant is competitive with all three other solvers.
+
+In situations where finding a solution quickly is more important than finding a guaranteed optimal solution, the greedy DP update is therefore a viable alternative.
+There is no problem set where the optimality gap is significantly increased, and only three sets contain problems which could be solved by the standard algorithm but not using greedy DP updates.
+Three problem sets from the max-\gls{csp} category additionally show improved optimality gaps as well as better runtimes.
+
+\begin{figure}[bp]
 	\begin{figcenter}
 	\input{figs/khappa1-cactus-MaxCSP-BlackHole.tikz}
 	\end{figcenter}
 	\caption{Accumulated runtime of the standard and greedy algorithm in the \emph{Black Hole} set, sorted by runtime individually for each variant. Note the logarithmic scale of the \(y\) axis.}
 	\label{fig:cactus-greedy}
 \end{figure}
+
+\Cref{fig:cactus-greedy} illustrates the utility of the greedy DP update.
+While it is slower for very small problems in the \emph{Black Hole} set, it is significantly faster in solving the more difficult problems.
+
+The only set in which the greedy update performs significantly worse is the \emph{Auction} set, in which it fails to solve any problems at all.
+It seems that the reason for this is that the algorithm never reaches a situation where the solution doesn't change between two iterations, instead oscillating between a set of solutions.
+This could potentially be resolved by increasing the threshold \(\epsilon\) and amplitude \(\zeta\) of the tie-breaking noise.
+
+With these results in mind, the greedy algorithm may be very useful when exact solutions aren't required.
+% [todo] - mention fields where a "good enough" solution is satisfactory and why
+This makes the algorithm with greedy updates extremely competitive in such cases.
+The greedy update variant may also be useful as part of a broader strategy, by for instance providing fast and good upper bounds or by providing fast unproven solutions while waiting for exact solvers.
+Another interesting direction for the greedy DP update could be to run it in parallel with the standard algorithm (sharing the immutable constraint components in memory), again providing quick approximative solutions as well as good solutions.
+
+% Note: for some problems, including CFN/ProteinDesign, no loss in accuracy but great decrease in time - discuss this!
