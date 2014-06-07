@@ -1,3 +1,37 @@
-% [review] - "no free lunch" theorem?
+In this final chapter I will attempt to consolidate the results of the thesis work, conclusively addressing the objective and purpose of the thesis itself.
+I will do this by identifying already apparent applications of the in-the-middle algorithm within the field of graphical models while also identifying the limitations and weaknesses of the algorithm, and by pointing out some areas of further research which I believe are tractable and meaningful to pursue when it comes to applying the algorithm to optimization within that field.
+
 \section{Applications}
+Since the performance of the algorithm varies widely between different problem sets, one cannot immediately identify any single field in which the algorithm would be decisively competitive.
+However, the good overall performance and low optimality gap of the algorithm --- especially when applied to problem sets in which other solvers struggle --- suggest that the algorithm may be a good candidate for a so-called portfolio approach, wherein several solvers are applied in parallel.
+
+The same properties, especially the good optimality gap, suggest that the algorithm may be useful in applications where good upper bounds on the solution are required.
+Since the greedy DP variant of the algorithm provides such upper bounds quickly, that variant of the algorithm may have applications in branch-and-bound applications.
+In combination with an exact solver, the in-the-middle algorithm may serve as an approximative anytime solver providing good approximative solutions while waiting for the exact solver to supply truly optimal solutions.
+
+% [review] - more?
+
 \section{Further research}
+The algorithm shows promise in several categories of those included in the benchmark.
+In these fields it would therefore be of interest to extend the algorithm and develop the underlying theory to further improve performance in these fields.
+
+Previous work, mainly from the french \emph{National Institute of Agronomic Research} (INRA), has provided strong theory on graphical model optimization especially with respect to arc consistency \parencite{Cooper10,Cooper08,deGivry06,deGivry05}.
+The in-the-middle algorithm, as previously detailed, uses a relatively weak arc consistency property (general arc consistency).
+If stronger notions such as existential \parencite{deGivry05} or optimal soft \parencite{Cooper10} arc consistency can be extended to the framework used by the in-the-middle algorithm, it may increase runtime performance and solution quality.
+
+Another area requiring further research is the design of the constraint updates, especially their effect on the optimality guarantee of the algorithm.
+A common situation for the algorithm is that the heuristic finds optimal solutions but cannot guarantee the optimality, which in turn means the algorithm wastes time in subsequent trials.
+Constructing constraint updates with better guarantees or providing stronger theory on other parts of the algorithm may therefore improve the performance of the algorithm.
+Additionally, common constraint types such as the \emph{all-different} constraint may benefit from specialized constraint component updates.
+
+There are also many tricks, some of them used in \gls{lp} implementations of the in-the-middle heuristic, that may be applied to the algorithm.
+In this benchmark, only tie-breaking using noise was introduced.
+Futher modifications that would require further research include not updating constraint components for which the associated variable components are unchanged and using the existing \gls{lp} or set-partitioning constraint update \parencite[\pno~102]{Wedelin08} for constraints of that type.
+Both these modifications may improve runtime for some problems.
+
+Finally, specializations of the implementation may prove interesting in some areas.
+For example, the \gls{wpms} category of problems would benefit from a formulation where the binary variables are stored in a single, shared variable component element instead of two different ones as in the current implementation.
+Similar simplifications based on various assumptions of the problem structure may be introduced in the constraint component updates.
+
+
+
