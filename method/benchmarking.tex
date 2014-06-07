@@ -9,7 +9,8 @@ It will also briefly present the problems used in the benchmark, to provide back
 
 \subsection{Benchmarking method}
 All problem instances were limited in runtime by the upper time limit \(t_{\text{max}} = \SI{1200}{\second}\), and the benchmarks were run on a single core of an Intel~Core~i5 processor at \SI{2.3}{\giga\hertz}, with \SI{8}{\gibi\byte} RAM.
-This is comparable to the conditions of the benchmark performed by \textcite{deGivry14}, and should ensure that the comparisons are valid.
+This is comparable to the conditions of the benchmark performed by \textcite{deGivry14}, and should ensure that the comparisons are valid\footnote{In fact, brief testing with the Toulbar2 solver on the same hardware supports this --- runtimes are of the same order of magnitude as those found by \textcite{deGivry14}.}.
+Due to time constraints, data for the comparison solver used in the benchmark was not regenerated on this hardware.
 
 Since the algorithm when used with the corresponding heuristic is an inexact algorithm (while the solvers benchmarked by \textcite{deGivry14} are all exact solvers) the quality of the solution must be compared in addition to the elapsed time per problem.
 While the time may be compared as-is (given the comparable hardware conditions), the found solution will have to be compared relative to the proven optimum for each problem.
@@ -40,6 +41,8 @@ The omitted problem sets are mostly from the \gls{cp} and \gls{wpms} categories 
 % [todo] - calculate graph girth/diameter if possible? could be a good measure of graph completeness
 % [todo] - Calculate connectivity? The connectivity or vertex connectivity κ(G) (where G is not a complete graph) is the size of a minimal vertex cut. http://en.wikipedia.org/wiki/Connectivity_(graph_theory)
 % [todo] - calculate density? D = 2 * e / (n^2 - n) when r = 2
+% 
+% [review] - references in this part clutter the bibliography, is two bibliographies, local footnote references or no references viable alternatives?
 
 % \begin{table}
 % 	\centering

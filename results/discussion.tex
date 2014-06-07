@@ -1,2 +1,66 @@
 \section{Discussion}
-% [review] - is one combined discussion better than in-line discussion?
+% [todo] - introductory blurb
+
+
+
+% [review] - review this section/file, it may be a bit osammanhängande
+
+Analyzing the shortcomings of the algorithm, it is clear from \cref{tab:comparative-results} that it had significant difficulties in solving the problems from the \gls{cfn} category.
+% large domains, large number of cost functions. memory issues? need background on toulbar first?
+% most cost functions have arity 2, would better constraint update be useful?
+% does cfn have a structure toulbar/cplex is using?
+
+% [todo] - analyze which problems itm is bad at, an whether specialized updates may solve this
+% [todo] - identify what problems ITM is good at
+
+Compared to the results of CPLEX, the \gls{lp}-based competitor in the benchmark, the in-the-middle algorithm performs better in most sets.
+This indicates that the translation of the algorithm to a max-sum based approach is a better approach than translating max-sum problems to \gls{lp} instances.
+The only sets in which CPLEX performs decisively better (those from \gls{cfn}) mainly contain problems of an operations research character (resource allocation, planning \emph{etc.}).
+
+The algorithm actually shows some promise in the \gls{wpms} category.
+While most problem sets in this category were omitted due to memory concerns, the algorithm has good runtime performance in the remaining set.
+The current implementation represents binary variables of the problem using two distinct variables internally, which could be improved by representing binary variables using only one variable.
+This could improve both memory use and runtime, making the algorithm more interesting for approximative applications in the \gls{wpms} field.
+The same variable representation issue applies to problems in the \emph{Auction} and \emph{DBN} sets.
+
+One would expect the algorithm to perform well on problems with many hard clauses (due to the sparse representation of constraint components including these implicitly, resulting in fewer clauses to operate on in the constraint update), and this is the case for those sets included in the benchmark.
+The algorithm performs well in all sets where a majority of the clauses are hard (\emph{On Call Rostering}, \emph{Parity Learning} and \emph{Pedigree}), but performs worse in sets where only \SIrange{25}{50}{\percent} of the clauses are hard (\emph{Max-Clique}, \emph{Protein Design} and \emph{Linkage}).
+
+The number of zero-value clauses does not seem to have any effect on the performance of the algorithm, suggesting that the tie-breaking method employed efficiently resolves any resulting ties.
+
+
+% [todo] - maybe mention that large cost function arities weren't tested, but may be interesting?
+
+\subsection{Extensions and improvements}
+% [todo] - introductory blurb
+
+
+% [todo] - analyzing the results
+% [todo] - were results as expected?
+% [todo] - is a given improvement useful?
+
+
+%%% THIS IS FOR THE PUSH VARIANT, MAKE THIS CLEAR
+The reason for this is likely that the algorithm, in trials after the \enquote{push} operation has been applied, is more conservative than the original algorithm in that the maximum \(\kappa\) value will be lower. This means more trials fail to force an integer solution, reducing the number of trials and as a consequence reducing the runtime as well as increasing the optimality gap.
+A more correct implementation would take into consideration the reduction of \(\kappa\) caused by the push operation when calculating the maximum \(\kappa\) value of subsequent trials.
+% [review] - maybe not true
+% [fix] - introduce this fix and re-run trials?
+
+Due to these results, the \enquote{push} operation is not as interesting when applied to the max-sum algorithm as it is in the original \gls{lp} formulation.
+% [todo] - analyze why it works on the CFN/Pedigree problem!
+
+
+
+%%% THIS IS FOR THE GREEDY DP UPDATE, MAKE THIS CLEAR
+In situations where finding a solution quickly is more important than finding a guaranteed optimal solution, the greedy DP update is therefore a viable alternative.
+There is no problem set where the optimality gap is significantly increased, and only three sets contain problems which could be solved by the standard algorithm but not using greedy DP updates.
+
+
+It seems that the reason for this is that the algorithm never reaches a situation where the solution doesn't change between two iterations, instead oscillating between a set of solutions.
+This could potentially be resolved by increasing the threshold \(\epsilon\) and amplitude \(\zeta\) of the tie-breaking noise.
+
+With these results in mind, the greedy algorithm may be very useful when exact solutions aren't required.
+% [todo] - mention fields where a "good enough" solution is satisfactory and why
+This makes the algorithm with greedy updates extremely competitive in such cases.
+The greedy update variant may also be useful as part of a broader strategy, by for instance providing fast and good upper bounds or by providing fast unproven solutions while waiting for exact solvers.
+Another interesting direction for the greedy DP update could be to run it in parallel with the standard algorithm (sharing the immutable constraint components in memory), again providing quick approximative solutions as well as good solutions.
