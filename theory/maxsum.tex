@@ -19,7 +19,6 @@ Formally, we may use the following definition (based on that of \citeauthor{Wede
 The max-sum problem then has three distinct components by which it is defined:
 \begin{itemize}
 	\item A finite set of \emph{variables} \(X = \{x_1, \dotsc, x_n\}\). We let \(X^k \subseteq X\) denote a specific subset of \(X\), and we let \(x^k \in X^k\) and \(x \in X\) be \emph{assignments} of the variables.
-	% [review] - above definition of set is strange, double-check with \textcite[\pno~281]{Meseguer06}
 	\item \emph{Domains} of the variables, \(D = \{D_1, \dotsc, D_n\}\), such that \(x_i \in D_i, \forall i\). Subsets \(D^k \subseteq D\) may be defined analogously to the variable subsets.
 	\item A finite set \(G\) of \emph{cost functions}. Every cost function \(g_k \in G\) is defined over a variable subset \(X^k\), \emph{i.e.} it is a map \(g_k : D^k \mapsto \Rminus \cup \{-\infty\}\).
 \end{itemize}
@@ -124,3 +123,4 @@ The translation from \gls{wcsp} to the equivalent max-sum problem may be summari
 
 \subsubsection{Terminology overlap}
 % [todo] - translation of equivalent terminology?
+% [review] - is this section redundant? most of what's interesting should be in inthemiddle.tex?

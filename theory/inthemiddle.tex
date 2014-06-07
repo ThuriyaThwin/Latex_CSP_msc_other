@@ -3,7 +3,6 @@ This section will present the in-the-middle algorithm for max-sum problems, and 
 It will provide theoretical results on the feasibility and optimality guarantees provided by the algorithm, and will present two variations of the update procedure used in the algorithm.
 Previous improvements to the \gls{lp} formulation will also be applied to the max-sum version.
 First, however, the original \gls{lp} algorithm will be reviewed.
-% [review] - previous utility in industry? (is in introduction already)
 
 \subsection{Original LP formulation}
 To provide context for the max-sum formulation of the in-the-middle algorithm and heuristic, we will briefly describe the original algorithm as applied to \gls{lp} problems, as well as providing an explicit pseudo-code for the algorithm.
@@ -51,11 +50,9 @@ If no sign changes occur after visiting each constraint once, the algorithm has 
 			\(\bar{c} \leftarrow r - s^j\) \;
 		}
 	}
-	% [todo] - fix the strange empty line occurring below
 	\eIf{\(\bar{c} \neq 0\)}{%
-		\lFor{\(i=1,\dotsc,n\)}{\leIf{\(\bar{c}_i \leq 0\)}%
-									 {\(\hat{x}_i\leftarrow1\)}%
-									 {\(\hat{x}_i\leftarrow0\)}%
+		\For{\(i=1,\dotsc,n\)}{
+			\leIf{\(\bar{c}_i \leq 0\)}{\(\hat{x}_i\leftarrow1\)}{\(\hat{x}_i\leftarrow0\)}%
 		}%
 	}{%
 		\KwRet{\(\emptyset\)}%
@@ -84,8 +81,6 @@ This assignment is (as implied) applied to all elements of \(s^j\).
 The (small) parameter \(\delta>0\) ensures that elements of \(\bar{c}\) are kept non-zero at all times.
 
 Note that \textcite[\pno~97]{Bastert10} provide a different but equivalent formulation of \cref{alg:itm-lp} with the approximative heuristic.
-
-% [review] - mention tie-breaking with random offsets?
 
 \subsection{Max-sum formulation}
 Working from the \gls{lp} formulation of the in-the-middle algorithm, \textcite{Wedelin08} introduce a similar algorithm for max-sum problems (which they call \emph{cost propagation}).
@@ -129,7 +124,6 @@ Then, two specific updates will be described.
 			\(\bar{\vcomp^j}, s^j \leftarrow \text{\UpdateConstraint{\(\ccomp_j\), \(\bar{\vcomp}^j\), \(s^j\)}}\)
 		}
 	}
-	% [todo] - fix the strange empty line occurring below
 	\eIf{\(\argmax*[x_i]{\bar{\vcomp}_i(x_i)}\) is unique for all \(i\)}{%
 		\lForEach{\(i=1,\dotsc,n\)}{\(\hat{x}_i \leftarrow \argmax*[x_i]{\bar{\vcomp}_i(x_i)}\)}
 	}{%
@@ -149,7 +143,6 @@ While \textcite[\pno~100\psq]{Wedelin08} present a framework for updates definin
 Some updates (in particular the fractional DP update described later, for some parameter values) are additionally \emph{non-conflicting}, which guarantees that any feasible solution found is also optimal.
 
 Each update, as illustrated by \cref{fig:itm-update}, first \emph{moves in} the costs of the variable components into the constraint component (\cref{fig:itm-update:in}, \emph{i.e.} a temporary constraint component \(h_k(x^k) = \ccomp_k(x^k) + \sum_{\vcomp_j \in \vcomp^k} \vcomp_j(x_j)\) is constructed).
-% [review] - formula terminology above unclear?
 Then, costs from the temporary constraint component \(h_k\) are moved out again (\cref{fig:itm-update:out}).
 It is mainly this last step that varies between different updates --- it is desireable to move out as much as possible (this improves the convergence rate of the algorithm), but if one moves out too much the \emph{non-conflicting} property is lost and optimality is no longer guaranteed \parencites[\pno~105]{Wedelin08}[\pno~15]{Wedelin13}.
 
@@ -215,8 +208,6 @@ Interesting values of \(\alpha\) for parameter sweep schemes are thus \(\alpha\i
 	\label{proc:frac-dp-update}
 \end{algorithm}
 
-% [todo] - continue writing here?
-
 \subsection{Extensions and improvements}
 Previous work on the \gls{lp} formulation of the in-the-middle algorithm has yielded useful improvements in performance, and it is therefore interesting to apply these variants to the max-sum variant as well.
 We present two such improvements.
@@ -253,7 +244,7 @@ If noise has been added in a previous iteration, that noise is removed from the 
 \subsection{Interpretations in other fields}
 % [todo] - write about terminology, guarantees and so on that correspond between Wedelin08's language and that of Allouche/Givry/Schiex
 % 
-% Arc consistency: (Wedelin08, p.8) corresponds to what kind of consistency? How does EDAC* relate to this? (deGivry05)
+% Arc consistency: (Wedelin08, p.8) corresponds to what kind of consistency? How does EDAC* relate to this? (deGivry05) How does soft arc consistency relate? (Cooper10)
 % http://en.wikipedia.org/wiki/Local_consistency#Arc_consistency implies that we have normal AC*, with in-the-middle being a simplistic algorithm
 % But what would EDAC be in our case?
 % 

@@ -29,7 +29,6 @@ The algorithm performs well in all sets where a majority of the clauses are hard
 The number of zero-value clauses does not seem to have any effect on the performance of the algorithm, suggesting that the tie-breaking method employed efficiently resolves any resulting ties.
 
 
-% [todo] - maybe mention that large cost function arities weren't tested, but may be interesting?
 
 \subsection{Extensions and improvements}
 % [todo] - introductory blurb
@@ -64,3 +63,7 @@ With these results in mind, the greedy algorithm may be very useful when exact s
 This makes the algorithm with greedy updates extremely competitive in such cases.
 The greedy update variant may also be useful as part of a broader strategy, by for instance providing fast and good upper bounds or by providing fast unproven solutions while waiting for exact solvers.
 Another interesting direction for the greedy DP update could be to run it in parallel with the standard algorithm (sharing the immutable constraint components in memory), again providing quick approximative solutions as well as good solutions.
+
+\subsection{Limitations}
+% [todo] - things like combining linear constraints with cost functions haven't been tested, mention this here? it's mentioned in the conclusion as well i think
+% [todo] - maybe mention that large cost function arities weren't tested, but may be interesting?

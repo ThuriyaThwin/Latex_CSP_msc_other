@@ -23,7 +23,6 @@ The vector representation may be described as a list of pairs \(\langle x^k, \cc
 In the actual implementation, \(x^k_i\) are represented as pointers to the values \(\bar{\vcomp}_i(x^k_i)\).
 
 \Cref{proc:frac-dp-update-fast} highlights these implementation details, and also shows the use of an invariant transformation of the variable components \(\bar{\vcomp}_i(x^k_i)\) that allows the use of existing code to detect solution changes by counting sign changes.
-% [review] - include actual c code somewhere? maybe appendix?
 
 \begin{algorithm}[tbp]
 	\SetKwFunction{UpdateConstraint}{UpdateConstraint}
@@ -68,15 +67,13 @@ In the actual implementation, \(x^k_i\) are represented as pointers to the value
 \end{algorithm}
 
 \subsection{Parameter sweep strategy}
-% [todo] - review this section
 As explained earlier, the fractional DP update of constraint components depends on a parameter \(\alpha\), which dictates the amount \enquote{moved out} of the constraint component.
 Choosing this parameter is difficult, but some of the results discussed earlier may be used to create a strategy for a parameter sweep.
-Knowing that values \(\alpha=n^{-1}\) --- where \(n\) is the arity of a constraint --- guarantee that any solution found is optimal, we may take \(n^{-1}\) as a lower limit for the parameter.
+Knowing that values \(\alpha\leq n^{-1}\) (where \(n\) is the arity of a constraint) guarantee that any solution found is optimal, we may take \(n^{-1}\) as a lower limit for the parameter.
 A reasonable upper limit fo the parameter is \(\alpha=1\), which in essence corresponds to the regular, non-fractional DP update.
-% [todo] - explain that kappa maps [0,1] to an alpha that is tailored for each individual constraint and that this is why we use kappa
 
 To vary the parameter between these two values, a sweep strategy is employed.
-\Cref{fig:khappa-plot} shows the value of a parameter \(\kappa\) (defined so that \(\alpha = n^{-1}\left(1 + \kappa(n - 1)\right)\), \emph{i.e.} mapping \(\left[0,1\right]\) to \(\left[n^{-1},1\right]\)) over the first \emph{trial} for two different problems, along with the number of sign changes which is used as a termination criterion.
+\Cref{fig:khappa-plot} shows the value of a parameter \(\kappa\) (defined so that \(\alpha = n^{-1}\left(1 + \kappa(n - 1)\right)\), \emph{i.e.} mapping \(\left[0,1\right]\) to \(\left[n^{-1},1\right]\) \emph{individually} for each constraint component) over the first \emph{trial} for two different problems, along with the number of sign changes which is used as a termination criterion.
 
 \begin{figure}[p]
 	\centering
