@@ -8,7 +8,7 @@ First, however, the original \gls{lp} algorithm will be reviewed.
 To provide context for the max-sum formulation of the in-the-middle algorithm and heuristic, we will briefly describe the original algorithm as applied to \gls{lp} problems, as well as providing an explicit pseudo-code for the algorithm.
 Full descriptions of the \gls{lp} variant of the in-the-middle algorithm are available from \textcites{Wedelin95}{Bastert10}.
 
-The algorithm solves an integer program
+The algorithm solves an \gls{ilp} problem
 \begin{equation}\label{eq:ilp}
 	\begin{aligned}
 		{}           & \min*{c^\top x} \\
@@ -110,6 +110,7 @@ We then have \(\vcomp_i : D_i \mapsto \Rminus \cup \{-\infty\}\) and \(\ccomp_k 
 
 With this in mind, we can layout the basic framework of the algorithm (\cref{alg:itm-maxsum}), which intentionally is very similar to that of the \gls{lp} formulation.
 Note especially the \emph{modified} variable components \(\hat{\vcomp}_i\), which roughly correspond to the reduced costs \(\bar{c}\) of the \gls{lp} formulation (in the same way that the actual variable components \(\vcomp_i\) roughly correspond to the actual cost vector \(c\)).
+
 We will now describe the constraint updates used in the algorithm, connect them theoretically to the updates used in the \gls{lp} formulation and point out some important theoretical results.
 Then, two specific updates will be described.
 
@@ -140,7 +141,7 @@ Then, two specific updates will be described.
 The basic idea of the constraint update, as with the \gls{lp} formulation, is to modify the variable components in an invariant manner to uniquely identify the (optimal) solution given the constraint component.
 This is done by considering only the subproblem consisting of the constraint component \(\ccomp_j\) along with its associated variable components \(\vcomp^j\) and performing a local optimization.
 While \textcite[\pno~100\psq]{Wedelin08} present a framework for updates defining a few sought-after properties, we will only consider what they call \emph{consistent} and \emph{locally optimal} updates which guarantee that any solution found by \cref{alg:itm-maxsum} will be feasible.
-Some updates (in particular the fractional DP update described later, for some parameter values) are additionally \emph{non-conflicting}, which guarantees that any feasible solution found is also optimal.
+Some updates (in particular the fractional \acrshort{dp} update described later, for some parameter values) are additionally \emph{non-conflicting}, which guarantees that any feasible solution found is also optimal.
 
 Each update, as illustrated by \cref{fig:itm-update}, first \emph{moves in} the costs of the variable components into the constraint component (\cref{fig:itm-update:in}, \emph{i.e.} a temporary constraint component \(h_k(x^k) = \ccomp_k(x^k) + \sum_{\vcomp_j \in \vcomp^k} \vcomp_j(x_j)\) is constructed).
 Then, costs from the temporary constraint component \(h_k\) are moved out again (\cref{fig:itm-update:out}).
@@ -153,12 +154,12 @@ It is mainly this last step that varies between different updates --- it is desi
 	\subfloat[The \enquote{move in} operation\label{fig:itm-update:in}]{\input{figs/cost-function-update-2.tikz}}
 	\hfil
 	\subfloat[The \enquote{move out} operation\label{fig:itm-update:out}]{\input{figs/cost-function-update-4.tikz}}
-	\caption{An illustration of a constraint update (in this case a DP update). Note that this particular update is \emph{conflicting}, which results in a lost optimality guarantee.}
+	\caption{An illustration of a constraint update (in this case a \gls{dp} update). Note that this particular update is \emph{conflicting}, which results in a lost optimality guarantee.}
 	\label{fig:itm-update}
 \end{figure}
 
 \subsubsection{The DP constraint update}
-The first update we will consider is the DP update (\cref{proc:dp-update,fig:itm-update}).
+The first update we will consider is the \gls{dp} update (\cref{proc:dp-update,fig:itm-update}).
 It is a fairly unsophisticated update, which exctracts the max-marginals along each dimension of the constraint component \(\ccomp_k\) and moves this amount into the corresponding variable component \(\vcomp_i(x_i)\) (\emph{i.e.} the new variable component value becomes \(\bar{\vcomp}'_i(x_i) = \max*[x\in x^k\setminus x_i]{h(x)}\) for every variable component \(\vcomp_i\) and value \(x_i\in D_i\)).
 While this should ensure quick convergence since it in effect moves out as much as possible, the update isn't non-conflicting \parencite[\pno~105]{Wedelin08}, which means we cannot guarantee optimality.
 
@@ -175,17 +176,17 @@ While this should ensure quick convergence since it in effect moves out as much 
 	}
 	
 	\caption{
-		The DP constraint update.
+		The \gls{dp} constraint update.
 	}
 	\label{proc:dp-update}
 \end{algorithm}
 
 \subsubsection{The fractional DP constraint update}
-Since the regular DP update cannot guarantee optimaly, it is interesting to see if it may be modified to provide such a guarantee.
+Since the regular \gls{dp} update cannot guarantee optimaly, it is interesting to see if it may be modified to provide such a guarantee.
 \Textcite[\pno~105\psqq]{Wedelin08} provide some theory useful in the construction of non-conflicting updates, in particular a weak upper bound on the amount possible to move out.
-They also introduce the \emph{fractional} DP update (\cref{proc:frac-dp-update}), which is very similar to the regular DP update --- instead of moving out the max-marginals of the constraint component, a fraction \(\alpha\) of the max-marginal is moved out (\emph{i.e.} the new variable component value becomes \(\bar{\vcomp}'_i(x_i) = \alpha\max*[x\in x^k\setminus x_i]{h(x)}\)).
+They also introduce the \emph{fractional} \gls{dp} update (\cref{proc:frac-dp-update}), which is very similar to the regular \gls{dp} update --- instead of moving out the max-marginals of the constraint component, a fraction \(\alpha\) of the max-marginal is moved out (\emph{i.e.} the new variable component value becomes \(\bar{\vcomp}'_i(x_i) = \alpha\max*[x\in x^k\setminus x_i]{h(x)}\)).
 
-It is immediately obvious that \(\alpha=1\) corresponds to the regular DP update, and as such this may be taken as an upper limit of the parameter.
+It is immediately obvious that \(\alpha=1\) corresponds to the regular \gls{dp} update, and as such this may be taken as an upper limit of the parameter.
 Additionally, \textcite{Wedelin08} provide an upper bound for \(\alpha\) that guarantee non-conflicting updates \parencite[\pno~107]{Wedelin08}.
 This upper limit is \(\alpha=\sfrac{1}{n}\), where \(n\) is the number of variables associated with the constraint component (\emph{e.g.} \(n=2\) for the constraint component in \cref{fig:itm-update}).
 Interesting values of \(\alpha\) for parameter sweep schemes are thus \(\alpha\in[n^{-1},1]\).
@@ -203,7 +204,7 @@ Interesting values of \(\alpha\) for parameter sweep schemes are thus \(\alpha\i
 	}
 	
 	\caption{
-		The fractional DP constraint update. Note that the only difference between this and \cref{proc:dp-update} is on \cref{proc:frac-dp-update:diffline}.
+		The fractional \gls{dp} constraint update. Note that the only difference between this and \cref{proc:dp-update} is on \cref{proc:frac-dp-update:diffline}.
 	}
 	\label{proc:frac-dp-update}
 \end{algorithm}

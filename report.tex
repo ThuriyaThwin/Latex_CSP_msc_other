@@ -131,6 +131,7 @@
 	% [fix] - use "I" for first-person
 	% [fix] - check overall conformance to writing guide
 	% [fix] - spell-check entire report (use aspell?)
+	% [fix] - make one last pass re-ordering figures and tables
 
 	\mainmatter
 
@@ -138,6 +139,9 @@
 	\input{introduction.tex}
 	\input{introduction/background.tex}
 	\input{introduction/related.tex}
+
+	% Reset glossaries "first use" for all acronyms after the introduction
+	\glsresetall
 
 	\chapter{Theory}
 	\input{theory.tex}

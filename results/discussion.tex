@@ -51,8 +51,8 @@ Due to these results, the \enquote{push} operation is not as interesting when ap
 
 
 %%% THIS IS FOR THE GREEDY DP UPDATE, MAKE THIS CLEAR
-In situations where finding a solution quickly is more important than finding a guaranteed optimal solution, the greedy DP update is therefore a viable alternative.
-There is no problem set where the optimality gap is significantly increased, and only three sets contain problems which could be solved by the standard algorithm but not using greedy DP updates.
+In situations where finding a solution quickly is more important than finding a guaranteed optimal solution, the greedy \gls{dp} update is therefore a viable alternative.
+There is no problem set where the optimality gap is significantly increased, and only three sets contain problems which could be solved by the standard algorithm but not using greedy \gls{dp} updates.
 
 
 It seems that the reason for this is that the algorithm never reaches a situation where the solution doesn't change between two iterations, instead oscillating between a set of solutions.
@@ -62,7 +62,7 @@ With these results in mind, the greedy algorithm may be very useful when exact s
 % [todo] - mention fields where a "good enough" solution is satisfactory and why
 This makes the algorithm with greedy updates extremely competitive in such cases.
 The greedy update variant may also be useful as part of a broader strategy, by for instance providing fast and good upper bounds or by providing fast unproven solutions while waiting for exact solvers.
-Another interesting direction for the greedy DP update could be to run it in parallel with the standard algorithm (sharing the immutable constraint components in memory), again providing quick approximative solutions as well as good solutions.
+Another interesting direction for the greedy \gls{dp} update could be to run it in parallel with the standard algorithm (sharing the immutable constraint components in memory), again providing quick approximative solutions as well as good solutions.
 
 \subsection{Limitations}
 % [todo] - things like combining linear constraints with cost functions haven't been tested, mention this here? it's mentioned in the conclusion as well i think

@@ -49,18 +49,18 @@ In fact, the only problem set for which the excpected result was obained is the 
 % [todo] - more observations?
 
 \subsection{The greedy DP update}
-The greedy DP update, obtained by fixing \(\alpha=1\) of the fractional DP update, should theoretically improve convergence at the expense of the optimality guarantee.
+The greedy \gls{dp} update, obtained by fixing \(\alpha=1\) of the fractional \gls{dp} update, should theoretically improve convergence at the expense of the optimality guarantee.
 Here, a large number of problems from \cref{tab:comparative-results} were selected, all exhibiting low optimality gaps and a reasonable but uncompetitive runtime.
 The expectation was to decrease runtime at the expense of solution quality.
 Additionally, some sets with zero optimality gap and competitive runtime were included to observe the effects of this variant on already well-performing problem sets.
 
-\begin{table}[tp]
+\begin{table}[tbp]
 	\centering
 	% Updated 2014-05-24
 	\caption{
-		Optimality gap and runtime using the greedy DP update (setting \(\alpha=1\)).
-		For several chosen problem sets, the greedy DP runtime is compared to the results obtained by the standard algorithm (see \cref{tab:comparative-results}).
-		Problem sets marked with \textdagger{} include unsolved problems (no feasible solution found by the greedy DP update), and n/a values indicate that none of the problems in the set were solved.
+		Optimality gap and runtime using the greedy \gls{dp} update (setting \(\alpha=1\)).
+		For several chosen problem sets, the greedy \gls{dp} runtime is compared to the results obtained by the standard algorithm (see \cref{tab:comparative-results}).
+		Problem sets marked with \textdagger{} include unsolved problems (no feasible solution found by the greedy \gls{dp} update), and n/a values indicate that none of the problems in the set were solved.
 		Runtimes based on less than \SI{70}{\percent} of the problems are faded.
 	}
 	\label{tab:greedy-dp-results}
@@ -95,12 +95,12 @@ Max-\acrshort{csp}	&	BlackHole\textdagger	&	37	&	36	&	9.009009e-01	&	1.081081	&	
 	\end{figcenter}
 \end{table}
 
-\Cref{tab:greedy-dp-results} shows the results of benchmarking the greedy DP algorithm against the selected problems.
+\Cref{tab:greedy-dp-results} shows the results of benchmarking the greedy \gls{dp} algorithm against the selected problems.
 As expected, the runtime of all sets (except the \emph{Auction} set) was improved significantly --- between \num{4} and \num{350} times --- with little or no increase in optimality gap.
-The runtime improvements are most significant for the \gls{cfn} and \gls{mrf} problems, where the greedy DP variant is competitive with all three other solvers.
+The runtime improvements are most significant for the \gls{cfn} and \gls{mrf} problems, where the greedy \gls{dp} variant is competitive with all three other solvers.
 Three problem sets from the max-\gls{csp} category additionally show improved optimality gaps as well as better runtimes.
 
-\begin{figure}[bp]
+\begin{figure}[tbp]
 	\begin{figcenter}
 	\input{figs/khappa1-cactus-MaxCSP-BlackHole.tikz}
 	\end{figcenter}
@@ -108,7 +108,7 @@ Three problem sets from the max-\gls{csp} category additionally show improved op
 	\label{fig:cactus-greedy}
 \end{figure}
 
-\Cref{fig:cactus-greedy} illustrates the utility of the greedy DP update.
+\Cref{fig:cactus-greedy} illustrates the utility of the greedy \gls{dp} update.
 While it is slower for very small problems in the \emph{Black Hole} set, it is significantly faster in solving the more difficult problems.
 
 The only set in which the greedy update performs significantly worse is the \emph{Auction} set, in which it fails to solve any problems at all.

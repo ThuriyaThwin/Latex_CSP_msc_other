@@ -1,7 +1,7 @@
 \section{Max-sum problems and constraint satisfaction}
 The formulation of the in-the-middle algorithm provided by \textcite{Wedelin08} is based on the definition of a max-sum problem.
 In order to apply this algorithm to general \gls{wcsp}, it is necessary to provide a link between the max-sum problem and problem formulations within the graphical model optimization field, where \gls{wcsp} is one of the more general formulations.
-We will do this by first introducing the max-sum problem along with some useful interpretations in other fields, followed by a similar introduction of the \gls{wcsp} family of problems.
+We will do this by first introducing the max-sum problem along with some useful interpretations in other fields, followed by a similar introduction of the \gls{wcsp} family.
 Finally, we will provide a theoretical link between the two, along with an explicit method of translation between the formulations.
 
 \subsection{Max-sum problems}
@@ -48,7 +48,7 @@ A restricted variant of the max-sum problem called the \emph{binary max-sum labe
 \subsection{Weighted constraint satisfaction problems}
 \Glspl{csp} are very general decision problems, defined through a set of objects which must satisfy a set of constraints.
 Many problems in artificial intelligence and operations research (including planning and resource allocation) may be stated as \glspl{csp}, as well as several academic problems such as \gls{sat}, queens puzzles and map coloring.
-One of the corresponding combinatorial optimization problems\footnote{Both the \gls{vcsp} and \gls{scsp} frameworks may be seen as the corresponding optmization problems \parencites{Meseguer06}{Bistarelli99}, but the \gls{wcsp} may be described using either.}, the \gls{wcsp}\footnote{In some litterature these problems are called \glspl{cfn} (or just constraint networks), but the definitions are in essence equivalent.}, additionally introduce \emph{weights} on the constraints, and classify these as \emph{hard} (must be satisfied) or \emph{soft}.
+One of the corresponding combinatorial optimization problems\footnote{Both the \gls{vcsp} and \gls{scsp} frameworks may be seen as the corresponding optmization problems \parencites{Meseguer06}{Bistarelli99}, but \glspl{wcsp} may be described using either.}, the \gls{wcsp}\footnote{In some litterature these problems are called \glspl{cfn}, but the definitions are in essence equivalent.}, additionally introduces \emph{weights} on the constraints, and classify these as \emph{hard} (must be satisfied) or \emph{soft}.
 All \glspl{csp} may of course be restated as \glspl{wcsp} with only hard constraints, while the relaxed objective of the combinatorial optimization approach allows even over-constrained \glspl{csp} to be \enquote{solved}.
 Additionally, many problems in complexity theory such as \gls{maxsat}, max-clique, max-cut and minimal vertex cover may be modeled using \glspl{wcsp} \parencite[\pno~315]{Meseguer06}.
 Due to these facts, \glspl{wcsp} may be regarded as more interesting than \glspl{csp}, especially in an optimization context.

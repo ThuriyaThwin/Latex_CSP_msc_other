@@ -16,7 +16,7 @@ Since the algorithm when used with the corresponding heuristic is an inexact alg
 While the time may be compared as-is (given the comparable hardware conditions), the found solution will have to be compared relative to the proven optimum for each problem.
 
 \label{pg:bench-method}
-The relative deviation of the obtained solution (an \emph{optimality gap}) may be calculated as \((f - \bar{f})/(\mathrm{UB}-\mathrm{LB})\), where \(f\) is the solution found by the algorithm, \(\bar{f}\) is the proven optimum and \(\mathrm{UB}, \mathrm{LB}\) is the trivial upper and lower bound of the problem (the upper bound is specified in the \textsc{wcsp} format, and the lower bound is trivially the lowest cost among all constraints).
+The relative deviation of the obtained solution (an \emph{optimality gap}) may be calculated as \((f - \bar{f})/(\mathrm{UB}-\mathrm{LB})\), where \(f\) is the solution found by the algorithm, \(\bar{f}\) is the proven optimum and \(\mathrm{UB}, \mathrm{LB}\) is the trivial upper and lower bound of the problem (the upper bound is the sum of the largest cost of each constraint component, and the lower bound is trivially the lowest cost among all constraints).
 When \(\bar{f}\) is unknown, the lower bound is used instead.
 
 For the \enquote{push} operation, the constant \(\rho\) was set to \num{5}, the reduction of \(\kappa\) was set to \num{0.8} and the algorithm was run for at most \num{100} additional iterations.
@@ -29,7 +29,7 @@ Since all constraint clauses of the problems used in the benchmark have integer 
 The problem sets obtained from \textcite{deGivry14} belong to a number of different domains and represent different types of problems from industry, academia and random generation.
 This section will briefly review each problem set used in the benchmark, and review both problem source, interpretation and size.
 % [review] - wcsp same as cfn, make this clear? < should be made clear when presenting cfn/wcsp
-All of these problems are directly representable as \gls{wcsp} problems, and hence as max-sum optimization problems, and \textcite{deGivry14} provide details on the translation from each field to the \gls{wcsp} formulation used in this benchmark.
+All of these problems are directly representable as \glspl{wcsp}, and hence as max-sum optimization problems, and \textcite{deGivry14} provide details on the translation from each field to the \gls{wcsp} formulation used in this benchmark.
 
 Several sets from the benchmark performed by \textcite{deGivry14} have been omitted from this benchmark.
 This is because the in-the-middle algorithm wasn't able to solve any instances in the set (due to time or memory constraints), making them uninteresting in the sense that the algorithm isn't a feasible alternative for those problems. 
@@ -109,14 +109,14 @@ The omitted problem sets are mostly from the \gls{cp} and \gls{wpms} categories 
 
 \subsubsection{Constraint Function Network (CFN)}
 This category contains six problem sets, all from the CFLib collection mentioned by \textcite[\pno~3]{deGivry14}.
-Most of them are real-world problems or generated to approximate such problems, and all of them are readily available in the WCSP file format mentioned earlier.
+Most of them are real-world problems or generated to approximate such problems, and all of them are readily available in the \textsc{WCSP} file format mentioned earlier.
 
 \begin{description}
 	\item[Auction]
 		The combinatorial auction problem has been previously used by \textcites{Larrosa08}{Sandholm99}.
 		In summary, the problem allows bidders to bid for indivisible subsets of goods, and the optimization problem is to maximize the revenue of the bid-taker.
 		The problems are generated, but inspired by real-world scenarios.
-		All variables are binary (the original problem is a binary Max-SAT problem), and the problems contain up to \num{246} variables and \num{12000} constraints.
+		All variables are binary (the original problem is a binary \gls{maxsat} problem), and the problems contain up to \num{246} variables and \num{12000} constraints.
 
 		The problem set includes \emph{scheduling} and \emph{path} distribution problems, but omits the \emph{regions} distribution mentioned by \textcite[\pno~228]{Larrosa08}.
 
@@ -128,16 +128,16 @@ Most of them are real-world problems or generated to approximate such problems, 
 		Problems included in the benchmark are mainly the CELAR sub-instances \parencite[\pno~85]{Cabon99} and some GRAPH instances.
 
 	\item[Pedigree]
-		This category contains problems relating to the Mendelian error correction on complex pedigree \parencites{Sanchez08}[\pno~317\psq]{Meseguer06}, which is a real-world \gls{wcsp} problem.
+		This category contains problems relating to the Mendelian error correction on complex pedigree \parencites{Sanchez08}[\pno~317\psq]{Meseguer06}, which is a real-world \gls{wcsp}.
 		The problem may be described as surveying a pedigree (similar to a family tree), detecting individuals that are erroneous in the sense that they do not conform to the Mendelian laws of inheritance.
 		Specifically, the problem formulation is to find the minimum number of errors needed to explain erroneous data.
 
 		The problems are very large, with the number of variables reaching \num{10000} and almost \num{20000} constraints, with variable domains around \num{25}.
 
 	\item[Protein Design]
-		Computational Protein Design problems concern the identification of proteins performing given tasks. The actual problem statement is the optimization of a complex energy function over amino acid sequences, and it is described in length by \textcite{Allouche12}.
+		\Gls{cpd} problems concern the identification of proteins performing given tasks. The actual problem statement is the optimization of a complex energy function over amino acid sequences, and it is described in length by \textcite{Allouche12}.
 
-		The problems may be expressed by \gls{cfn} or integer \gls{lp} models — only the \gls{cfn} formulations are used in this benchmark. The problems contain few (roughly \num{20}) variables with very large domains (up to \num{200}), and around \num{170} constraints.
+		The problems may be expressed by \gls{cfn} or \gls{ilp} models — only the \gls{cfn} formulations are used in this benchmark. The problems contain few (roughly \num{20}) variables with very large domains (up to \num{200}), and around \num{170} constraints.
 
 	\item[SPOT5]
 		The SPOT5 problems are in essence planning problems, taken from real-world planning of earth optical observation satellites.
@@ -154,7 +154,7 @@ Most of them are real-world problems or generated to approximate such problems, 
 
 \subsubsection{Constraint Programming (CP)}
 Two problems (one real-world problem and one academic) from this category have been included in this benchmark.
-All problems in these sets come from the MiniZinc Challenge\footnote{\url{http://www.minizinc.org/}} \parencite[\pno~5]{deGivry14}, and represent specific problems (representable as \gls{wcsp} instances) defined through Constraint Programming languages.
+All problems in these sets come from the MiniZinc Challenge\footnote{\url{http://www.minizinc.org/}} \parencite[\pno~5]{deGivry14}, and represent specific problems (representable as \gls{wcsp} instances) defined through \acrlong{cp} languages.
 % [review] - page number above will have to change
 Note that \gls{cp} problems are not generally representable as \glspl{wcsp}, which makes this category less interesting in the context of \gls{wcsp} or max-sum algorithms.
 
@@ -162,7 +162,7 @@ Note that \gls{cp} problems are not generally representable as \glspl{wcsp}, whi
 %	\item[A Maze]
 %	\item[Fast Food]
 %	\item[Golomb]
-	\item[On Call Rostering]
+	\item[On-call Rostering]
 		This problem is a planning problem in which staff members are assigned to days in a rostering period.
 		Requirements on staff (both forced rostering and staff being unavailable) affect the schedule, and work load should be even over the rostering period.
 		Additionally, staff members are not allowed to be on call more than two days in a row, and prefer not to be on call for two consecutive days.
@@ -171,7 +171,7 @@ Note that \gls{cp} problems are not generally representable as \glspl{wcsp}, whi
 		Problems in this set are generally fairly large in terms of domain size (up to \num{90}), but only contain up to \num{2200} variables and \num{4500} constraints, which is small compared to other sets.
 	
 	\item[Parity Learning]
-		The Parity Learning set contains instances of an optimization variant of the Minimal Disagreement Parity problem \parencite{Crawford94}.
+		The parity learning set contains instances of an optimization variant of the \gls{mdp} problem \parencite{Crawford94}.
 		A set of input/output samples of a Boolean function is given, where the function outputs the parity of an unkown subset of the input variables.
 		A stated number of the input/output samples are incorrect with respect to the given function, and the goal of the parity learning problem is to find a subset of the input variables that minimizes the number of errors.
 
@@ -198,12 +198,12 @@ The problems are mostly academic and random, with a relatively small number of v
 	\item[Coloring]
 		In the well-known graph coloring (decision) problem, the objective is to decide whether a given graph is \(k\)-colorable, \emph{i.e.} whether each edge can be assigned one of \(k\) distinct colors such that no adjacent (connected) nodes have the same color.
 		As such, the instances are crafted academic problems.
-		The instances in this set originate from the \emph{Center for Discrete Mathematics and Theoretical Computer Science} (DIMACS), and have been previously studied by \textcite{Benhamou07}.
+		The instances in this set originate from the \gls{dimacs}, and have been previously studied by \textcite{Benhamou07}.
 	\item[Composed]
 		These are random instances composed of an unconstrained \gls{csp} core combined using binary constraints with auxillary fragments.
 		Such problems have been previously used by \textcite{Lecoutre04,Jussien00}.
 	\item[EHI]
-		The EHI problem instances are random 3-\gls{sat} (\gls{sat} problems where every clause consists of exactly three literals) converted into \gls{csp} instances with binary constraints, then further restated as max-\gls{csp} problems. They have previously been considered by \textcite{Lecoutre04}.
+		The EHI problem instances are random 3-\gls{sat} (\gls{sat} problems where every clause consists of exactly three literals) problems converted into \gls{csp} instances with binary constraints, then further restated as max-\gls{csp} problems. They have previously been considered by \textcite{Lecoutre04}.
 	\item[Geometric]
 		This set contains problems generated from random points in the unit square. For every pair of points, a hard constraint forbidding the pair is added if they are within a certain distance from each other.
 		These instances were used in the 2005 max-\gls{csp} competition \parencite{Boussemart05}.
@@ -211,14 +211,14 @@ The problems are mostly academic and random, with a relatively small number of v
 		The Langford instances are academic instances solving the problem of arranging \(k\) sets of numbers ranging from \(1\) to \(n\) so that appearances of the number \(m\) are exactly \(m\) places apart.
 		A general formulation of the problem has been presented by \textcite{Linek03}.
 	\item[QCP]
-		The Quasi-group Completion problems (QCP) are concerned with deciding if a partial Latin square can be filled in order to obtain a full Latin square.
+		The \glspl{qcp} are concerned with deciding if a partial Latin square can be filled in order to obtain a full Latin square.
 		The set consists of 60 instances previously used in the 2005 \gls{csp} Solver Competition, and the general problem has previously been studied by \textcite{Gomes02}.
 \end{description}
 
 \subsubsection{Markov Random Fields (MRF)}
 This category consists of seven sets, where the task is to estimate \gls{map} probabilities on \gls{mrf}. The sets represent different underlying problems such as image alignment, genetic linkage analysis, protein folding and other probabilistic problems.
 
-All of these problems, except those in the \emph{Linkage} set (which was used in the UAI08 probabilistic inference evaluation and later by \textcites{Favier11}{Kishimoto13}), are from the 2011 Probabilistic Inference Challenge\footnote{\url{http://www.cs.huji.ac.il/project/PASCAL/}}.
+All of these problems, except those in the \emph{Linkage} set (which was used in the UAI'08 probabilistic inference evaluation and later by \textcites{Favier11}{Kishimoto13}), are from the 2011 Probabilistic Inference Challenge\footnote{\url{http://www.cs.huji.ac.il/project/PASCAL/}}.
 The problems were translated into their \gls{wcsp} equivalent using a \(-\log{}\) transformation \parencite[\pno~4]{deGivry14}.
 % [review] - page number above will have to change
 
@@ -233,16 +233,16 @@ From the field of \gls{wpms}, only one problem set was kept.
 Problems in this fiels contain a very large number of (binary, for obvious reasons) variables and cost functions with very large arity --- in fact, this is the only field in which cost function arity exceeds \num{5} (most other sets have cost functions of two variables only).
 The only kept problem set, \emph{Max-Clique}, has a cost function arity of \num{2}.
 Discarded sets were omitted due to memory concerns, likely caused by inefficient representation of the cost functions.
-The instances were used in the eigth Max-SAT Evaluation\footnote{\url{http://maxsat.ia.udl.cat/13/benchmarks/}},
+The instances were used in the 8th \Gls{maxsat} Evaluation\footnote{\url{http://maxsat.ia.udl.cat/13/benchmarks/}}.
 
 \begin{description}
 %	\item[Haplotyping]
 	\item[Max-Clique]
-		The Max-Clique problem, which may be restated as a max-SAT problem \parencite{Heras08}, is the well-known problem of finding the largest \emph{clique} (complete subgraph) of a graph.
+		The Max-Clique problem, which may be restated as a \gls{maxsat} problem \parencite{Heras08}, is the well-known problem of finding the largest \emph{clique} (complete subgraph) of a graph.
 		It may be regarded as an academic problem, but has many applications to real-world problems and has seen extensive study when it comes to tailored algorithms for the original formulation.
-		The original instances are from the second DIMACS challenge \parencite{Johnson96}, and have been previously used by \emph{e.g.} \textcite{Östergård02} for benchmarking max-clique algorithms.
+		The original instances are from the second \gls{dimacs} challenge \parencite{Johnson96}, and have been previously used by \emph{e.g.} \textcite{Östergård02} for benchmarking max-clique algorithms.
 
-		When translated into their max-SAT equivalent, max-clique instances become very large. While the number of variables is fairly low (below \num{3400}), the number of constraints is very large (approaching \num{380000}).
+		When translated into their \gls{maxsat} equivalent, max-clique instances become very large. While the number of variables is fairly low (below \num{3400}), the number of constraints is very large (approaching \num{380000}).
 %	\item[MIPLib]
 %	\item[Packup Weighted]
 %	\item[Planning With Preferences]
@@ -255,15 +255,15 @@ Three solvers used by \textcite{deGivry14} are included in this benchmark.
 This section will briefly describe their original field of application, give brief pointers to the method they employ, and relate them to the in-the-middle algorithm.
 
 \subsubsection{Toulbar2}
-The Toulbar2 solver is an exact anytime solver for \gls{wcsp} based on a depth-first branch-and-bound algorithm \parencite{Allouche10}.
+The Toulbar2 solver is an exact anytime solver for \glspl{wcsp} based on a depth-first branch-and-bound algorithm \parencite{Allouche10}.
 In addition to using a strong arc consistency property\footnote{Existential directed arc consistency, as presented by \textcite{deGivry05}.}, the solver uses a sizable bag of tricks including variable elimination, dead-end elimination \parencite{deGivry13} and pairwise decomposition \parencite{Favier11}.
 
 The Toulbar2 solver is by far the most advanced solver in the \gls{wcsp} field, with significant amounts of theory behind it especially with respect to strong arc consistency properties (the one implicitly employed by the in-the-middle algorithm, generalized arc consistency, is quite weak in comparison).
 It is therefore an interesting benchmark \enquote{opponent}, and matching it in a benchmark (especially the \gls{mrf}, \gls{cfn} and max-\gls{csp} categories) could indicate potential for the in-the-middle algorithm in those categories.
 
 \subsubsection{CPLEX}
-The well-known CPLEX solver, which is an exact \gls{lp} solver rather than a \gls{wcsp} solver, is also included in the benchmark.
-Using the \emph{direct} encoding described by \textcite[\pno~3]{deGivry14} of \gls{wcsp} into \gls{lp} problems, CPLEX was found to have very good performance for some problem categories an therefore it is also included in this benchmark.
+The well-known CPLEX solver, which is an exact \gls{mip} solver rather than a \gls{wcsp} solver, is also included in the benchmark.
+Using the \emph{direct} encoding described by \textcite[\pno~3]{deGivry14} of \glspl{wcsp} into \gls{01lp} problems, CPLEX was found to have very good performance for some problem categories an therefore it is also included in this benchmark.
 CPLEX is highly optimized proprietary software, but uses the well-known simplex and barrier interior point methods to solve \gls{lp} problems.
 Even so, previous results \parencite{Mason01,Ernst05} have shown that the \gls{lp} formulation of the in-the-middle algorithm is competitive with CPLEX, and it is therefore interesting to see how the two relate in the \gls{wcsp} field.
 

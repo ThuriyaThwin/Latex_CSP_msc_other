@@ -1,11 +1,11 @@
 Optimization is a very relevant topic in modern industry, with applications to planning, cost-efficiency and many other areas.
-Since many modern optimization problems are formulated through \acrlong{lp} models, there are many mature and efficient algorithms aimed at solving such problems.
+Since many modern optimization problems are formulated through \gls{lp} models, there are many mature and efficient algorithms aimed at solving such problems.
 However, some problems are most efficiently expressed through deterministic or probabilistic \emph{graphical models} in which constraints and variables are expressed through a hypergraph.
-It is therefore of interest to examine the application of known \acrlong{lp} methods to problems in the graphical model field.
+It is therefore of interest to examine the application of known \gls{lp} methods to problems in the graphical model field.
 
-This thesis will expand a known \acrlong{lp} optimization algorithm which has seen extensive use in industry, the in-the-middle algorithm\footnote{Originally proposed by \textcite{Wedelin95}.} (and its accompanying heuristic), to a wider set of problems in graphical model discrete optimization, specifically \acrlongpl{wcsp} and related instances.
-This will be done by implementing a recently developed reformulation of the algorithm which applies to max-sum problems, with a suitable transformation of \acrlong{wcsp} instances into max-sum instances.
-This implementation will then be benchmarked against solvers in the \acrlong{cp} and graphical model optimization fields.
+This thesis will expand a known \gls{lp} optimization algorithm which has seen extensive use in industry, the in-the-middle algorithm\footnote{Originally proposed by \textcite{Wedelin95}.} (and its accompanying heuristic), to a wider set of problems in graphical model discrete optimization, specifically \glspl{wcsp} and related instances.
+This will be done by implementing a recently developed reformulation of the algorithm which applies to max-sum problems, with a suitable transformation of \gls{wcsp} instances into max-sum instances.
+This implementation will then be benchmarked against solvers in the \gls{cp} and graphical model optimization fields.
 
 The objective and purpose of the thesis is then to determine the usefulness of the max-sum in-the-middle algorithm within the field of graphical model discrete optimization, and to shed light on potential areas of improvement of the algorithm within that field.
 However, this thesis will not develop any significant variations of the algorithm, nor will it develop stronger theory on its functionality.

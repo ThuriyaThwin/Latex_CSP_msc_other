@@ -2,14 +2,14 @@
 Since the purpose of this thesis is to extend an existing algorithm and benchmark it against known solvers, it is interesting to note previous work both related to the algorithm itself (either its \gls{lp} formulation or the max-sum variant discussed in this thesis) as well as previous benchmarks and recent algorithms in the related fields.
 
 Previous work on the algorithm itself, especially the \gls{lp} variant, will be implemented and examined to determine if known modifications of the algorithm apply to the max-sum variant as well.
-Benchmarks in the \gls{csp} field will be surveyed to collect suitable problem sets and to pick appropriate solvers to benchmark the algorithm against.
+Publications (primarily benchmakrs and competitions) in the \gls{csp} field will be surveyed to collect suitable problem sets and to pick appropriate solvers to benchmark the algorithm against.
 
 \subsection{The in-the-middle algorithm}
 Although the in-the-middle algorithm has mostly been discussed by its principal author \parencites{Wedelin95}{Wedelin08}{Wedelin13}{Alefragis00}, there is some litterature evaluating and improving upon the algorithm available.
 
-\Textcite{Bastert10} notes the practical relevance of the field of heuristics for integer programming in recent years, and evaluates the in-the-middle algorithm applied to such problems. In addition to explicitly providing the generalizations mentioned by \textcite{Wedelin95}, they also introduce a \enquote{push} operation intended to improve the quality of the approximative solutions. Finally, they also compare the algorithm with commercial software, with fairly favourable results.
+\Textcite{Bastert10} notes the practical relevance of the field of heuristics for \gls{ilp} in recent years, and evaluates the in-the-middle algorithm applied to such problems. In addition to explicitly providing the generalizations mentioned by \textcite{Wedelin95}, they also introduce a \enquote{push} operation intended to improve the quality of the approximative solutions. Finally, they also compare the algorithm with commercial software, with fairly favourable results.
 
-\Textcite{Ernst05} applied a method based on the Lagrangian relaxation used by the in-the-middle algorithm to the task allocation problem, with favourable results compared to the commercial CPLEX \gls{lp} solver.
+\Textcite{Ernst05} applied a method based on the Lagrangian relaxation used by the in-the-middle algorithm to the task allocation problem, with favourable results compared to the commercial CPLEX \gls{mip} solver.
 Similarly, \textcite{Mason01} applied a specialized variant of the in-the-middle algorithm to personnel scheduling, outperforming CPLEX on difficult commercial rostering problems.
 
 \subsection{Max-sum and constraint satisfaction problems}

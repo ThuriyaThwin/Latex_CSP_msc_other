@@ -1,12 +1,12 @@
 \section{Implementation}
-The algorithm --- including reading routines for the WCSP format \parencite{wcspformat}, parameter sweep strategy and timing facilities --- was implemented in C++11.
+The algorithm --- including reading routines for the \textsc{wcsp} file format \parencite{wcspformat}, parameter sweep strategy and timing facilities --- was implemented in C++11.
 The implementation is partly based on an existing framework for the original \gls{lp} in-the-middle algorithm.
 The code was compiled using version 5.1 of the LLVM compiler, with all safe optimizations enabled (\emph{i.e.} \texttt{-O3}).
 
 There are several implementation details which are highly relevant to the performance of the algorithm, and this section will explore such details in depth.
 In particular, the choice of data structure for constraint component data as well as implementation of constraint updates makes significant impact on the runtime of the algorithm.
 
-A parameter sweep strategy used in conjunction with the algorithm, which controls the \(\alpha\) parameter of the fractional DP update, will also be introduced and explained in further detail.
+A parameter sweep strategy used in conjunction with the algorithm, which controls the \(\alpha\) parameter of the fractional \gls{dp} update, will also be introduced and explained in further detail.
 
 \subsection{Constraint component design decisions}
 Several design decisions in the implementation of the constraint components have significant impact on the performance of the constraint component updates.
@@ -61,16 +61,16 @@ In the actual implementation, \(x^k_i\) are represented as pointers to the value
 	}
 	
 	\caption{
-		Fast implementation of the fractional DP update described in \cref{proc:dp-update}.
+		Fast implementation of the fractional \gls{dp} update described in \cref{proc:dp-update}.
 	}
 	\label{proc:frac-dp-update-fast}
 \end{algorithm}
 
 \subsection{Parameter sweep strategy}
-As explained earlier, the fractional DP update of constraint components depends on a parameter \(\alpha\), which dictates the amount \enquote{moved out} of the constraint component.
+As explained earlier, the fractional \gls{dp} update of constraint components depends on a parameter \(\alpha\), which dictates the amount \enquote{moved out} of the constraint component.
 Choosing this parameter is difficult, but some of the results discussed earlier may be used to create a strategy for a parameter sweep.
 Knowing that values \(\alpha\leq n^{-1}\) (where \(n\) is the arity of a constraint) guarantee that any solution found is optimal, we may take \(n^{-1}\) as a lower limit for the parameter.
-A reasonable upper limit fo the parameter is \(\alpha=1\), which in essence corresponds to the regular, non-fractional DP update.
+A reasonable upper limit fo the parameter is \(\alpha=1\), which in essence corresponds to the regular, non-fractional \gls{dp} update.
 
 To vary the parameter between these two values, a sweep strategy is employed.
 \Cref{fig:khappa-plot} shows the value of a parameter \(\kappa\) (defined so that \(\alpha = n^{-1}\left(1 + \kappa(n - 1)\right)\), \emph{i.e.} mapping \(\left[0,1\right]\) to \(\left[n^{-1},1\right]\) \emph{individually} for each constraint component) over the first \emph{trial} for two different problems, along with the number of sign changes which is used as a termination criterion.
@@ -79,7 +79,7 @@ To vary the parameter between these two values, a sweep strategy is employed.
 	\centering
 	\subfloat[\label{fig:khappa-plot:comp}A max-\gls{csp} problem from the \enquote{Composed} set.]{\input{figs/composed-khappa-plot.tikz}}
 	\\
-	\subfloat[\label{fig:khappa-plot:deer}A \gls{mrf} problem from the \enquote{ObjectDetection} set.]{\input{figs/deer-khappa-plot.tikz}}
+	\subfloat[\label{fig:khappa-plot:deer}A \gls{mrf} problem from the \enquote{Object Detection} set.]{\input{figs/deer-khappa-plot.tikz}}
 	\caption{Influence of the \(\kappa\) parameter for two different problems using the fractional update, with noise applied to resolve ties. Only the first trial is shown.}
 	\label{fig:khappa-plot}
 \end{figure}
