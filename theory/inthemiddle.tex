@@ -242,11 +242,24 @@ Moving through all the variable components \(\bar{\vcomp}_j\), any element whose
 where \(u \in \mathcal{U}(-\zeta,\zeta)\) is a random variable taken from a uniform distibution.
 If noise has been added in a previous iteration, that noise is removed from the variable component first.
 
-\subsection{Interpretations in other fields}
-% [todo] - write about terminology, guarantees and so on that correspond between Wedelin08's language and that of Allouche/Givry/Schiex
-% 
-% Arc consistency: (Wedelin08, p.8) corresponds to what kind of consistency? How does EDAC* relate to this? (deGivry05) How does soft arc consistency relate? (Cooper10)
-% http://en.wikipedia.org/wiki/Local_consistency#Arc_consistency implies that we have normal AC*, with in-the-middle being a simplistic algorithm
-% But what would EDAC be in our case?
-% 
-% [todo] - check how the algorithm exposes/utilizes the notions in Bordeaux08?
+\subsection{Interpretation in a WCSP context}
+The framework commonly employed in \gls{wcsp} optimization focuses on providing equivalence-preserving transformations of the problem graph, in order to obtain good upper and lower bounds which are then used in branch-and-bound strategies.
+A fairly thorough presentation of the \emph{arc consistency} notions used in this framework is given by \textcite{Cooper10}.
+
+The notion of \emph{generalized arc consistency} \parencite[\pno~7]{Cooper10} is in fact used by the algorithm, corresponding to the \emph{consistent} updates introduced by \parencite[\pno~101]{Wedelin08}.
+This type of arc consistency is normally not utilized in \gls{wcsp} theory, since it is rather weak.
+Stronger notions, such as \emph{(full) arc consistency} and \emph{existential arc consistency} \parencite{deGivry05}, are centered around providing very good bound on the problem by projecting costs away from constraints and moving them into the variable components or the nullary constraint, which then immediately provides an easily accessible lower bound on the optimal solution.
+
+Algorithms enforcing full arc consistency are in fact very similar to the \emph{non-conflicting} updates proposed by \textcite{Wedelin08}.
+\Textcite[\pno~85\psq]{deGivry05} present an algorith enforcing this property, and the general structure of this algorithm is very similar to the DP update described above.
+First, the costs in one of the variable components are moved into the constraint component.
+Then (as in the DP update), the max-marginals are calculated and \enquote{moved out} (\emph{projected}) onto the other variable component.
+The result is one variable component with mostly zero-value costs, and one variable component with (if possible) no zero-value costs. 
+This fact is then used when enforcing another property, \emph{node consistency} \parencite[\pno~7]{Cooper10}, which in effect moves redundant costs from the variable components to the nullary constraint.
+
+\subsubsection{Stronger constraint component updates}
+Although the theory behind the in-the-middle algorithm isn't aimed at providing good upper and lower bounds, instead being concerned with providing an optimality guarantee, there is no reason to discard existing theory in the \gls{wcsp} field.
+It appears feasible to implement some of the consistency-enforcing algorithms of \textcite{deGivry05} as constraint component updates, and enforcing node consistency could be done once every few iterations independently of the updates (or in a preprocessing stage).
+This could provide lower bounds which could be employed as a secondary optimality guarantee, which could be used to measure the optimality gap in situations where potentially conflicting updates are used.
+
+It may therefore be possible or even desirable to extend notions of stronger arc consistecy to the in-the-middle algorithm.
