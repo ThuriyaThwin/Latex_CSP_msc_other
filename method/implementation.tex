@@ -6,25 +6,7 @@ The code was compiled using version 5.1 of the LLVM compiler, with all safe opti
 There are several implementation details which are highly relevant to the performance of the algorithm, and this section will explore such details in depth.
 In particular, the choice of data structure for constraint component data as well as implementation of constraint updates makes significant impact on the runtime of the algorithm.
 
-A parameter sweep strategy used in conjunction with the algorithm, which controls the \(\alpha\) parameter of the fractional \gls{dp} update, will also be introduced and explained in further detail.
-
-\subsection{Constraint component design decisions}
-Several design decisions in the implementation of the constraint components have significant impact on the performance of the constraint component updates.
-These design decisions mostly relate to the data structure representing costs inside the constraint component, and the main concern in selecting this data structure is quick access in the update loop.
-Since the constraint component is kept constant through all iterations, and the temporary cost table \(h\) can be made implicit, this is the only major concern.
-
-Another implementation detail to note is the storage of the (modified) variable components \(\bar{\vcomp}_i\).
-Storing these sequentially in memory is a good choice, but care needs to be taken when ordering the variable components in memory --- due to CPU cache characteristics, storing variable components used in the same constraint component next to each other is highly beneficial.
-However, the implementation used here does not reorder variable components in this manner, instead storing them in the order they have been defined in the problem input.
-
-A good data structure for the constraint components \(\ccomp_k\) is a vector with a sparse representation of the table costs (omitting infeasible values, \emph{i.e.} \(\ccomp_k(x^k) = -\infty\)).
-These values may be implicitly represented by proper initialization of variables in the constraint update.
-The vector representation may be described as a list of pairs \(\langle x^k, \ccomp_k(x^k)\rangle\), where the (fixed) variable values \(x^k\) additionally may be used to access corresponding variable component values \(\bar{\vcomp}_i(x^k_i)\).
-In the actual implementation, \(x^k_i\) are represented as pointers to the values \(\bar{\vcomp}_i(x^k_i)\).
-
-\Cref{proc:frac-dp-update-fast} highlights these implementation details, and also shows the use of an invariant transformation of the variable components \(\bar{\vcomp}_i(x^k_i)\) that allows the use of existing code to detect solution changes by counting sign changes.
-
-\begin{algorithm}[tbp]
+\begin{algorithm}[p]
 	\SetKwFunction{UpdateConstraint}{UpdateConstraint}
 	\Fn{\UpdateConstraint{\(\ccomp_k\), \(\bar{\vcomp}^k\), \(s^k\)}}{
 		\KwData{A constraint component \(\ccomp_k\), (pointers to) variable components \(\bar{\vcomp}^k\) and offsets \(s^k\)}
@@ -66,14 +48,29 @@ In the actual implementation, \(x^k_i\) are represented as pointers to the value
 	\label{proc:frac-dp-update-fast}
 \end{algorithm}
 
+A parameter sweep strategy used in conjunction with the algorithm, which controls the \(\alpha\) parameter of the fractional \gls{dp} update, will also be introduced and explained in further detail.
+
+\subsection{Constraint component design decisions}
+Several design decisions in the implementation of the constraint components have significant impact on the performance of the constraint component updates.
+These design decisions mostly relate to the data structure representing costs inside the constraint component, and the main concern in selecting this data structure is quick access in the update loop.
+Since the constraint component is kept constant through all iterations, and the temporary cost table \(h\) can be made implicit, this is the only major concern.
+
+Another implementation detail to note is the storage of the (modified) variable components \(\bar{\vcomp}_i\).
+Storing these sequentially in memory is a good choice, but care needs to be taken when ordering the variable components in memory --- due to CPU cache characteristics, storing variable components used in the same constraint component next to each other is highly beneficial.
+However, the implementation used here does not reorder variable components in this manner, instead storing them in the order they have been defined in the problem input.
+
+A good data structure for the constraint components \(\ccomp_k\) is a vector with a sparse representation of the table costs (omitting infeasible values, \emph{i.e.} \(\ccomp_k(x^k) = -\infty\)).
+These values may be implicitly represented by proper initialization of variables in the constraint update.
+The vector representation may be described as a list of pairs \(\langle x^k, \ccomp_k(x^k)\rangle\), where the (fixed) variable values \(x^k\) additionally may be used to access corresponding variable component values \(\bar{\vcomp}_i(x^k_i)\).
+In the actual implementation, \(x^k_i\) are represented as pointers to the values \(\bar{\vcomp}_i(x^k_i)\).
+
+\Cref{proc:frac-dp-update-fast} highlights these implementation details, and also shows the use of an invariant transformation of the variable components \(\bar{\vcomp}_i(x^k_i)\) that allows the use of existing code to detect solution changes by counting sign changes.
+
 \subsection{Parameter sweep strategy}
 As explained earlier, the fractional \gls{dp} update of constraint components depends on a parameter \(\alpha\), which dictates the amount \enquote{moved out} of the constraint component.
 Choosing this parameter is difficult, but some of the results discussed earlier may be used to create a strategy for a parameter sweep.
 Knowing that values \(\alpha\leq n^{-1}\) (where \(n\) is the arity of a constraint) guarantee that any solution found is optimal, \(n^{-1}\) may be chosen as a lower limit for the parameter.
 A reasonable upper limit for the parameter is \(\alpha=1\), which in essence corresponds to the regular, non-fractional \gls{dp} update.
-
-To vary the parameter between these two values, a sweep strategy is employed.
-\Cref{fig:khappa-plot} shows the value of a parameter \(\kappa\) (defined so that \(\alpha = n^{-1}\left(1 + \kappa(n - 1)\right)\), \emph{i.e.} mapping \(\left[0,1\right]\) to \(\left[n^{-1},1\right]\) \emph{individually} for each constraint component) over the first \emph{trial} for two different problems, along with the number of sign changes which is used as a termination criterion.
 
 \begin{figure}[p]
 	\centering
@@ -83,6 +80,9 @@ To vary the parameter between these two values, a sweep strategy is employed.
 	\caption{Influence of the \(\kappa\) parameter for two different problems using the fractional update, with noise applied to resolve ties. Only the first trial is shown.}
 	\label{fig:khappa-plot}
 \end{figure}
+
+To vary the parameter between these two values, a sweep strategy is employed.
+\Cref{fig:khappa-plot} shows the value of a parameter \(\kappa\) (defined so that \(\alpha = n^{-1}\left(1 + \kappa(n - 1)\right)\), \emph{i.e.} mapping \(\left[0,1\right]\) to \(\left[n^{-1},1\right]\) \emph{individually} for each constraint component) over the first \emph{trial} for two different problems, along with the number of sign changes which is used as a termination criterion.
 
 In particular, \cref{fig:khappa-plot:deer} shows a full run in which \(\kappa\) is varied throughout the entire range \([0,1]\).
 As can be seen, \(\kappa\) is initially kept at 0 for a number of iterations --- this is in effect an attempt to find guaranteed optimal solutions if possible, only attempting to solve the problem heuristically if this fails.

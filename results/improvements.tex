@@ -3,12 +3,7 @@ Two variants of the algorithm have been discussed earlier in the thesis, with di
 Benchmark data was produced for these variants as well, but on a limited subset of the problems chosen specifically to test the variants and their intended purpose.
 Results for both variants will be reviewed in in order to determine if they have the desired effect, and if their function is satisfactory with respect to the drawbacks they introduce.
 
-\subsection{The \enquote{push} operation}
-The purpose of the \enquote{push} operation is to decrease the optimality gap of the approximate algorithm once a feasible solution has been found.
-Six problem sets from \cref{tab:comparative-results} were therefore chosen for this benchmark, all with comparatively bad solutions (optimality gaps close to or above \SI{1}{\percent}) but competitive runtimes.
-The expectation was to obtain better solutions while maintaining good runtimes.
-
-\begin{table}[b!]
+\begin{table}[t]
 	\centering
 	% Updated 2014-05-24
 	\caption{
@@ -38,6 +33,11 @@ Max-\acrshort{csp}	&	BlackHole	&	37	&	37	&	9.009009e-01	&	1.08108100	&	58.8900	&
 	\end{figcenter}
 \end{table}
 
+\subsection{The \enquote{push} operation}
+The purpose of the \enquote{push} operation is to decrease the optimality gap of the approximate algorithm once a feasible solution has been found.
+Six problem sets from \cref{tab:comparative-results} were therefore chosen for this benchmark, all with comparatively bad solutions (optimality gaps close to or above \SI{1}{\percent}) but competitive runtimes.
+The expectation was to obtain better solutions while maintaining good runtimes.
+
 \Cref{tab:push-results} shows the results of benchmarking the \enquote{push} operation on the selected problems.
 Surprisingly, the optimality gap did not improve for a majority of the problems.
 In fact, for some sets the optimality gap was increased, and the runtime of the algorithm improved instead (which given the already competitive runtime of the standard algorithm is an unwanted result).
@@ -49,7 +49,7 @@ To test this a large number of problems from \cref{tab:comparative-results} were
 The expectation was to decrease runtime at the expense of solution quality.
 Additionally, some sets with zero optimality gap and competitive runtime were included to observe the effects of this variant on already well-performing problem sets.
 
-\begin{table}[tbp]
+\begin{table}[p]
 	\centering
 	% Updated 2014-05-24
 	\caption{
@@ -90,19 +90,19 @@ Max-\acrshort{csp}	&	BlackHole\textdagger	&	37	&	36	&	9.009009e-01	&	1.081081	&	
 	\end{figcenter}
 \end{table}
 
-\Cref{tab:greedy-dp-results} shows the results of benchmarking the greedy \gls{dp} algorithm against the selected problems.
-As expected, the runtime of all sets (except the \emph{Auction} set) was improved significantly --- between \num{4} and \num{350} times --- but with little or no increase in optimality gap.
-The runtime improvements are most significant for the \gls{cfn} and \gls{mrf} problems, where the greedy \gls{dp} variant is competitive with all three other solvers.
-Three problem sets from the max-\gls{csp} category additionally show improved optimality gaps as well as better runtimes.
-The only set in which the greedy update performs significantly worse is the \emph{Auction} set, in which it fails to solve any problems at all.
-
-\begin{figure}[tbp]
+\begin{figure}[p]
 	\begin{figcenter}
 	\input{figs/khappa1-cactus-MaxCSP-BlackHole.tikz}
 	\end{figcenter}
 	\caption{Accumulated runtime of the standard and greedy algorithm in the \emph{Black Hole} set, sorted by runtime individually for each variant. Note the logarithmic scale of the \(y\) axis.}
 	\label{fig:cactus-greedy}
 \end{figure}
+
+\Cref{tab:greedy-dp-results} shows the results of benchmarking the greedy \gls{dp} algorithm against the selected problems.
+As expected, the runtime of all sets (except the \emph{Auction} set) was improved significantly --- between \num{4} and \num{350} times --- but with little or no increase in optimality gap.
+The runtime improvements are most significant for the \gls{cfn} and \gls{mrf} problems, where the greedy \gls{dp} variant is competitive with all three other solvers.
+Three problem sets from the max-\gls{csp} category additionally show improved optimality gaps as well as better runtimes.
+The only set in which the greedy update performs significantly worse is the \emph{Auction} set, in which it fails to solve any problems at all.
 
 \Cref{fig:cactus-greedy} illustrates the utility of the greedy \gls{dp} update.
 While it is slower for very small problems in the \emph{Black Hole} set, it is significantly faster in solving the more difficult problems.

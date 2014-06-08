@@ -10,7 +10,7 @@ It should be noted that Toulbar2, CPLEX and MaxHS may be at a slight disadvantag
 Brief testing of the Toulbar2 solver indicated that the difference in hardware between the in-the-middle runtimes and those provided by \textcite{deGivry14} may skew the results in favour of the in-the-middle solver, with actual runtimes on the same hardware being \SIrange{0}{50}{\percent} lower for Toulbar2.
 Fortunately, this difference only makes comparisons in a small number of the sets (\emph{Pedigree}, \emph{In-Painting} and \emph{Max-Clique}) potentially invalid, since the difference in runtime between solvers is large in most cases.
 
-\begin{table}
+\begin{table}[p]
 	\centering
 	% Updated 2014-05-25
 	\caption{
@@ -89,7 +89,7 @@ The algorithm has a consistent advantage in the \emph{Segmentation} set (\cref{f
 It shows performance in the \emph{DBN} set, in which the algorithm has an advantage in total runtime across the whole set, almost entirely due to good performance on the more difficult problems.
 In fact, the runtimes are fairly evenly distributed whereas the runtimes for CPLEX and Toulbar vary significantly between the difficult and easy problems of the set.
 
-\begin{figure}[tp]
+\begin{figure}[p]
 	\begin{figcenter}
 	\subfloat[The \emph{Segmentation} set of the \gls{mrf} category.\label{fig:cactus-std:segmentation}]{\input{figs/cactus-MRF-Segmentation.tikz}}
 	\end{figcenter}
