@@ -66,7 +66,7 @@ If no sign changes occur after visiting each constraint once, the algorithm has 
 \end{algorithm}
 
 The attentive reader will note that the method described by \cref{alg:itm-lp} may produce situations in which \(\bar{c}_i = 0\) for some \(i\), terminating without an integer solution to the original problem.
-To address this issue, the algorithm is transformed from being exact to being approximative by introducing a heuristic.
+To address this issue, the algorithm is transformed from being exact to being approximate by introducing a heuristic.
 The purpose of the heuristic is to \enquote{nudge} the reduced costs and move them away from \(0\), while still distorting them as little as possible.
 This will force an integer solution through what may be interpreted as coordinate search.
 A parameter \(\kappa\) is introduced to govern the heuristic: for \(\kappa=0\) there is no approximation and for \(\kappa=1\) there is maximal approximation.
@@ -80,7 +80,7 @@ where addition is used when \(r_i - s^j_i \geq 0\) and subtraction otherwise.
 This assignment is (as implied) applied to all elements of \(s^j\).
 The (small) parameter \(\delta>0\) ensures that elements of \(\bar{c}\) are kept non-zero at all times.
 
-Note that \textcite[\pno~97]{Bastert10} provide a different but equivalent formulation of \cref{alg:itm-lp} with the approximative heuristic.
+Note that \textcite[\pno~97]{Bastert10} provide a different but equivalent formulation of \cref{alg:itm-lp} with the approximate heuristic.
 
 \subsection{Max-sum formulation}
 Working from the \gls{lp} formulation of the in-the-middle algorithm, \textcite{Wedelin08} introduce a similar algorithm for max-sum problems (which they call \emph{cost propagation}).
@@ -146,7 +146,7 @@ Some updates (in particular the fractional \acrshort{dp} update described later,
 
 Each update, as illustrated by \cref{fig:itm-update}, first \emph{moves in} the costs of the variable components into the constraint component (\cref{fig:itm-update:in}, \emph{i.e.} a temporary constraint component \(h_k(x^k) = \ccomp_k(x^k) + \sum_{\vcomp_j \in \vcomp^k} \vcomp_j(x_j)\) is constructed).
 Then, costs from the temporary constraint component \(h_k\) are moved out again (\cref{fig:itm-update:out}).
-It is mainly this last step that varies between different updates --- it is desireable to move out as much as possible (this improves the convergence rate of the algorithm), but if one moves out too much the \emph{non-conflicting} property is lost and optimality is no longer guaranteed \parencites[\pno~105]{Wedelin08}[\pno~15]{Wedelin13}.
+It is mainly this last step that varies between different updates --- it is desirable to move out as much as possible (this improves the convergence rate of the algorithm), but if one moves out too much the \emph{non-conflicting} property is lost and optimality is no longer guaranteed \parencites[\pno~105]{Wedelin08}[\pno~15]{Wedelin13}.
 
 \begin{figure}[tbp]
 	\centering
@@ -161,7 +161,7 @@ It is mainly this last step that varies between different updates --- it is desi
 
 \subsubsection{The DP constraint update}
 The first update considered is the \gls{dp} update (\cref{proc:dp-update,fig:itm-update}).
-It is a fairly unsophisticated update, which exctracts the max-marginals along each dimension of the constraint component \(\ccomp_k\) and moves this amount into the corresponding variable component \(\vcomp_i(x_i)\) (\emph{i.e.} the new variable component value becomes \(\bar{\vcomp}'_i(x_i) = \max*[x\in x^k\setminus x_i]{h(x)}\) for every variable component \(\vcomp_i\) and value \(x_i\in D_i\)).
+It is a fairly unsophisticated update, which extracts the max-marginals along each dimension of the constraint component \(\ccomp_k\) and moves this amount into the corresponding variable component \(\vcomp_i(x_i)\) (\emph{i.e.} the new variable component value becomes \(\bar{\vcomp}'_i(x_i) = \max*[x\in x^k\setminus x_i]{h(x)}\) for every variable component \(\vcomp_i\) and value \(x_i\in D_i\)).
 While this should ensure quick convergence since it in effect moves out as much as possible, the update isn't non-conflicting \parencite[\pno~105]{Wedelin08}, which means optimality cannot be guaranteed.
 
 \begin{algorithm}[tbp]
@@ -183,7 +183,7 @@ While this should ensure quick convergence since it in effect moves out as much 
 \end{algorithm}
 
 \subsubsection{The fractional DP constraint update}
-Since the regular \gls{dp} update cannot guarantee optimaly, it is interesting to see if it may be modified to provide such a guarantee.
+Since the regular \gls{dp} update cannot guarantee optimality, it is interesting to see if it may be modified to provide such a guarantee.
 \Textcite[\pno~105\psqq]{Wedelin08} provide some theory useful in the construction of non-conflicting updates, in particular a weak upper bound on the amount possible to move out.
 They also introduce the \emph{fractional} \gls{dp} update (\cref{proc:frac-dp-update}), which is very similar to the regular \gls{dp} update --- instead of moving out the max-marginals of the constraint component, a fraction \(\alpha\) of the max-marginal is moved out (\emph{i.e.} the new variable component value becomes \(\bar{\vcomp}'_i(x_i) = \alpha\max*[x\in x^k\setminus x_i]{h(x)}\)).
 
@@ -218,9 +218,9 @@ First, a modification of the \gls{lp} algorithm introduced by \textcite{Bastert1
 Then, an important addition to the algorithm designed to break ties in variables is introduced.
 
 \subsubsection{The \enquote{push} operation}
-In their paper examining the in-the-middle algorithm, \textcite{Bastert10} introduce a \enquote{push} operation intended to improve the quality of any non-optimal solutions found by the approximative algorithm \parencite[\pno~99\psq]{Bastert10}.
-The operation is aimed at improving the solution by modifying the reduced costs \(\bar{c}\) to make them \enquote{more similar} to \(c\), contending that the algorithm in fact optimizes with respect to the reduced costs (to which the approximative variant applies non-invariant changes).
-This is done by setting \(\bar{c}\leftarrow\bar{c}+\rho c\) (with \(\rho>0\)) and reducing the parameter \(\kappa\) of the approximative \gls{lp} formulation (\cref{alg:itm-lp}) by a set factor when a feasible solution is found (and \(\kappa>0\)).
+In their paper examining the in-the-middle algorithm, \textcite{Bastert10} introduce a \enquote{push} operation intended to improve the quality of any non-optimal solutions found by the approximate algorithm \parencite[\pno~99\psq]{Bastert10}.
+The operation is aimed at improving the solution by modifying the reduced costs \(\bar{c}\) to make them \enquote{more similar} to \(c\), contending that the algorithm in fact optimizes with respect to the reduced costs (to which the approximate variant applies non-invariant changes).
+This is done by setting \(\bar{c}\leftarrow\bar{c}+\rho c\) (with \(\rho>0\)) and reducing the parameter \(\kappa\) of the approximate \gls{lp} formulation (\cref{alg:itm-lp}) by a set factor when a feasible solution is found (and \(\kappa>0\)).
 Additionally, a flag is set that makes the algorithm treat all constraints as violated \parencite[\pno~100]{Bastert10}.
 
 Given the favourable results of \textcite{Bastert10}, it is interesting to benchmark the operation for the max-sum algorithm as well.
@@ -240,7 +240,7 @@ Moving through all the variable components \(\bar{\vcomp}_j\), any element whose
 		0 & \text{otherwise}
 	\end{cases}, \quad \forall x_j \in D_j,
 \end{equation*}
-where \(u \in \mathcal{U}(-\zeta,\zeta)\) is a random variable taken from a uniform distibution.
+where \(u \in \mathcal{U}(-\zeta,\zeta)\) is a random variable taken from a uniform distribution.
 If noise has been added in a previous iteration, that noise is removed from the variable component first.
 
 \subsection{Interpretation in a WCSP context}
@@ -249,10 +249,10 @@ A fairly thorough presentation of the \emph{arc consistency} notions used in thi
 
 The notion of \emph{generalized arc consistency} \parencite[\pno~7]{Cooper10} is in fact used by the algorithm, corresponding to the \emph{consistent} updates introduced by \parencite[\pno~101]{Wedelin08}.
 This type of arc consistency is normally not utilized in \gls{wcsp} theory, since it is rather weak.
-Stronger notions, such as \emph{(full) arc consistency} and \emph{existential arc consistency} \parencite{deGivry05}, are centered around providing very good bound on the problem by projecting costs away from constraints and moving them into the variable components or the nullary constraint, which then immediately provides an easily accessible lower bound on the optimal solution.
+Stronger notions, such as \emph{(full) arc consistency} and \emph{existential arc consistency} \parencite{deGivry05}, are centred around providing very good bound on the problem by projecting costs away from constraints and moving them into the variable components or the nullary constraint, which then immediately provides an easily accessible lower bound on the optimal solution.
 
 Algorithms enforcing full arc consistency are in fact very similar to the \emph{non-conflicting} updates proposed by \textcite{Wedelin08}.
-\Textcite[\pno~85\psq]{deGivry05} present an algorith enforcing this property, and the general structure of this algorithm is very similar to the DP update described above.
+\Textcite[\pno~85\psq]{deGivry05} present an algorithm enforcing this property, and the general structure of this algorithm is very similar to the DP update described above.
 First, the costs in one of the variable components are moved into the constraint component.
 Then (as in the DP update), the max-marginals are calculated and \enquote{moved out} (\emph{projected}) onto the other variable component.
 The result is one variable component with mostly zero-value costs, and one variable component with (if possible) no zero-value costs. 
@@ -263,4 +263,4 @@ Although the theory behind the in-the-middle algorithm isn't aimed at providing 
 It appears feasible to implement some of the consistency-enforcing algorithms of \textcite{deGivry05} as constraint component updates, and enforcing node consistency could be done once every few iterations independently of the updates (or in a preprocessing stage).
 This could provide lower bounds which could be employed as a secondary optimality guarantee, which could be used to measure the optimality gap in situations where potentially conflicting updates are used.
 
-It may therefore be possible or even desirable to extend notions of stronger arc consistecy to the in-the-middle algorithm.
+It may therefore be possible or even desirable to extend notions of stronger arc consistency to the in-the-middle algorithm.

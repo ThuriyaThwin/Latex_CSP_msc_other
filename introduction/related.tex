@@ -2,12 +2,12 @@
 Since the purpose of this thesis is to extend an existing algorithm and benchmark it against known solvers, it is interesting to note previous work both related to the algorithm itself (either its \gls{lp} formulation or the max-sum variant discussed in this thesis) as well as previous benchmarks and recent algorithms in the related fields.
 
 Previous work on the algorithm itself, especially the \gls{lp} variant, will be implemented and examined to determine if known modifications of the algorithm apply to the max-sum variant as well.
-Publications (primarily benchmakrs and competitions) in the \gls{csp} field will be surveyed to collect suitable problem sets and to pick appropriate solvers to benchmark the algorithm against.
+Publications (primarily benchmarks and competitions) in the \gls{csp} field will be surveyed to collect suitable problem sets and to pick appropriate solvers to benchmark the algorithm against.
 
 \subsection{The in-the-middle algorithm}
-Although the in-the-middle algorithm has mostly been discussed by its principal author \parencites{Wedelin95}{Wedelin08}{Wedelin13}{Alefragis00}, there is some litterature evaluating and improving upon the algorithm available.
+Although the in-the-middle algorithm has mostly been discussed by its principal author \parencites{Wedelin95}{Wedelin08}{Wedelin13}{Alefragis00}, there is some literature evaluating and improving upon the algorithm available.
 
-\Textcite{Bastert10} notes the practical relevance of the field of heuristics for \gls{ilp} in recent years, and evaluates the in-the-middle algorithm applied to such problems. In addition to explicitly providing the generalizations mentioned by \textcite{Wedelin95}, they also introduce a \enquote{push} operation intended to improve the quality of the approximative solutions. Finally, they also compare the algorithm with commercial software, with fairly favourable results.
+\Textcite{Bastert10} notes the practical relevance of the field of heuristics for \gls{ilp} in recent years, and evaluates the in-the-middle algorithm applied to such problems. In addition to explicitly providing the generalizations mentioned by \textcite{Wedelin95}, they also introduce a \enquote{push} operation intended to improve the quality of the approximate solutions. Finally, they also compare the algorithm with commercial software, with fairly favourable results.
 
 \Textcite{Ernst05} applied a method based on the Lagrangian relaxation used by the in-the-middle algorithm to the task allocation problem, with favourable results compared to the commercial CPLEX \gls{mip} solver.
 Similarly, \textcite{Mason01} applied a specialized variant of the in-the-middle algorithm to personnel scheduling, outperforming CPLEX on difficult commercial rostering problems.
@@ -18,5 +18,5 @@ As such, there is reason to believe that the application of linear programming a
 
 Although several specialized solvers --- \emph{e.g.} Toulbar2 \parencite{Allouche10}, WPM2 \parencite{Ansotegui13b}, MaxHS \parencite{Davies13}, Max-DPLL \parencite{Larrosa08} and several others --- have been developed for graphical models in recent years, benchmarks still indicate that there are areas of graphical model optimization in which \gls{lp} solvers perform better, and areas where no existing solvers excel.
 
-\Textcites{Allouche14b}{deGivry14} evaluate several exact optimizers to graphical model optimization problems, and the results indicate that there may be several problem domains (most notably \acrshort{mrf}, \acrshort{wpms} and Max-\acrshort{csp}) which could benefit from fast, approximative solvers.
+\Textcites{Allouche14b}{deGivry14} evaluate several exact optimizers to graphical model optimization problems, and the results indicate that there may be several problem domains (most notably \acrshort{mrf}, \acrshort{wpms} and Max-\acrshort{csp}) which could benefit from fast, approximate solvers.
 Additionally, several large problem sets from each domains are included in the benchmark, and these problem sets have also been made available online by the authors\footnote{\url{http://genoweb.toulouse.inra.fr/~degivry/evalgm} \parencite[\pno~7]{Allouche14b}.}.

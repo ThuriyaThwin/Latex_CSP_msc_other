@@ -17,7 +17,7 @@ Fortunately, this difference only makes comparisons in a small number of the set
 		Optimality gap and runtime.
 		For each problem instance used in the benchmark, the in-the-middle solver runtime is compared the other solvers included in the benchmark, and the objective value is compared to the best known optimum from \textcite{deGivry14}.
 		Problem sets marked with \textdagger{} include unsolved problems (no feasible solution found by the in-the-middle solver), and n/a values indicate that none of the problems in the set were solved.
-		Runtimes based on less than \SI{70}{\percent} of the problems are faded, while the best runtime of those remaining is emphasised.
+		Runtimes based on less than \SI{70}{\percent} of the problems are faded, while the best runtime of those remaining is emphasized.
 	}
 	\label{tab:comparative-results}
 	\begin{figcenter}
@@ -80,7 +80,7 @@ Max-\acrshort{csp}	&	BlackHole	&	\emph{37/37}	&	9.009009e-01	&	\emshape 58.8900	
 \end{table}
 
 The algorithm shows promise especially in the Max-\gls{csp} and \gls{mrf} categories, where overall solution quality is good and the algorithm had the best performance for several sets.
-Compared to both Toulbar2 and CPLEX, the in-the-middle algorithm appears to be a useful complement providing (good) approximative solutions to problems the other solvers have great difficulty in solving.
+Compared to both Toulbar2 and CPLEX, the in-the-middle algorithm appears to be a useful complement providing (good) approximate solutions to problems the other solvers have great difficulty in solving.
 Results from the \gls{cp} category are also promising, but these problem sets are small and not all \gls{cp} problems have max-sum formulations.
 
 \Cref{fig:cactus-std} shows accumulated runtimes for two of the sets in which the algorithm performed well.
@@ -102,4 +102,4 @@ In fact, the runtimes are fairly evenly distributed whereas the runtimes for CPL
 \end{figure}
 
 The largest problem solved optimally by the in-the-middle algorithm was an instance of in the \emph{In-Painting} set with search space \(d^n = 4^{\num{14400}}\).
-The smallest unsolved instances are in the \emph{Auction} set, with seach spaces \(d^n \approx 2^{80}\).
+The smallest unsolved instances are in the \emph{Auction} set, with search spaces \(d^n \approx 2^{80}\).

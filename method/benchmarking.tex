@@ -32,7 +32,7 @@ All of these problems are directly representable as \glspl{wcsp}, and hence as m
 
 Several sets from the benchmark performed by \textcite{deGivry14} have been omitted from this benchmark.
 This is because the in-the-middle algorithm wasn't able to solve any instances in the set (due to time or memory constraints), making them uninteresting in the sense that the algorithm isn't a feasible alternative for those problems. 
-The omitted problem sets are mostly from the \gls{cp} and \gls{wpms} categories (where only two resp. one problem(s) were kept), but the \emph{Chinese Characters}, \emph{Color Segmentation}, \emph{Matching Stereo} and \emph{Photo Montage} sets from \gls{cvpr} are also omitted from the benchmark.
+The omitted problem sets are mostly from the \gls{cp} and \gls{wpms} categories (where only two resp. one problem(s) were kept), but the \emph{Chinese Characters}, \emph{Colour Segmentation}, \emph{Matching Stereo} and \emph{Photo Montage} sets from \gls{cvpr} are also omitted from the benchmark.
 % [review] - references in this part clutter the bibliography, is two bibliographies, local footnote references or no references viable alternatives?
 
 \subsubsection{Constraint Function Network (CFN)}
@@ -100,7 +100,7 @@ Note that \gls{cp} problems are not generally representable as \glspl{wcsp}, whi
 	
 	\item[Parity Learning]
 		The parity learning set contains instances of an optimization variant of the \gls{mdp} problem \parencite{Crawford94}.
-		A set of input/output samples of a Boolean function is given, where the function outputs the parity of an unkown subset of the input variables.
+		A set of input/output samples of a Boolean function is given, where the function outputs the parity of an unknown subset of the input variables.
 		A stated number of the input/output samples are incorrect with respect to the given function, and the goal of the parity learning problem is to find a subset of the input variables that minimizes the number of errors.
 
 		In terms of problem size, instances of this set are fairly small. The number of variables is below \num{760}, and the number of constraints at most \num{1440}. The variable domain sizes are below \num{20}.
@@ -120,15 +120,15 @@ The problems are mostly academic and random, with a relatively small number of v
 
 \begin{description}
 	\item[Black Hole]
-		\enquote{Black Hole} is a solitaire card game in which card from 17 piles are moved to a center pile according to certain rules.
+		\enquote{Black Hole} is a solitaire card game in which card from 17 piles are moved to a centre pile according to certain rules.
 		The instances in this set correspond to a simplification of this solitaire game, and were used in the 2005 \gls{csp} Solver Competition.
 		\Textcite{Gent07} provide a theoretical background to the \gls{csp} formulation of this problem.
-	\item[Coloring]
-		In the well-known graph coloring (decision) problem, the objective is to decide whether a given graph is \(k\)-colorable, \emph{i.e.} whether each edge can be assigned one of \(k\) distinct colors such that no adjacent (connected) nodes have the same color.
+	\item[Colouring]
+		In the well-known graph collaring (decision) problem, the objective is to decide whether a given graph is \(k\)-colourable, \emph{i.e.} whether each edge can be assigned one of \(k\) distinct colours such that no adjacent (connected) nodes have the same colour.
 		As such, the instances are crafted academic problems.
 		The instances in this set originate from the \gls{dimacs}, and have been previously studied by \textcite{Benhamou07}.
 	\item[Composed]
-		These are random instances composed of an unconstrained \gls{csp} core combined using binary constraints with auxillary fragments.
+		These are random instances composed of an unconstrained \gls{csp} core combined using binary constraints with auxiliary fragments.
 		Such problems have been previously used by \textcite{Lecoutre04,Jussien00}.
 	\item[EHI]
 		The EHI problem instances are random 3-\gls{sat} (\gls{sat} problems where every clause consists of exactly three literals) problems converted into \gls{csp} instances with binary constraints, then further restated as max-\gls{csp} problems. They have previously been considered by \textcite{Lecoutre04}.
@@ -157,7 +157,7 @@ Notably, the \emph{Segmentation} set contains both binary and 21-ary formulation
 
 \subsubsection{Weighted Partial Max-SAT (WPMS)}
 From the field of \gls{wpms}, only one problem set was kept.
-Problems in this fiels contain a very large number of (binary, for obvious reasons) variables and cost functions with very large arity --- in fact, this is the only field in which cost function arity exceeds \num{5} (most other sets have cost functions of two variables only).
+Problems in this field contain a very large number of (binary, for obvious reasons) variables and cost functions with very large arity --- in fact, this is the only field in which cost function arity exceeds \num{5} (most other sets have cost functions of two variables only).
 The only kept problem set, \emph{Max-Clique}, has a cost function arity of \num{2}.
 Discarded sets were omitted due to memory concerns, likely caused by inefficient representation of the cost functions.
 The instances were used in the 8th \Gls{maxsat} Evaluation\footnote{\url{http://maxsat.ia.udl.cat/13/benchmarks/}}.
@@ -183,7 +183,7 @@ This section will briefly describe their original field of application, give bri
 
 \subsubsection{Toulbar2}
 The Toulbar2 solver is an exact anytime solver for \glspl{wcsp} based on a depth-first branch-and-bound algorithm \parencite{Allouche10}.
-In addition to using a strong arc consistency property\footnote{Existential directed arc consistency, as presented by \textcite{deGivry05}.}, the solver uses a sizable bag of tricks including variable elimination, dead-end elimination \parencite{deGivry13} and pairwise decomposition \parencite{Favier11}.
+In addition to using a strong arc consistency property\footnote{Existential directed arc consistency, as presented by \textcite{deGivry05}.}, the solver uses a sizeable bag of tricks including variable elimination, dead-end elimination \parencite{deGivry13} and pairwise decomposition \parencite{Favier11}.
 
 The Toulbar2 solver is by far the most advanced solver in the \gls{wcsp} field, with significant amounts of theory behind it especially with respect to strong arc consistency properties (the one implicitly employed by the in-the-middle algorithm, generalized arc consistency, is quite weak in comparison).
 It is therefore an interesting benchmark \enquote{opponent}, and matching it in a benchmark (especially the \gls{mrf}, \gls{cfn} and max-\gls{csp} categories) could indicate potential for the in-the-middle algorithm in those categories.

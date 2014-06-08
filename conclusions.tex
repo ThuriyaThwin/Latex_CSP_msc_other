@@ -7,7 +7,7 @@ However, the good overall performance and low optimality gap of the algorithm --
 
 The same properties, especially the good optimality gap, suggest that the algorithm may be useful in applications where good upper bounds on the solution are required.
 Since the greedy \gls{dp} variant of the algorithm provides such upper bounds quickly, that variant of the algorithm may have applications in branch-and-bound applications.
-In combination with an exact solver, the in-the-middle algorithm may serve as an approximative anytime solver providing good approximative solutions while waiting for the exact solver to supply truly optimal solutions.
+In combination with an exact solver, the in-the-middle algorithm may serve as an approximate anytime solver providing good approximate solutions while waiting for the exact solver to supply truly optimal solutions.
 
 \section{Further research}
 The algorithm shows promise in several categories of those included in the benchmark.
@@ -24,7 +24,7 @@ Additionally, common constraint types such as the \emph{all-different} constrain
 
 There are also many tricks, some of them used in \gls{lp} implementations of the in-the-middle heuristic, that may be applied to the algorithm.
 In this benchmark, only tie-breaking using noise was introduced.
-Futher modifications that would require further research include not updating constraint components for which the associated variable components are unchanged and using the existing \gls{lp} or set-partitioning constraint update \parencite[\pno~102]{Wedelin08} for constraints of that type.
+Further modifications that would require further research include not updating constraint components for which the associated variable components are unchanged and using the existing \gls{lp} or set-partitioning constraint update \parencite[\pno~102]{Wedelin08} for constraints of that type.
 Both these modifications may improve runtime for some problems.
 
 Finally, specializations of the implementation may prove interesting in some areas.

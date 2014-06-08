@@ -34,16 +34,16 @@ There are several algorithms available for solving max-sum problems, with \textc
 In addition to those direct methods, the relation to \gls{csp} provides many more (which will be mentioned later), and algorithms such as \emph{belief propagation} and \emph{message passing} are also applicable to some max-sum problems (in particular, max-sum problems without loops).
 
 \subsubsection{Markov Random Fields}
-A restricted variant of the max-sum problem called the \emph{binary max-sum labeling problem} has direct applications to artificial intelligence and pattern recognition, where the problem is known as computing the \gls{map} configuration of \acrlongpl{mrf} \parencite[\pno~1165]{Werner07}.
+A restricted variant of the max-sum problem called the \emph{binary max-sum labelling problem} has direct applications to artificial intelligence and pattern recognition, where the problem is known as computing the \gls{map} configuration of \acrlongpl{mrf} \parencite[\pno~1165]{Werner07}.
 
 % [todo] - mention previous algorithms from the AI field?
 
 \subsection{Weighted constraint satisfaction problems}
 \Glspl{csp} are very general decision problems, defined through a set of objects which must satisfy a set of constraints.
-Many problems in artificial intelligence and operations research (including planning and resource allocation) may be stated as \glspl{csp}, as well as several academic problems such as \gls{sat}, queens puzzles and map coloring.
-One of the corresponding combinatorial optimization problems\footnote{Both the \gls{vcsp} and \gls{scsp} frameworks may be seen as the corresponding optmization problems \parencites{Meseguer06}{Bistarelli99}, but \glspl{wcsp} may be described using either.}, the \gls{wcsp}\footnote{In some litterature these problems are called \glspl{cfn}, but the definitions are in essence equivalent.}, additionally introduces \emph{weights} on the constraints, and classify these as \emph{hard} (must be satisfied) or \emph{soft}.
+Many problems in artificial intelligence and operations research (including planning and resource allocation) may be stated as \glspl{csp}, as well as several academic problems such as \gls{sat}, queens puzzles and map colouring.
+One of the corresponding combinatorial optimization problems\footnote{Both the \gls{vcsp} and \gls{scsp} frameworks may be seen as the corresponding optimization problems \parencites{Meseguer06}{Bistarelli99}, but \glspl{wcsp} may be described using either.}, the \gls{wcsp}\footnote{In some literature these problems are called \glspl{cfn}, but the definitions are in essence equivalent.}, additionally introduces \emph{weights} on the constraints, and classify these as \emph{hard} (must be satisfied) or \emph{soft}.
 All \glspl{csp} may of course be restated as \glspl{wcsp} with only hard constraints, while the relaxed objective of the combinatorial optimization approach allows even over-constrained \glspl{csp} to be \enquote{solved}.
-Additionally, many problems in complexity theory such as \gls{maxsat}, max-clique, max-cut and minimal vertex cover may be modeled using \glspl{wcsp} \parencite[\pno~315]{Meseguer06}.
+Additionally, many problems in complexity theory such as \gls{maxsat}, max-clique, max-cut and minimal vertex cover may be modelled using \glspl{wcsp} \parencite[\pno~315]{Meseguer06}.
 Due to these facts, \glspl{wcsp} may be regarded as more interesting than \glspl{csp}, especially in an optimization context.
 
 There are several ways to formally define a \gls{wcsp}, but the one used here closely matches the definition of a max-sum problem, which simplifies the formal translation between the two. The definition is based on that presented by \textcite{Meseguer06}, which defines \gls{wcsp} \parencite[\pno~284]{Meseguer06} in terms of a regular \gls{csp} \parencite[\pno~281]{Meseguer06}:
@@ -52,7 +52,7 @@ There are several ways to formally define a \gls{wcsp}, but the one used here cl
 	\begin{itemize}
 		\item A finite set of \emph{variables} \(X = \{x_1, \dotsc, x_n\}\). Let \(V \subseteq X\) denote a specific subset of \(X\).
 		\item \emph{Domains} of the variables, \(D = \{D_1, \dotsc, D_n\}\), such that \(x_i \in D_i, \forall i\). Subsets \(D^V \subseteq D\) may be defined analogously to the variable subsets.
-		\item A finite set \(C\) of \emph{constraints} \(R_V\in C\) defined by a \emph{relation} \(R\) defined on a subset of variables \(V\subseteq X\), which specify the allowes assignments of \(V\) allowed by the constraint.
+		\item A finite set \(C\) of \emph{constraints} \(R_V\in C\) defined by a \emph{relation} \(R\) defined on a subset of variables \(V\subseteq X\), which specify the assignments of \(V\) allowed by the constraint.
 	\end{itemize}
 	The problem is to find an \emph{assignment} \(t\) which is allowed by all constraints \(R_V\in C\).
 \end{definition}
@@ -61,7 +61,7 @@ The reformulation as an optimization problem mainly concerns the introduction of
 \begin{definition}[\Acrlong{wcsp}] \label{def:wcsp}
 	A \gls{wcsp} (denoted by \textcite[\pno~284]{Meseguer06} as a \emph{k-weighted constraint network}) is a 4-tuple \(\langle X, D, C, k\rangle\), where \(X\) and \(D\) are variables and domains as in \cref{def:csp}, \(C\) is a set of \emph{weighted} constraints and \(k\) is an upper bound.
 	A weighted constraint \(f_V\in C\) maps a subset \(V\) of variables to the set \([0,k]\), \emph{i.e.} \(f_V : D^V \mapsto [0,k]\).
-	The \emph{cost} of an assignment \(t\) is defined as the (bounded) sum of all \(f_V\), and the optmization problem amounts to
+	The \emph{cost} of an assignment \(t\) is defined as the (bounded) sum of all \(f_V\), and the optimization problem amounts to
 	\begin{equation*}
 		\min*[t] \cost{t} = \sum_{f_V\in C} f_V(t^V).
 	\end{equation*}
@@ -82,7 +82,7 @@ The special case where all constraints are clauses of a Boolean formula (and wei
 % [fix] - page number above will have to change
 If the weights are restricted to unit or zero costs as above, the problem becomes the well-known \gls{maxsat} problem \parencite[\pno~284]{Meseguer06}.
 
-This makes explicit the fact that many real-world and academic problems in satisfiability and operations reserach may be restated as \gls{wcsp} (and therefore max-sum) problems, and consequently that the in-the-middle algorithm may present a viable alternative to solving these problems using \gls{lp} formulations \parencites{Ansotegui13a}{Davies13} or special algorithms \parencites{Ansotegui13b}{Larrosa08}.
+This makes explicit the fact that many real-world and academic problems in satisfiability and operations research may be restated as \gls{wcsp} (and therefore max-sum) problems, and consequently that the in-the-middle algorithm may present a viable alternative to solving these problems using \gls{lp} formulations \parencites{Ansotegui13a}{Davies13} or special algorithms \parencites{Ansotegui13b}{Larrosa08}.
 
 % [review] - mention previous algorithms?
 
@@ -91,7 +91,7 @@ The translation from \gls{wcsp} to max-sum, when using the definitions given abo
 In addition to the superficial similarity between \cref{def:wcsp,def:max-sum}, the two problems have deep connections and are in a sense equivalent.
 When regarding the \gls{wcsp} formulation as an instance of \gls{scsp} \parencite[\pno~285\psq]{Meseguer06}, the \gls{wcsp} has an associated ordered semiring \(\langle [0,k],+^k,\min*,\leq\rangle\) \parencite[\pno~290]{Meseguer06}.
 \Textcite[\pno~1167]{Werner07} noted that the max-sum problem is also associated with a similar ordered semiring structure \(\langle (-\infty,\infty),+,\max*,\geq\rangle\) (although in our case the set is \(\Rminus \cup \{-\infty\}\)).
-\Citeauthor{Werner07} additionally provides a connection between max-sum and the regular \gls{csp} through a labeling problem, of which they are both special cases.
+\Citeauthor{Werner07} additionally provides a connection between max-sum and the regular \gls{csp} through a labelling problem, of which they are both special cases.
 
 In fact, it seems that the only differences between the two problems as stated is the definition of the set included in the semiring --- while the \gls{wcsp} from \cref{def:wcsp} considers a domain \(\{0,\dotsc,k\}\), the max-sum problem according to \cref{def:max-sum} has domain \(\Rminus \cup \{-\infty\}\) --- and the fact that one is a minimization problem while the other is a maximization problem.
 However, by transforming the weighted constraints of the \gls{wcsp} problem in such a way that the ordering is preserved but reversed (\emph{i.e.} by negating all costs), and additionally setting \(k=-\infty\) (and changing the costs of all hard constraints accordingly), a formulation which has a semiring \(\langle\Rminus \cup \{-\infty\},+,\max*,\geq\rangle\) is obtained, which is exactly what the max-sum problem has.

@@ -1,10 +1,10 @@
 \section{Discussion}
-Analyzing the shortcomings of the algorithm it is clear from \cref{tab:comparative-results} that it had significant difficulties in solving the problems from some categories, while it was very successful in others.
+Analysing the shortcomings of the algorithm it is clear from \cref{tab:comparative-results} that it had significant difficulties in solving the problems from some categories, while it was very successful in others.
 
 The algorithm shows some promise in the \gls{wpms} category.
 While most problem sets in this category were omitted due to memory concerns, the algorithm has good runtime performance in the remaining set.
 The current implementation represents binary variables of the problem using two distinct variables internally, which could be improved by representing binary variables using only one variable.
-This could improve both memory use and runtime, making the algorithm more interesting for approximative applications in the \gls{wpms} field.
+This could improve both memory use and runtime, making the algorithm more interesting for approximate applications in the \gls{wpms} field.
 The same variable representation issue applies to problems in the \emph{Auction} and \emph{DBN} sets.
 
 One would expect the algorithm to perform well on problems with many hard clauses (due to the sparse representation of constraint components including these implicitly, resulting in fewer clauses to operate on in the constraint update), and this is the case for those sets included in the benchmark.
@@ -36,7 +36,7 @@ Due to the results presented above, the \enquote{push} operation is not as inter
 
 The result of the greedy \gls{dp} update was more in line with expectations.
 Solution quality was in fact largely maintained while improving runtimes significantly.
-The maintained solution quality may be due to the problem instances having very large ranges between trivial upper an lower bounds, with many solutions of similar cost --- this would result in very small changes in the optimalty gap, which may not show in the data.
+The maintained solution quality may be due to the problem instances having very large ranges between trivial upper an lower bounds, with many solutions of similar cost --- this would result in very small changes in the optimality gap, which may not show in the data.
 However, the optimality gap is still small in all problem sets, which may be an acceptable compromise given the very low runtimes.
 
 For one problem set (\emph{Auction}) the greedy \gls{dp} update showed abysmal performance, failing to solve any instances.
@@ -45,14 +45,14 @@ This could potentially be resolved by increasing the threshold \(\epsilon\) and 
 
 With these results in mind, the greedy algorithm may be very useful when exact solutions aren't required.
 The greedy update variant may also be useful as part of a broader strategy, by for instance providing fast and good upper bounds or by providing fast unproven solutions while waiting for exact solvers.
-Another interesting direction for the greedy \gls{dp} update could be to run it in parallel with the standard algorithm (sharing the immutable constraint components in memory), again providing quick approximative solutions as well as good solutions.
+Another interesting direction for the greedy \gls{dp} update could be to run it in parallel with the standard algorithm (sharing the immutable constraint components in memory), again providing quick approximate solutions as well as good solutions.
 This would also be useful in \emph{e.g.} the \emph{Black Hole} set, where the standard algorithm performed better on easy instances and the greedy \gls{dp} update was better on difficult ones.
 
 \subsection{Limitations}
 The benchmark has a few limitations which should be mentioned.
 For instance, the implementation as it stands has the capability to combine regular \gls{wcsp} constraints with linear (set-partitioning) constraints \parencite[\pno~102]{Wedelin08}, for which more efficient constraint updates may be constructed.
 For some problem sets, this could result in runtime improvements.
-However, identifying such constraints in a pre-processing stage increases the complexity of the implementation.
+However, identifying such constraints in a preprocessing stage increases the complexity of the implementation.
 
 Another limitation of the benchmark is the omission of most \gls{wpms} instances.
 This is a category where conventional \gls{wcsp} solvers have difficulties due to the large cost function arities, which causes issues with local consistency enforcing.

@@ -4,7 +4,7 @@ Benchmark data was produced for these variants as well, but on a limited subset 
 Results for both variants will be reviewed in in order to determine if they have the desired effect, and if their function is satisfactory with respect to the drawbacks they introduce.
 
 \subsection{The \enquote{push} operation}
-The purpose of the \enquote{push} operation is to decrease the optimality gap of the approximative algorithm once a feasible solution has been found.
+The purpose of the \enquote{push} operation is to decrease the optimality gap of the approximate algorithm once a feasible solution has been found.
 Six problem sets from \cref{tab:comparative-results} were therefore chosen for this benchmark, all with comparatively bad solutions (optimality gaps close to or above \SI{1}{\percent}) but competitive runtimes.
 The expectation was to obtain better solutions while maintaining good runtimes.
 
@@ -41,11 +41,11 @@ Max-\acrshort{csp}	&	BlackHole	&	37	&	37	&	9.009009e-01	&	1.08108100	&	58.8900	&
 \Cref{tab:push-results} shows the results of benchmarking the \enquote{push} operation on the selected problems.
 Surprisingly, the optimality gap did not improve for a majority of the problems.
 In fact, for some sets the optimality gap was increased, and the runtime of the algorithm improved instead (which given the already competitive runtime of the standard algorithm is an unwanted result).
-In fact, the only problem set for which the excpected result was obained is the \gls{cfn} \emph{Pedigree} set.
+In fact, the only problem set for which the expected result was obtained is the \gls{cfn} \emph{Pedigree} set.
 
 \subsection{The greedy DP update}
 The greedy \gls{dp} update, obtained by fixing \(\alpha=1\) of the fractional \gls{dp} update, should theoretically improve convergence at the expense of solution quality.
-To test this a large number of problems from \cref{tab:comparative-results} were selected, all exhibiting low optimality gaps and a reasonable but uncompetitive runtime.
+To test this a large number of problems from \cref{tab:comparative-results} were selected, all exhibiting low optimality gaps and a reasonable but noncompetitive runtime.
 The expectation was to decrease runtime at the expense of solution quality.
 Additionally, some sets with zero optimality gap and competitive runtime were included to observe the effects of this variant on already well-performing problem sets.
 
