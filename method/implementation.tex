@@ -69,7 +69,7 @@ In the actual implementation, \(x^k_i\) are represented as pointers to the value
 \subsection{Parameter sweep strategy}
 As explained earlier, the fractional \gls{dp} update of constraint components depends on a parameter \(\alpha\), which dictates the amount \enquote{moved out} of the constraint component.
 Choosing this parameter is difficult, but some of the results discussed earlier may be used to create a strategy for a parameter sweep.
-Knowing that values \(\alpha\leq n^{-1}\) (where \(n\) is the arity of a constraint) guarantee that any solution found is optimal, we may take \(n^{-1}\) as a lower limit for the parameter.
+Knowing that values \(\alpha\leq n^{-1}\) (where \(n\) is the arity of a constraint) guarantee that any solution found is optimal, \(n^{-1}\) may be chosen as a lower limit for the parameter.
 A reasonable upper limit fo the parameter is \(\alpha=1\), which in essence corresponds to the regular, non-fractional \gls{dp} update.
 
 To vary the parameter between these two values, a sweep strategy is employed.

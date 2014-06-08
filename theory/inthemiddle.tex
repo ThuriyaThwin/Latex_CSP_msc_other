@@ -5,7 +5,7 @@ Previous improvements to the \gls{lp} formulation will also be applied to the ma
 First, however, the original \gls{lp} algorithm will be reviewed.
 
 \subsection{Original LP formulation}
-To provide context for the max-sum formulation of the in-the-middle algorithm and heuristic, we will briefly describe the original algorithm as applied to \gls{lp} problems, as well as providing an explicit pseudo-code for the algorithm.
+To provide context for the max-sum formulation of the in-the-middle algorithm and heuristic, the original algorithm as applied to \gls{lp} problems will be briefly described, and explicit pseudo-code for the algorithm will be presented.
 Full descriptions of the \gls{lp} variant of the in-the-middle algorithm are available from \textcites{Wedelin95}{Bastert10}.
 
 The algorithm solves an \gls{ilp} problem
@@ -98,8 +98,8 @@ Recalling the \emph{component model} (\cpageref{pg:component-model}), the functi
 \end{equation*}
 has variable components \(g_1, g_2, g_3\) and constraint components \(g_4, g_5\).
 While it is possible to implement the algorithm so that all functions \(g_k\) are translated into constraint components, this division has computational advantages in that the variable components may be represented implicitly in a cost variable.
-Therefore, to keep the variable and constraint components apart, we will denote the former by \(\vcomp_1,\dotsc,\vcomp_n\) and the latter by \(\ccomp_1,\dotsc,\ccomp_m\).
-We then have \(\vcomp_i : D_i \mapsto \Rminus \cup \{-\infty\}\) and \(\ccomp_k : D^k \mapsto \Rminus \cup \{-\infty\}\), where each \(\ccomp_k\) is associated with a subset of all variable components as well, as shown by \cref{fig:maxsum-components} (we call this subset \(\vcomp^j\)).
+Therefore, to keep the variable and constraint components apart, the former will be denoted by \(\vcomp_1,\dotsc,\vcomp_n\) and the latter by \(\ccomp_1,\dotsc,\ccomp_m\).
+The components are then \(\vcomp_i : D_i \mapsto \Rminus \cup \{-\infty\}\) and \(\ccomp_k : D^k \mapsto \Rminus \cup \{-\infty\}\), where each \(\ccomp_k\) is associated with a subset of all variable components as well, as shown by \cref{fig:maxsum-components} (this subset will be called \(\vcomp^j\)).
 
 \begin{figure}[tp]
 	\centering
@@ -108,11 +108,11 @@ We then have \(\vcomp_i : D_i \mapsto \Rminus \cup \{-\infty\}\) and \(\ccomp_k 
 	\label{fig:maxsum-components}
 \end{figure}
 
-With this in mind, we can layout the basic framework of the algorithm (\cref{alg:itm-maxsum}), which intentionally is very similar to that of the \gls{lp} formulation.
+With this in mind, the basic framework of the algorithm may be introduced (\cref{alg:itm-maxsum}), which intentionally is very similar to that of the \gls{lp} formulation.
 Note especially the \emph{modified} variable components \(\hat{\vcomp}_i\), which roughly correspond to the reduced costs \(\bar{c}\) of the \gls{lp} formulation (in the same way that the actual variable components \(\vcomp_i\) roughly correspond to the actual cost vector \(c\)).
 
-We will now describe the constraint updates used in the algorithm, connect them theoretically to the updates used in the \gls{lp} formulation and point out some important theoretical results.
-Then, two specific updates will be described.
+The constraint updates used in the algorithm will now be described and theoretically related to the updates used in the \gls{lp} formulation. In addition to this, some important theoretical results will be mentioned.
+Finally, two specific updates will be described.
 
 \begin{algorithm}[tbp]
 	\SetKwFunction{UpdateConstraint}{UpdateConstraint}
@@ -140,7 +140,8 @@ Then, two specific updates will be described.
 
 The basic idea of the constraint update, as with the \gls{lp} formulation, is to modify the variable components in an invariant manner to uniquely identify the (optimal) solution given the constraint component.
 This is done by considering only the subproblem consisting of the constraint component \(\ccomp_j\) along with its associated variable components \(\vcomp^j\) and performing a local optimization.
-While \textcite[\pno~100\psq]{Wedelin08} present a framework for updates defining a few sought-after properties, we will only consider what they call \emph{consistent} and \emph{locally optimal} updates which guarantee that any solution found by \cref{alg:itm-maxsum} will be feasible.
+While \textcite[\pno~100\psq]{Wedelin08} present a framework for updates defining a few sought-after properties, only what they call \emph{consistent} and \emph{locally optimal} updates are considered here.
+These guarantee that any solution found by \cref{alg:itm-maxsum} will be feasible.
 Some updates (in particular the fractional \acrshort{dp} update described later, for some parameter values) are additionally \emph{non-conflicting}, which guarantees that any feasible solution found is also optimal.
 
 Each update, as illustrated by \cref{fig:itm-update}, first \emph{moves in} the costs of the variable components into the constraint component (\cref{fig:itm-update:in}, \emph{i.e.} a temporary constraint component \(h_k(x^k) = \ccomp_k(x^k) + \sum_{\vcomp_j \in \vcomp^k} \vcomp_j(x_j)\) is constructed).
@@ -159,9 +160,9 @@ It is mainly this last step that varies between different updates --- it is desi
 \end{figure}
 
 \subsubsection{The DP constraint update}
-The first update we will consider is the \gls{dp} update (\cref{proc:dp-update,fig:itm-update}).
+The first update considered is the \gls{dp} update (\cref{proc:dp-update,fig:itm-update}).
 It is a fairly unsophisticated update, which exctracts the max-marginals along each dimension of the constraint component \(\ccomp_k\) and moves this amount into the corresponding variable component \(\vcomp_i(x_i)\) (\emph{i.e.} the new variable component value becomes \(\bar{\vcomp}'_i(x_i) = \max*[x\in x^k\setminus x_i]{h(x)}\) for every variable component \(\vcomp_i\) and value \(x_i\in D_i\)).
-While this should ensure quick convergence since it in effect moves out as much as possible, the update isn't non-conflicting \parencite[\pno~105]{Wedelin08}, which means we cannot guarantee optimality.
+While this should ensure quick convergence since it in effect moves out as much as possible, the update isn't non-conflicting \parencite[\pno~105]{Wedelin08}, which means optimality cannot be guaranteed.
 
 \begin{algorithm}[tbp]
 	\SetKwFunction{UpdateConstraint}{UpdateConstraint}
@@ -211,7 +212,7 @@ Interesting values of \(\alpha\) for parameter sweep schemes are thus \(\alpha\i
 
 \subsection{Extensions and improvements}
 Previous work on the \gls{lp} formulation of the in-the-middle algorithm has yielded useful improvements in performance, and it is therefore interesting to apply these variants to the max-sum variant as well.
-We present two such improvements.
+Two such improvements are presented.
 
 First, a modification of the \gls{lp} algorithm introduced by \textcite{Bastert10} is considered.
 Then, an important addition to the algorithm designed to break ties in variables is introduced.
