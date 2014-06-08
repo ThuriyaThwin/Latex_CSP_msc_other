@@ -1,10 +1,7 @@
 \section{Extensions and improvements}
 Two variants of the algorithm have been discussed earlier in the thesis, with different purpose and functionality.
-Benchmark data was produced for these variants as well, but on a limited subset of the problems, chosen specifically to test the variants and their intended purpose.
+Benchmark data was produced for these variants as well, but on a limited subset of the problems chosen specifically to test the variants and their intended purpose.
 Results for both variants will be reviewed in in order to determine if they have the desired effect, and if their function is satisfactory with respect to the drawbacks they introduce.
-Results will be presented by comparison with the original benchmark only, without the solvers benchmarked by \textcite{deGivry14}.
-
-% [review] - rest of this file may be osammanhängande
 
 \subsection{The \enquote{push} operation}
 The purpose of the \enquote{push} operation is to decrease the optimality gap of the approximative algorithm once a feasible solution has been found.
@@ -46,11 +43,9 @@ Surprisingly, the optimality gap did not improve for a majority of the problems.
 In fact, for some sets the optimality gap was increased, and the runtime of the algorithm improved instead (which given the already competitive runtime of the standard algorithm is an unwanted result).
 In fact, the only problem set for which the excpected result was obained is the \gls{cfn} \emph{Pedigree} set.
 
-% [todo] - more observations?
-
 \subsection{The greedy DP update}
-The greedy \gls{dp} update, obtained by fixing \(\alpha=1\) of the fractional \gls{dp} update, should theoretically improve convergence at the expense of the optimality guarantee.
-Here, a large number of problems from \cref{tab:comparative-results} were selected, all exhibiting low optimality gaps and a reasonable but uncompetitive runtime.
+The greedy \gls{dp} update, obtained by fixing \(\alpha=1\) of the fractional \gls{dp} update, should theoretically improve convergence at the expense of solution quality.
+To test this a large number of problems from \cref{tab:comparative-results} were selected, all exhibiting low optimality gaps and a reasonable but uncompetitive runtime.
 The expectation was to decrease runtime at the expense of solution quality.
 Additionally, some sets with zero optimality gap and competitive runtime were included to observe the effects of this variant on already well-performing problem sets.
 
@@ -96,9 +91,10 @@ Max-\acrshort{csp}	&	BlackHole\textdagger	&	37	&	36	&	9.009009e-01	&	1.081081	&	
 \end{table}
 
 \Cref{tab:greedy-dp-results} shows the results of benchmarking the greedy \gls{dp} algorithm against the selected problems.
-As expected, the runtime of all sets (except the \emph{Auction} set) was improved significantly --- between \num{4} and \num{350} times --- with little or no increase in optimality gap.
+As expected, the runtime of all sets (except the \emph{Auction} set) was improved significantly --- between \num{4} and \num{350} times --- but with little or no increase in optimality gap.
 The runtime improvements are most significant for the \gls{cfn} and \gls{mrf} problems, where the greedy \gls{dp} variant is competitive with all three other solvers.
 Three problem sets from the max-\gls{csp} category additionally show improved optimality gaps as well as better runtimes.
+The only set in which the greedy update performs significantly worse is the \emph{Auction} set, in which it fails to solve any problems at all.
 
 \begin{figure}[tbp]
 	\begin{figcenter}
@@ -110,9 +106,3 @@ Three problem sets from the max-\gls{csp} category additionally show improved op
 
 \Cref{fig:cactus-greedy} illustrates the utility of the greedy \gls{dp} update.
 While it is slower for very small problems in the \emph{Black Hole} set, it is significantly faster in solving the more difficult problems.
-
-The only set in which the greedy update performs significantly worse is the \emph{Auction} set, in which it fails to solve any problems at all.
-
-% Note: for some problems, including CFN/ProteinDesign, no loss in accuracy but great decrease in time - discuss this!
-
-% [todo] - more observations?

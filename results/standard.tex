@@ -4,7 +4,7 @@ The number of problems (out of the total number available from each set) that we
 This implies that the algorithm may be useful in most of the fields from which problems were drawn, but does not indicate whether it is useful in its current state, performance-wise.
 
 However, as \cref{tab:comparative-results} shows, the algorithm performed very well when comparing runtime to other solvers and in fact it was the fastest for almost half of the sets after removing incomplete data (runtimes based on data where less than \SI{70}{\percent} of the problems were solved).
-In most problem sets, the optimality gap was small as well --- for several sets optimal solutions were found --- with the notable exception of the \emph{Scene Decomposition} set\footnote{Note however that the Toulbar2 solver finds the same non-optimal solutions in this problem set.}.
+In most problem sets the optimality gap was small as well (for several sets optimal solutions were found) with the notable exception of the \emph{Scene Decomposition} set\footnote{Note however that the Toulbar2 solver finds the same non-optimal solutions in this problem set.}.
 
 It should be noted that Toulbar2, CPLEX and MaxHS may be at a slight disadvantage in terms of runtime presented in \cref{tab:comparative-results}.
 Brief testing of the Toulbar2 solver indicated that the difference in hardware between the in-the-middle runtimes and those provided by \textcite{deGivry14} may skew the results in favour of the in-the-middle solver, with actual runtimes on the same hardware being \SIrange{0}{50}{\percent} lower for Toulbar2.
@@ -83,12 +83,11 @@ The algorithm shows promise especially in the Max-\gls{csp} and \gls{mrf} catego
 Compared to both Toulbar2 and CPLEX, the in-the-middle algorithm appears to be a useful complement providing (good) approximative solutions to problems the other solvers have great difficulty in solving.
 Results from the \gls{cp} category are also promising, but these problem sets are small and not all \gls{cp} problems have max-sum formulations.
 
-\Cref{fig:cactus-std} shows accumulated runtimes for three of the sets in which the algorithm performed well.
+\Cref{fig:cactus-std} shows accumulated runtimes for two of the sets in which the algorithm performed well.
 The algorithm has a consistent advantage in the \emph{Segmentation} set (\cref{fig:cactus-std:segmentation}), which is reflected by the mean runtime in \cref{tab:comparative-results}.
 \Cref{fig:cactus-std:dbn} highlights a more interesting situation.
 It shows performance in the \emph{DBN} set, in which the algorithm has an advantage in total runtime across the whole set, almost entirely due to good performance on the more difficult problems.
 In fact, the runtimes are fairly evenly distributed whereas the runtimes for CPLEX and Toulbar vary significantly between the difficult and easy problems of the set.
-% [todo] - justify choice of median for the values (goes in method?)
 
 \begin{figure}[tp]
 	\begin{figcenter}
@@ -101,8 +100,6 @@ In fact, the runtimes are fairly evenly distributed whereas the runtimes for CPL
 	\caption{Accumulated runtime of the algorithms in three different sets, sorted by runtime individually for every solver. Note the logarithmic scale of the \(y\) axis.}
 	\label{fig:cactus-std}
 \end{figure}
-
-% [todo] - explain SceneDecomp anomaly? Maybe deGivry14 has something on it?
 
 The largest problem solved optimally by the in-the-middle algorithm was an instance of in the \emph{In-Painting} set with search space \(d^n = 4^{\num{14400}}\).
 The smallest unsolved instances are in the \emph{Auction} set, with seach spaces \(d^n \approx 2^{80}\).
