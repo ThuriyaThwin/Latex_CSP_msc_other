@@ -1,13 +1,14 @@
 \section{Max-sum problems and constraint satisfaction}
 The formulation of the in-the-middle algorithm provided by \textcite{Wedelin08} is based on the definition of a max-sum problem.
 In order to apply this algorithm to general \gls{wcsp}, it is necessary to provide a link between the max-sum problem and problem formulations within the graphical model optimization field, where \gls{wcsp} is one of the more general formulations.
+% [fix] - Wedelin: "what are the fundamental problem formulations really?"
 This will be done by first introducing the max-sum problem along with some useful interpretations in other fields, followed by a similar introduction of the \gls{wcsp} family.
 Finally, a theoretical link between the two fields will be provided, along with an explicit method of translation between the formulations.
 
 \subsection{Max-sum problems}
 The general max-sum problem is an NP-hard optimization problem with many applications in fields ranging from statistical physics to artificial intelligence and pattern recognition.
-Problems including set partitioning \parencite[\pno~107]{Wedelin08}, max-flow/min-cut and (as will be apparent later) several variants of constraint satisfaction may be restated as max-sum problems.
-Formally, the following definition (which is based on that of \citeauthor{Wedelin08}) may be used:
+In general, and constrained optimization problem (crucially, several variants of constraint satisfaction) may be restated as max-sum problems.
+Formally, the following definition \parencite[based on that of][\pno~11]{Wedelin13} may be used:
 \begin{definition}[Max-sum problem] \label{def:max-sum}
 	The max-sum problem is the optimization problem
 	\begin{equation*}
@@ -20,23 +21,20 @@ The max-sum problem then has three distinct components by which it is defined:
 \begin{itemize}
 	\item A finite set of \emph{variables} \(X = \{x_1, \dotsc, x_n\}\). Let \(X^k \subseteq X\) denote a specific subset of \(X\), and let \(x^k \in X^k\) and \(x \in X\) be \emph{assignments} of the variables.
 	\item \emph{Domains} of the variables, \(D = \{D_1, \dotsc, D_n\}\), such that \(x_i \in D_i, \forall i\). Subsets \(D^k \subseteq D\) may be defined analogously to the variable subsets.
-	\item A finite set \(G\) of \emph{cost functions}. Every cost function \(g_k \in G\) is defined over a variable subset \(X^k\), \emph{i.e.} it is a map \(g_k : D^k \mapsto \Rminus \cup \{-\infty\}\).
+	\item A finite set \(G\) of \emph{cost functions} or \emph{components}. Every cost function \(g_k \in G\) is defined over a variable subset \(X^k\), \emph{i.e.} it is a map \(g_k : D^k \mapsto \Rminus \cup \{-\infty\}\).
 \end{itemize}
 The cost functions may additionally be divided into three kinds: those defined on the empty set (\emph{constants}), those defined on singleton subsets \(X^k = \{x_i\} \subseteq X\) (\emph{variable components}) and those defined on larger subsets (\emph{constraint components}) --- this is the \emph{component model}\label{pg:component-model} introduced by \textcite[\pno~98]{Wedelin08}.
 
-One should also note that the codomains of \(g_k\) need not be restricted to \(\Rminus \cup \{-\infty\}\), but for the purposes of this thesis that is the chosen output.
+One should also note that the co-domains of \(g_k\) need not be restricted to \(\Rminus \cup \{-\infty\}\), but for the purposes of this thesis that is the chosen output.
+% [fix] - The above is undelined by Wedelin, why?
 This allows solutions \(x\) to the max-sum problem to be ordered by their cost, where the cost is defined as \(\cost{x} = f(x) = \sum_k g_k(x^k)\), and additionally allows the definition of \emph{infeasible} solutions to the max-sum problem as those for which \(\cost{x} = -\infty\).
 This will be useful in the translation between \glspl{wcsp} and max-sum problems.
 
-% [review] - theory on upper/lower bounds?
-
 There are several algorithms available for solving max-sum problems, with \textcite{Werner07} mentioning the \emph{augmented DAG algorithm}, the \emph{max-sum diffusion algorithm} and a \gls{lp} relaxation method.
-In addition to those direct methods, the relation to \gls{csp} provides many more (which will be mentioned later), and algorithms such as \emph{belief propagation} and \emph{message passing} are also applicable to some max-sum problems (in particular, max-sum problems without loops).
+In addition to those direct methods, the relation to \gls{csp} provides many more (which will be mentioned later), and algorithms such as \emph{belief propagation} and \emph{message passing} are also applicable to some max-sum problems.
 
 \subsubsection{Markov Random Fields}
 A restricted variant of the max-sum problem called the \emph{binary max-sum labelling problem} has direct applications to artificial intelligence and pattern recognition, where the problem is known as computing the \gls{map} configuration of \acrlongpl{mrf} \parencite[\pno~1165]{Werner07}.
-
-% [todo] - mention previous algorithms from the AI field?
 
 \subsection{Weighted constraint satisfaction problems}
 \Glspl{csp} are very general decision problems, defined through a set of objects which must satisfy a set of constraints.
@@ -71,9 +69,6 @@ The attentive reader will notice the similarity between \cref{def:wcsp} and \cre
 Using this definition, \emph{feasible} solutions are assignments \(t\) for which \(\cost{t} < k\).
 One may also make a distinction between \emph{hard} constraints (\(f_V(t^V) = k\) for some assignment(s) \(t^V\)) and \emph{soft} constraints.
 
-% [review] - theory on upper/lower bounds?
-% [review] - mention previous algorithms and results?
-
 \subsubsection{Max-CSP and (weighted) max-SAT}
 The special case of \gls{wcsp} where all constraints have either unit or zero cost (\emph{i.e.} \(f_V : D^V \mapsto {0,1}\), regardless of choice of \(k\)) is normally referred to as max-\gls{csp} \parencite[\pno~284]{Meseguer06}.
 Here, the objective value is exactly the number of violated clauses, and as such it is the most natural formulation of existing \gls{csp} instances as optimization problems.
@@ -83,8 +78,6 @@ The special case where all constraints are clauses of a Boolean formula (and wei
 If the weights are restricted to unit or zero costs as above, the problem becomes the well-known \gls{maxsat} problem \parencite[\pno~284]{Meseguer06}.
 
 This makes explicit the fact that many real-world and academic problems in satisfiability and operations research may be restated as \gls{wcsp} (and therefore max-sum) problems, and consequently that the in-the-middle algorithm may present a viable alternative to solving these problems using \gls{lp} formulations \parencites{Ansotegui13a}{Davies13} or special algorithms \parencites{Ansotegui13b}{Larrosa08}.
-
-% [review] - mention previous algorithms?
 
 \subsection{Translating WCSP to max-sum}
 The translation from \gls{wcsp} to max-sum, when using the definitions given above, is fairly straight-forward.

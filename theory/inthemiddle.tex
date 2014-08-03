@@ -16,7 +16,7 @@ The algorithm solves an \gls{ilp} problem
 		{}           & x \in \{0,1\}^n,
 	\end{aligned}
 \end{equation}
-where \(A \in \{-1,0,1\}^{m\times n}\) and \(b\in\N^m\) (\textcite{Wedelin95} considers the case \(A \in \{0,1\}^{m\times n}\)).
+where \(A \in \{0,1\}^{m\times n}\) and \(b\in\N^m\) (a generalization to the case \(A \in \{-1,0,1\}^{m\times n}\) exists).
 The idea is to exploit the Lagrangian relaxation of the problem,
 \begin{equation}\label{eq:ilp-lagrange}
 	\begin{aligned}
@@ -30,7 +30,7 @@ Assuming all reduced costs \(\bar{c} = (c^\top - \hat{y}^\top A)\) are non-zero 
 The goal of the algorithm is to manipulate \(y\) to minimize \eqref{eq:ilp-lagrange} while maintaining feasibility for \eqref{eq:ilp}.
 The basic idea is to, for every single constraint \(j\) of the problem, find the elements in \(\bar{c}\) that correspond to the variables of that constraint (denoted by \(\bar{c}^j\)) and subtract the average of two \emph{critical values} \(r^+\) and \(r^-\).
 The critical values are chosen so that at most \(b_j\) of the values in \(\bar{c}^j\) are strictly positive.
-If no sign changes occur after visiting each constraint once, the algorithm has converged and a feasible (and possibly optimal, if \(\bar{c} \neq 0\)) solution has been found.
+If no sign changes occur after visiting each constraint once, the algorithm has converged and a feasible (assuming \(\bar{c} \neq 0\)) and optimal solution has been found.
 \Cref{alg:itm-lp} provides complete pseudo-code for this algorithm, and \textcites{Wedelin95}{Wedelin13} provides further theoretical results.
 
 \begin{algorithm}[p]
@@ -134,6 +134,7 @@ The components are then \(\vcomp_i : D_i \mapsto \Rminus \cup \{-\infty\}\) and 
 
 With this in mind, the basic framework of the algorithm may be introduced (\cref{alg:itm-maxsum}), which intentionally is very similar to that of the \gls{lp} formulation.
 Note especially the \emph{modified} variable components \(\hat{\vcomp}_i\), which roughly correspond to the reduced costs \(\bar{c}\) of the \gls{lp} formulation (in the same way that the actual variable components \(\vcomp_i\) roughly correspond to the actual cost vector \(c\)).
+% [fix] - Wedelin: "which terminology"
 
 The constraint updates used in the algorithm will now be described and theoretically related to the updates used in the \gls{lp} formulation. In addition to this, some important theoretical results will be mentioned.
 Finally, two specific updates will be described.
@@ -141,6 +142,7 @@ Finally, two specific updates will be described.
 The basic idea of the constraint update, as with the \gls{lp} formulation, is to modify the variable components in an invariant manner to uniquely identify the (optimal) solution given the constraint component.
 This is done by considering only the subproblem consisting of the constraint component \(\ccomp_j\) along with its associated variable components \(\vcomp^j\) and performing a local optimization.
 While \textcite[\pno~100\psq]{Wedelin08} present a framework for updates defining a few sought-after properties, only what they call \emph{consistent} and \emph{locally optimal} updates are considered here.
+% [fix] - Wedelin: "best terminology?"
 These guarantee that any solution found by \cref{alg:itm-maxsum} will be feasible.
 Some updates (in particular the fractional \acrshort{dp} update described later, for some parameter values) are additionally \emph{non-conflicting}, which guarantees that any feasible solution found is also optimal.
 
@@ -203,7 +205,7 @@ Since the regular \gls{dp} update cannot guarantee optimality, it is interesting
 \Textcite[\pno~105\psqq]{Wedelin08} provide some theory useful in the construction of non-conflicting updates, in particular a weak upper bound on the amount possible to move out.
 They also introduce the \emph{fractional} \gls{dp} update (\cref{proc:frac-dp-update}), which is very similar to the regular \gls{dp} update --- instead of moving out the max-marginals of the constraint component, a fraction \(\alpha\) of the max-marginal is moved out (\emph{i.e.} the new variable component value becomes \(\bar{\vcomp}'_i(x_i) = \alpha\max*[x\in x^k\setminus x_i]{h(x)}\)).
 
-It is immediately obvious that \(\alpha=1\) corresponds to the regular \gls{dp} update, and as such this may be taken as an upper limit of the parameter.
+It is immediately obvious that \(\alpha=1\) corresponds to the regular \gls{dp} update, and therefore this will be used as an upper limit of the parameter\footnote{However, note that values \(\alpha>1\) are in no way prohibited by the algorithm and may prove meaningful in some situations.}.
 Additionally, \textcite{Wedelin08} provide an upper bound for \(\alpha\) that guarantee non-conflicting updates \parencite[\pno~107]{Wedelin08}.
 This upper limit is \(\alpha=\sfrac{1}{n}\), where \(n\) is the number of variables associated with the constraint component (\emph{e.g.} \(n=2\) for the constraint component in \cref{fig:itm-update}).
 Interesting values of \(\alpha\) for parameter sweep schemes are thus \(\alpha\in[n^{-1},1]\).
