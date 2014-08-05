@@ -43,8 +43,8 @@ Surprisingly, the optimality gap did not improve for a majority of the problems.
 In fact, for some sets the optimality gap was increased, and the runtime of the algorithm improved instead (which given the already competitive runtime of the standard algorithm is an unwanted result).
 In fact, the only problem set for which the expected result was obtained is the \gls{cfn} \emph{Pedigree} set.
 
-\subsection{The greedy DP update}
-The greedy \gls{dp} update, obtained by fixing \(\alpha=1\) of the fractional \gls{dp} update, should theoretically improve convergence at the expense of solution quality.
+\subsection{The non-fractional DP update}
+The non-fractional \gls{dp} update, which is equivalent to the well-known max-sum algorithm and obtained by fixing \(\alpha=1\) of the fractional \gls{dp} update, should theoretically improve convergence at the expense of solution quality.
 To test this a large number of problems from \cref{tab:comparative-results} were selected, all exhibiting low optimality gaps and a reasonable but noncompetitive runtime.
 The expectation was to decrease runtime at the expense of solution quality.
 Additionally, some sets with zero optimality gap and competitive runtime were included to observe the effects of this variant on already well-performing problem sets.
@@ -53,9 +53,9 @@ Additionally, some sets with zero optimality gap and competitive runtime were in
 	\centering
 	% Updated 2014-05-24
 	\caption{
-		Optimality gap and runtime using the greedy \gls{dp} update (setting \(\alpha=1\)).
-		For several chosen problem sets, the greedy \gls{dp} runtime is compared to the results obtained by the standard algorithm (see \cref{tab:comparative-results}).
-		Problem sets marked with \textdagger{} include unsolved problems (no feasible solution found by the greedy \gls{dp} update), and n/a values indicate that none of the problems in the set were solved.
+		Optimality gap and runtime using the non-fractional \gls{dp} update (setting \(\alpha=1\)).
+		For several chosen problem sets, the non-fractional \gls{dp} runtime is compared to the results obtained by the standard algorithm (see \cref{tab:comparative-results}).
+		Problem sets marked with \textdagger{} include unsolved problems (no feasible solution found by the non-fractional \gls{dp} update), and n/a values indicate that none of the problems in the set were solved.
 		Runtimes based on less than \SI{70}{\percent} of the problems are faded.
 	}
 	\label{tab:greedy-dp-results}
@@ -94,15 +94,15 @@ Max-\acrshort{csp}	&	BlackHole\textdagger	&	37	&	36	&	9.009009e-01	&	1.081081	&	
 	\begin{figcenter}
 	\input{figs/khappa1-cactus-MaxCSP-BlackHole.tikz}
 	\end{figcenter}
-	\caption{Accumulated runtime of the standard and greedy algorithm in the \emph{Black Hole} set, sorted by runtime individually for each variant. Note the logarithmic scale of the \(y\) axis.}
+	\caption{Accumulated runtime of the standard and non-fractional algorithm in the \emph{Black Hole} set, sorted by runtime individually for each variant. Note the logarithmic scale of the \(y\) axis.}
 	\label{fig:cactus-greedy}
 \end{figure}
 
-\Cref{tab:greedy-dp-results} shows the results of benchmarking the greedy \gls{dp} algorithm against the selected problems.
-As expected, the runtime of all sets (except the \emph{Auction} set) was improved significantly --- between \num{4} and \num{350} times --- but with little or no increase in optimality gap.
-The runtime improvements are most significant for the \gls{cfn} and \gls{mrf} problems, where the greedy \gls{dp} variant is competitive with all three other solvers.
+\Cref{tab:greedy-dp-results} shows the results of benchmarking the non-fractional \gls{dp} algorithm against the selected problems.
+As expected, the runtime of all sets (except the \emph{Auction} set) was improved significantly --- between \num{4} and \num{350} times --- in some cases with little or no increase in the optimality gap.
+The runtime improvements are most significant for the \gls{cfn} and \gls{mrf} problems, where the non-fractional \gls{dp} variant is competitive with all three other solvers.
 Three problem sets from the max-\gls{csp} category additionally show improved optimality gaps as well as better runtimes.
-The only set in which the greedy update performs significantly worse is the \emph{Auction} set, in which it fails to solve any problems at all.
+The only set in which the non-fractional update performs significantly worse is the \emph{Auction} set, in which it fails to solve any problems at all.
 
-\Cref{fig:cactus-greedy} illustrates the utility of the greedy \gls{dp} update.
-While it is slower for very small problems in the \emph{Black Hole} set, it is significantly faster in solving the more difficult problems.
+\Cref{fig:cactus-greedy} illustrates the utility of the non-fractional \gls{dp} update.
+While it is slower for very small problems in the \emph{Black Hole} set, it is significantly faster in solving the larger problems.

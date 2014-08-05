@@ -34,19 +34,19 @@ A more correct implementation would take into consideration the reduction of \(\
 Due to the results presented above, the \enquote{push} operation is not as interesting when applied to the max-sum algorithm as it is in the original \gls{lp} formulation.
 % [review] - analyze why it works on the CFN/Pedigree problem?
 
-The result of the greedy \gls{dp} update was more in line with expectations.
+The result of the non-fractional \gls{dp} update was more in line with expectations, but nonetheless unintuitive given the mostly insignificant changes in solution quality.
 Solution quality was in fact largely maintained while improving runtimes significantly.
-The maintained solution quality may be due to the problem instances having very large ranges between trivial upper an lower bounds, with many solutions of similar cost --- this would result in very small changes in the optimality gap, which may not show in the data.
+The maintained solution quality may be due to the problem instances having very large ranges between trivial upper and lower bounds, with many solutions of similar cost --- this would result in very small changes in the optimality gap, which may not show in the data.
 However, the optimality gap is still small in all problem sets, which may be an acceptable compromise given the very low runtimes.
 
-For one problem set (\emph{Auction}) the greedy \gls{dp} update showed abysmal performance, failing to solve any instances.
+For one problem set (\emph{Auction}) the non-fractional \gls{dp} update showed abysmal performance, failing to solve any instances.
 It seems that the reason for this is that the algorithm never reaches a situation where the solution doesn't change between two iterations, instead oscillating between a set of solutions.
 This could potentially be resolved by increasing the threshold \(\epsilon\) and amplitude \(\zeta\) of the tie-breaking noise.
 
-With these results in mind, the greedy algorithm may be very useful when exact solutions aren't required.
-The greedy update variant may also be useful as part of a broader strategy, by for instance providing fast and good upper bounds or by providing fast unproven solutions while waiting for exact solvers.
-Another interesting direction for the greedy \gls{dp} update could be to run it in parallel with the standard algorithm (sharing the immutable constraint components in memory), again providing quick approximate solutions as well as good solutions.
-This would also be useful in \emph{e.g.} the \emph{Black Hole} set, where the standard algorithm performed better on easy instances and the greedy \gls{dp} update was better on difficult ones.
+With these results in mind, the non-fractional algorithm may be very useful when exact solutions aren't required.
+The non-fractional update variant may also be useful as part of a broader strategy, by for instance providing fast and good upper bounds or by providing fast unproven solutions while waiting for exact solvers.
+Another interesting direction for the non-fractional \gls{dp} update could be to run it in parallel with the standard algorithm (sharing the immutable constraint components in memory), again providing quick approximate solutions as well as good solutions.
+This would also be useful in \emph{e.g.} the \emph{Black Hole} set, where the standard algorithm performed better on easy instances and the non-fractional \gls{dp} update was better on difficult ones.
 
 \subsection{Limitations}
 The benchmark has a few limitations which should be mentioned.
@@ -58,3 +58,7 @@ Another limitation of the benchmark is the omission of most \gls{wpms} instances
 This is a category where conventional \gls{wcsp} solvers have difficulties due to the large cost function arities, which causes issues with local consistency enforcing.
 In theory, in-the-middle algorithm has no such issues with large cost function arities, but the memory requirements for such problems are significant.
 Including these problems in the benchmark would likely require better hardware and/or a specialized implementation (specifically, simplifications can be made when solving \gls{wpms} problems due to their binary variable domains).
+
+Finally, the benchmark does not take into consideration the structure of the problems used.
+It may well be the case that some problems can be modelled or expressed in a way that makes them easier to solve (for instance, \textcite[\pno~6]{deGivry14} mention that some problem translations are not appropriate for \gls{lp} solvers because they decompose linear constraints).
+By tailoring each problem to each solver (for instance, in-the-middle has the ability to combine linear constraints and general max-sum constraints) performance may be significantly improved.
