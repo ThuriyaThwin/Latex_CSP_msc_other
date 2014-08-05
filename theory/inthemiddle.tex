@@ -173,7 +173,7 @@ It is mainly this last step that varies between different updates --- it is desi
 		\lForAll{\(\bar{\vcomp}'_j\in \bar{\vcomp}'^k\)}{\(s'^k_j \leftarrow \bar{\vcomp}'_j - r^k_j\)}
 		\Return{\(\bar{\vcomp}'^k,s'^k\)}
 	}
-	
+
 	\caption{
 		The \gls{dp} constraint update.
 	}
@@ -195,7 +195,7 @@ While this should ensure quick convergence since it in effect moves out as much 
 		\lForAll{\(\bar{\vcomp}'_j\in \bar{\vcomp}'^k\)}{\(s'^k_j \leftarrow \bar{\vcomp}'_j - r^k_j\)}
 		\Return{\(\bar{\vcomp}'^k,s'^k\)}
 	}
-	
+
 	\caption{
 		The fractional \gls{dp} constraint update. Note that the only difference between this and \cref{proc:dp-update} is on \cref{proc:frac-dp-update:diffline}.
 	}
@@ -205,10 +205,17 @@ Since the regular \gls{dp} update cannot guarantee optimality, it is interesting
 \Textcite[\pno~105\psqq]{Wedelin08} provide some theory useful in the construction of non-conflicting updates, in particular a weak upper bound on the amount possible to move out.
 They also introduce the \emph{fractional} \gls{dp} update (\cref{proc:frac-dp-update}), which is very similar to the regular \gls{dp} update --- instead of moving out the max-marginals of the constraint component, a fraction \(\alpha\) of the max-marginal is moved out (\emph{i.e.} the new variable component value becomes \(\bar{\vcomp}'_i(x_i) = \alpha\max*[x\in x^k\setminus x_i]{h(x)}\)).
 
-It is immediately obvious that \(\alpha=1\) corresponds to the regular \gls{dp} update, and therefore this will be used as an upper limit of the parameter\footnote{However, note that values \(\alpha>1\) are in no way prohibited by the algorithm and may prove meaningful in some situations.}.
-Additionally, \textcite{Wedelin08} provide an upper bound for \(\alpha\) that guarantee non-conflicting updates \parencite[\pno~107]{Wedelin08}.
-This upper limit is \(\alpha=\sfrac{1}{n}\), where \(n\) is the number of variables associated with the constraint component (\emph{e.g.} \(n=2\) for the constraint component in \cref{fig:itm-update}).
-Interesting values of \(\alpha\) for parameter sweep schemes are thus \(\alpha\in[n^{-1},1]\).
+In order to control the \(\alpha\) parameter of this update variant, one may introduce a parameter sweep strategy.
+Higher values of \(\alpha\) are expected to improve the rate of convergence, but sufficiently large values compromise the non-conflicting property and thus the optimality guarantee.
+Therefore, a good sweep strategy will attempt to solve the problem using non-conflicting updates at first, only increasing \(\alpha\) if this fails.
+
+The parameter sweep strategy will therefore start at a lower limit \(\alpha_\perp\) that guarantees non-conflicting updates, keep this value for a fixed number of iterations, then increase \(\alpha\) until it reaches an upper limit \(\alpha_\top\).
+Experience from the \gls{lp} variant of the heuristic additionally suggests that inceases should be more careful close to the upper limit \(\alpha_\top\).
+These limits are taken \emph{individually}\footnote{This is different from the \gls{lp} heuristic, where the parameter is identical for all constraints.} for each constraint, since they will depend on properties of the constraints themselves.
+
+\Textcite{Wedelin08} provide a suitable lower bound \(\alpha_\perp\) through their proof that \(\alpha_\perp=\sfrac{1}{n}\) (where \(n\) is the number of variables associated with a constraint) guarantee non-conflicting updates \parencite[\pno~107]{Wedelin08}.
+The upper limit is chosen to be \(\alpha_\top=1\), which corresponds to the regular \gls{dp} update\footnote{However, note that values \(\alpha>1\) are in no way prohibited by the algorithm and may prove meaningful in some situations.}.
+In subsequent runs on the same problem, the upper limit \(\alpha_\top\) may be taken to be the \(\alpha\) at which the algorithm terminated in the previous run.
 
 \subsection{Extensions and improvements}
 Previous work on the \gls{lp} formulation of the in-the-middle algorithm has yielded useful improvements in performance, and it is therefore interesting to apply these variants to the max-sum variant as well.
@@ -255,7 +262,7 @@ Algorithms enforcing full arc consistency are in fact very similar to the \emph{
 \Textcite[\pno~85\psq]{deGivry05} present an algorithm enforcing this property, and the general structure of this algorithm is very similar to the DP update described above.
 First, the costs in one of the variable components are moved into the constraint component.
 Then (as in the DP update), the max-marginals are calculated and \enquote{moved out} (\emph{projected}) onto the other variable component.
-The result is one variable component with mostly zero-value costs, and one variable component with (if possible) no zero-value costs. 
+The result is one variable component with mostly zero-value costs, and one variable component with (if possible) no zero-value costs.
 This fact is then used when enforcing another property, \emph{node consistency} \parencite[\pno~7]{Cooper10}, which in effect moves redundant costs from the variable components to the nullary constraint.
 
 \subsubsection{Stronger constraint component updates}

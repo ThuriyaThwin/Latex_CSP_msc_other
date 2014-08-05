@@ -16,6 +16,7 @@ Since the algorithm when used with the corresponding heuristic is an inexact alg
 While the time may be compared as-is (given the comparable hardware conditions), the found solution will have to be compared relative to the proven optimum for each problem.
 
 \label{pg:bench-method}
+% [fix] - Wedelin has a question mark here and I don't know why
 The relative deviation of the obtained solution (an \emph{optimality gap}) may be calculated as \((f - \bar{f})/(\mathrm{UB}-\mathrm{LB})\), where \(f\) is the solution found by the algorithm, \(\bar{f}\) is the proven optimum and \(\mathrm{UB}, \mathrm{LB}\) is the trivial upper and lower bound of the problem (the upper bound is the sum of the largest cost of each constraint component, and the lower bound is trivially the lowest cost among all constraints).
 When \(\bar{f}\) is unknown, the lower bound is used instead.
 
@@ -31,9 +32,12 @@ This section will briefly review each problem set used in the benchmark, and rev
 All of these problems are directly representable as \glspl{wcsp}, and hence as max-sum optimization problems, and \textcite{deGivry14} provide details on the translation from each field to the \gls{wcsp} formulation used in this benchmark.
 
 Several sets from the benchmark performed by \textcite{deGivry14} have been omitted from this benchmark.
-This is because the in-the-middle algorithm wasn't able to solve any instances in the set (due to time or memory constraints), making them uninteresting in the sense that the algorithm isn't a feasible alternative for those problems. 
+This is because the in-the-middle algorithm wasn't able to solve any instances in the set (due to time or memory constraints), making them uninteresting in the sense that the algorithm isn't a feasible alternative for those problems.
 The omitted problem sets are mostly from the \gls{cp} and \gls{wpms} categories (where only two resp. one problem(s) were kept), but the \emph{Chinese Characters}, \emph{Colour Segmentation}, \emph{Matching Stereo} and \emph{Photo Montage} sets from \gls{cvpr} are also omitted from the benchmark.
-% [review] - references in this part clutter the bibliography, is two bibliographies, local footnote references or no references viable alternatives?
+
+It is important to note that the omissions are due to the in-the-middle implementation not being able to solve enough instances for a comparison to be meaningful, and that this will be reflected in the discussion.
+In particular, it is already clear that the algorithm has abysmal performance in the \gls{cp} and \gls{wpms} categories.
+Comparisons in the \gls{cvpr} category are valid even with the omissions, since the competing solvers show equally poor performance (\emph{i.e.} solve no problems) in the omitted sets \textcite[\pno~9]{deGivry14}.
 
 \subsubsection{Constraint Function Network (CFN)}
 This category contains six problem sets, all from the CFLib collection mentioned by \textcite[\pno~3]{deGivry14}.
@@ -97,7 +101,7 @@ Note that \gls{cp} problems are not generally representable as \glspl{wcsp}, whi
 		Other, similar constraints may also be present.
 
 		Problems in this set are generally fairly large in terms of domain size (up to \num{90}), but only contain up to \num{2200} variables and \num{4500} constraints, which is small compared to other sets.
-	
+
 	\item[Parity Learning]
 		The parity learning set contains instances of an optimization variant of the \gls{mdp} problem \parencite{Crawford94}.
 		A set of input/output samples of a Boolean function is given, where the function outputs the parity of an unknown subset of the input variables.
@@ -150,7 +154,7 @@ All of these problems, except those in the \emph{Linkage} set (which was used in
 The problems were translated into their \gls{wcsp} equivalent using a \(-\log{}\) transformation \parencite[\pno~4]{deGivry14}.
 % [fix] - page number above will have to change
 
-Most problems are modest in size, with \numrange{60}{2000} variables and \numrange{1000}{10000} constraints and variable domains below \num{30}. 
+Most problems are modest in size, with \numrange{60}{2000} variables and \numrange{1000}{10000} constraints and variable domains below \num{30}.
 Some problems have variable domains approaching \num{500}, and some have up to \num{6400} variables and \num{20000} constraints.
 Notably, the \emph{Segmentation} set contains both binary and 21-ary formulations of each problem.
 % [review] - describe every set?

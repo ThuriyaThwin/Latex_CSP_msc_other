@@ -1,5 +1,5 @@
 \section{Implementation}
-The algorithm --- including reading routines for the \textsc{wcsp} file format \parencite{wcspformat}, parameter sweep strategy and timing facilities --- was implemented in C++11.
+The algorithm --- including code for reading the \textsc{wcsp} file format \parencite{wcspformat}, parameter sweep strategy and timing facilities --- was implemented in C++11.
 The implementation is partly based on an existing framework for the original \gls{lp} in-the-middle algorithm.
 The code was compiled using version 5.1 of the LLVM compiler, with all safe optimizations enabled (\emph{i.e.} \texttt{-O3}).
 
@@ -41,14 +41,14 @@ In particular, the choice of data structure for constraint component data as wel
 		}
 		\Return{\(\bar{\vcomp}^k,s^k,c\)}
 	}
-	
+
 	\caption{
 		Fast implementation of the fractional \gls{dp} update described in \cref{proc:dp-update}.
 	}
 	\label{proc:frac-dp-update-fast}
 \end{algorithm}
 
-A parameter sweep strategy used in conjunction with the algorithm, which controls the \(\alpha\) parameter of the fractional \gls{dp} update, will also be introduced and explained in further detail.
+Implementation details regarding the parameter sweep strategy presented earlier, which controls the \(\alpha\) parameter of the fractional \gls{dp} update, will also be explained in further detail.
 
 \subsection{Constraint component design decisions}
 Several design decisions in the implementation of the constraint components have significant impact on the performance of the constraint component updates.
@@ -67,10 +67,10 @@ In the actual implementation, \(x^k_i\) are represented as pointers to the value
 \Cref{proc:frac-dp-update-fast} highlights these implementation details, and also shows the use of an invariant transformation of the variable components \(\bar{\vcomp}_i(x^k_i)\) that allows the use of existing code to detect solution changes by counting sign changes.
 
 \subsection{Parameter sweep strategy}
-As explained earlier, the fractional \gls{dp} update of constraint components depends on a parameter \(\alpha\), which dictates the amount \enquote{moved out} of the constraint component.
-Choosing this parameter is difficult, but some of the results discussed earlier may be used to create a strategy for a parameter sweep.
-Knowing that values \(\alpha\leq n^{-1}\) (where \(n\) is the arity of a constraint) guarantee that any solution found is optimal, \(n^{-1}\) may be chosen as a lower limit for the parameter.
-A reasonable upper limit for the parameter is \(\alpha=1\), which in essence corresponds to the regular, non-fractional \gls{dp} update.
+As explained earlier, the fractional \gls{dp} update may be accompanied by a parameter sweep strategy.
+Due to the structure of the algorithm implementation, the constraint-specific upper and lower limits of the parameter sweep as described earlier are awkward to handle.
+Therefore, these are consolidated into a single parameter \(\kappa\in\left[0,1\right]\).
+This is done by mapping \(\kappa\), individually for each constraint, from \(\left[0,1\right]\) to \(\left[\alpha_\perp,\alpha_\top\right]\) using the transformation \(\alpha = \alpha_\perp + \kappa\left(\alpha_\top - \alpha_\perp\right)\).
 
 \begin{figure}[p]
 	\centering
@@ -81,18 +81,13 @@ A reasonable upper limit for the parameter is \(\alpha=1\), which in essence cor
 	\label{fig:khappa-plot}
 \end{figure}
 
-To vary the parameter between these two values, a sweep strategy is employed.
-\Cref{fig:khappa-plot} shows the value of a parameter \(\kappa\) (defined so that \(\alpha = n^{-1}\left(1 + \kappa(n - 1)\right)\), \emph{i.e.} mapping \(\left[0,1\right]\) to \(\left[n^{-1},1\right]\) \emph{individually} for each constraint component) over the first \emph{trial} for two different problems, along with the number of sign changes which is used as a termination criterion.
+Initially, the limits on alpha are \(\alpha_\perp=n^{-1}\) and \(\alpha_\top\) as suggested by theory.
+However, the implementation used will make several subsequent attempts at solving the problem; in subequent attempts (\enquote{trials}, futher explained later) the upper limit \(\alpha_\top\) is lowered to match the value at which the prevoius trial found a solution.
+This upper limit is implemented in terms of a new upper limit \(\kappa_\top\) on \(\kappa\) (exemplified by \cref{fig:khappa-plot:comp}, for which \(\kappa_\top\) will be roughly \num{0.3} in the next trial).
 
+\Cref{fig:khappa-plot} shows the value of \(\kappa\) for two different problems, along with the number of sign changes which is used as a termination criterion.
 In particular, \cref{fig:khappa-plot:deer} shows a full run in which \(\kappa\) is varied throughout the entire range \([0,1]\).
-As can be seen, \(\kappa\) is initially kept at 0 for a number of iterations --- this is in effect an attempt to find guaranteed optimal solutions if possible, only attempting to solve the problem heuristically if this fails.
-Then, the parameter is increased fairly quickly until reaching an upper limit (\SI{70}{\percent} of the final value of \(\kappa\)), after which it is increased more slowly.
-
-In \cref{fig:khappa-plot:deer} the final value of \(\kappa\) is 1, but this is not always the case.
-For instance, when a solution has been found in a previous trial, the \(\kappa\) for which that solution was found is used as a final value instead.
-This means that in the next trial of the problem shown in \cref{fig:khappa-plot:comp} the final value of \(\kappa\) will be around \num{0.3}.
-
-The purpose of increasing \(\kappa\) slowly near this value is to increase accuracy by avoiding overshoot, as a lower \(\alpha\) will result in a better approximate solution.
+As can be seen, \(\kappa\) is initially kept at 0 for a number of iterations --- attempting to find guaranteed optimal solutions if possible --- after which the parameter is increased fairly quickly until reaching \(0.7\kappa_\top\), after which it is increased more slowly.
 
 \subsubsection{Trials}
 As briefly mentioned above, the optimization involves several \emph{trials}.
