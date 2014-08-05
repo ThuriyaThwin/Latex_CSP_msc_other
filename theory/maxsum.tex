@@ -1,7 +1,6 @@
 \section{Max-sum problems and constraint satisfaction}
 The formulation of the in-the-middle algorithm provided by \textcite{Wedelin08} is based on the definition of a max-sum problem.
 In order to apply this algorithm to general \gls{wcsp}, it is necessary to provide a link between the max-sum problem and problem formulations within the graphical model optimization field, where \gls{wcsp} is one of the more general formulations.
-% [fix] - Wedelin: "what are the fundamental problem formulations really?"
 This will be done by first introducing the max-sum problem along with some useful interpretations in other fields, followed by a similar introduction of the \gls{wcsp} family.
 Finally, a theoretical link between the two fields will be provided, along with an explicit method of translation between the formulations.
 
@@ -26,7 +25,6 @@ The max-sum problem then has three distinct components by which it is defined:
 The cost functions may additionally be divided into three kinds: those defined on the empty set (\emph{constants}), those defined on singleton subsets \(X^k = \{x_i\} \subseteq X\) (\emph{variable components}) and those defined on larger subsets (\emph{constraint components}) --- this is the \emph{component model}\label{pg:component-model} introduced by \textcite[\pno~98]{Wedelin08}.
 
 One should also note that the co-domains of \(g_k\) need not be restricted to \(\Rminus \cup \{-\infty\}\), but for the purposes of this thesis that is the chosen output.
-% [fix] - The above is undelined by Wedelin, why?
 This allows solutions \(x\) to the max-sum problem to be ordered by their cost, where the cost is defined as \(\cost{x} = f(x) = \sum_k g_k(x^k)\), and additionally allows the definition of \emph{infeasible} solutions to the max-sum problem as those for which \(\cost{x} = -\infty\).
 This will be useful in the translation between \glspl{wcsp} and max-sum problems.
 

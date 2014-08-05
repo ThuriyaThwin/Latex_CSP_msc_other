@@ -134,7 +134,6 @@ The components are then \(\vcomp_i : D_i \mapsto \Rminus \cup \{-\infty\}\) and 
 
 With this in mind, the basic framework of the algorithm may be introduced (\cref{alg:itm-maxsum}), which intentionally is very similar to that of the \gls{lp} formulation.
 Note especially the \emph{modified} variable components \(\hat{\vcomp}_i\), which roughly correspond to the reduced costs \(\bar{c}\) of the \gls{lp} formulation (in the same way that the actual variable components \(\vcomp_i\) roughly correspond to the actual cost vector \(c\)).
-% [fix] - Wedelin: "which terminology"
 
 The constraint updates used in the algorithm will now be described and theoretically related to the updates used in the \gls{lp} formulation. In addition to this, some important theoretical results will be mentioned.
 Finally, two specific updates will be described.
@@ -142,7 +141,6 @@ Finally, two specific updates will be described.
 The basic idea of the constraint update, as with the \gls{lp} formulation, is to modify the variable components in an invariant manner to uniquely identify the (optimal) solution given the constraint component.
 This is done by considering only the subproblem consisting of the constraint component \(\ccomp_j\) along with its associated variable components \(\vcomp^j\) and performing a local optimization.
 While \textcite[\pno~100\psq]{Wedelin08} present a framework for updates defining a few sought-after properties, only what they call \emph{consistent} and \emph{locally optimal} updates are considered here.
-% [fix] - Wedelin: "best terminology?"
 These guarantee that any solution found by \cref{alg:itm-maxsum} will be feasible.
 Some updates (in particular the fractional \acrshort{dp} update described later, for some parameter values) are additionally \emph{non-conflicting}, which guarantees that any feasible solution found is also optimal.
 

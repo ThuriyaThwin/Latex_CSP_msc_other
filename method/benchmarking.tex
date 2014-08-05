@@ -16,7 +16,6 @@ Since the algorithm when used with the corresponding heuristic is an inexact alg
 While the time may be compared as-is (given the comparable hardware conditions), the found solution will have to be compared relative to the proven optimum for each problem.
 
 \label{pg:bench-method}
-% [fix] - Wedelin has a question mark here and I don't know why
 The relative deviation of the obtained solution (an \emph{optimality gap}) may be calculated as \((f - \bar{f})/(\mathrm{UB}-\mathrm{LB})\), where \(f\) is the solution found by the algorithm, \(\bar{f}\) is the proven optimum and \(\mathrm{UB}, \mathrm{LB}\) is the trivial upper and lower bound of the problem (the upper bound is the sum of the largest cost of each constraint component, and the lower bound is trivially the lowest cost among all constraints).
 When \(\bar{f}\) is unknown, the lower bound is used instead.
 
@@ -27,7 +26,7 @@ The stochastic tie-breaking mechanism was included in all benchmark runs, with t
 Since all constraint clauses of the problems used in the benchmark have integer costs, having \(\zeta\leq1\) ensures that the tie-breaking noise will never promote tied variables above better, non-tied solutions.
 
 \subsection{Problem sets}
-% [fix] Wedelin: ...it would be really interesting to look into the modelling of each problem
+% [review] Wedelin: ...it would be really interesting to look into the modelling of each problem
 The problem sets obtained from \textcite{deGivry14} belong to a number of different domains and represent different types of problems from industry, academia and random generation.
 This section will briefly review each problem set used in the benchmark, and review both problem source, interpretation and size.
 All of these problems are directly representable as \glspl{wcsp}, and hence as max-sum optimization problems, and \textcite{deGivry14} provide details on the translation from each field to the \gls{wcsp} formulation used in this benchmark.
