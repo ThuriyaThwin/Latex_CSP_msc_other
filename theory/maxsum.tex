@@ -65,7 +65,7 @@ The reformulation as an optimization problem mainly concerns the introduction of
 	\end{equation*}
 \end{definition}
 
-The attentive reader will notice the similarity between \cref{def:wcsp} and \cref{def:max-sum}. 
+The attentive reader will notice the similarity between \cref{def:wcsp} and \cref{def:max-sum}.
 Using this definition, \emph{feasible} solutions are assignments \(t\) for which \(\cost{t} < k\).
 One may also make a distinction between \emph{hard} constraints (\(f_V(t^V) = k\) for some assignment(s) \(t^V\)) and \emph{soft} constraints.
 
@@ -74,7 +74,6 @@ The special case of \gls{wcsp} where all constraints have either unit or zero co
 Here, the objective value is exactly the number of violated clauses, and as such it is the most natural formulation of existing \gls{csp} instances as optimization problems.
 
 The special case where all constraints are clauses of a Boolean formula (and weights are unrestricted) yields the \gls{wpms} problem \parencite[\pno~2]{deGivry14}.
-% [fix] - page number above will have to change
 If the weights are restricted to unit or zero costs as above, the problem becomes the well-known \gls{maxsat} problem \parencite[\pno~284]{Meseguer06}.
 
 This makes explicit the fact that many real-world and academic problems in satisfiability and operations research may be restated as \gls{wcsp} (and therefore max-sum) problems, and consequently that the in-the-middle algorithm may present a viable alternative to solving these problems using \gls{lp} formulations \parencites{Ansotegui13a}{Davies13} or special algorithms \parencites{Ansotegui13b}{Larrosa08}.

@@ -22,17 +22,13 @@ Single-precision arithmetic could probably be used with little impact on either 
 The problems used in the benchmark all have integer costs (in fact, the Toulbar2 solver appears to work exclusively with integer-valued \glspl{wcsp}), so in theory it would be possible to use and integer arithmetic.
 This would however require the code detecting changed variable components to be reimplemented, potentially causing worse performance, and would also require a new tie-breaking mechanism.
 
-% [review] - mention specialized updates?
-
 \subsection{Extensions and improvements}
 The performance of the two variants of the algorithms was fairly unexpected, especially with respect to the \enquote{push} operation.
 While the optimality gap was expected to decrease, with a corresponding increase in runtime, the opposite happened instead.
 The reason for this may be that the algorithm, in trials after the \enquote{push} operation has been applied, is more conservative than the original algorithm in that the maximum \(\kappa\) value will be lower. This means more trials fail to force an integer solution, reducing the number of trials and as a consequence reducing the runtime as well as increasing the optimality gap.
 A more correct implementation would take into consideration the reduction of \(\kappa\) caused by the push operation when calculating the maximum \(\kappa\) value of subsequent trials.
-% [review] - maybe not true
 
 Due to the results presented above, the \enquote{push} operation is not as interesting when applied to the max-sum algorithm as it is in the original \gls{lp} formulation.
-% [review] - analyze why it works on the CFN/Pedigree problem?
 
 The result of the non-fractional \gls{dp} update was more in line with expectations, but nonetheless unintuitive given the mostly insignificant changes in solution quality.
 Solution quality was in fact largely maintained while improving runtimes significantly.
