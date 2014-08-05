@@ -1,4 +1,3 @@
-% [review] - use of "CSP" acronym is inconsistent here
 \section{Related work}
 Since the purpose of this thesis is to extend an existing algorithm and benchmark it against known solvers, it is interesting to note previous work both related to the algorithm itself (either its \gls{lp} formulation or the max-sum variant discussed in this thesis) as well as previous benchmarks and recent algorithms in the related fields.
 
@@ -17,7 +16,7 @@ Similarly, \textcite{Mason01} applied a specialized variant of the in-the-middle
 Graphical models allow the modelling of a range of NP-hard optimization problems in a consistent manner \parencite{deGivry14}, and recent articles on the subject expose strong connections between linear programming and graphical models \parencites{Werner07}{Kolmogorov13}.
 As such, there is reason to believe that the application of linear programming algorithms to constraint satisfaction may have practical relevance.
 
-Although several specialized solvers --- \emph{e.g.} Toulbar2 \parencite{Allouche10}, WPM2 \parencite{Ansotegui13b}, MaxHS \parencite{Davies13}, Max-DPLL \parencite{Larrosa08} and several others --- have been developed for constraint satisfaction problems in recent years, benchmarks indicate that there are areas of constraint satisfaction in which \gls{lp} solvers perform better, and areas where no existing solvers excel.
+Although several specialized solvers --- \emph{e.g.} Toulbar2 \parencite{Allouche10}, WPM2 \parencite{Ansotegui13b}, MaxHS \parencite{Davies13}, Max-DPLL \parencite{Larrosa08} and several others --- have been developed for \glspl{csp} in recent years, benchmarks indicate that there are areas of constraint satisfaction in which \gls{lp} solvers perform better, and areas where no existing solvers excel.
 
-\Textcites{Allouche14b}{deGivry14} evaluate several exact optimizers to constraint satisfaction problems, and the results indicate that there may be several problem domains (most notably \acrshort{mrf}, \acrshort{wpms} and Max-\acrshort{csp}) which could benefit from fast, approximate solvers.
+\Textcites{Allouche14b}{deGivry14} evaluate several exact optimizers to \glspl{csp}, and the results indicate that there may be several problem domains (most notably \acrshort{mrf}, \acrshort{wpms} and Max-\acrshort{csp}) which could benefit from fast, approximate solvers.
 Additionally, several large problem sets from each domains are included in the benchmark, and these problem sets have also been made available online by the authors\footnote{\url{http://genoweb.toulouse.inra.fr/~degivry/evalgm} \parencite[\pno~7]{Allouche14b}.}.
