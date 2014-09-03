@@ -1,4 +1,8 @@
-\section{Implementation}
+\chapter{Implementation}
+In this chapter, specific implementation details relating to the algorithm as used in the benchmark will be presented.
+This includes considerations which are of great importance when implementing efficient variants of the algorithm, including memory considerations as well as computational ones.
+The implementation details are intended to facilitate independent implementations of the algorithm.
+
 The algorithm --- including code for reading the \textsc{wcsp} file format \parencite{wcspformat}, parameter sweep strategy and timing facilities --- was implemented in C++11.
 The implementation is partly based on an existing framework for the original \gls{lp} in-the-middle algorithm.
 The code was compiled using version 5.1 of the LLVM compiler, with all safe optimizations enabled (\emph{i.e.} \texttt{-O3}).
@@ -50,7 +54,7 @@ In particular, the choice of data structure for constraint component data as wel
 
 Implementation details regarding the parameter sweep strategy presented earlier, which controls the \(\alpha\) parameter of the fractional \gls{dp} update, will also be explained in further detail.
 
-\subsection{Constraint component design decisions}
+\section{Constraint component design decisions}
 Several design decisions in the implementation of the constraint components have significant impact on the performance of the constraint component updates.
 These design decisions mostly relate to the data structure representing costs inside the constraint component, and the main concern in selecting this data structure is quick access in the update loop.
 Since the constraint component is kept constant through all iterations, and the temporary cost table \(h\) can be made implicit, this is the only major concern.
@@ -66,7 +70,7 @@ In the actual implementation, \(x^k_i\) are represented as pointers to the value
 
 \Cref{proc:frac-dp-update-fast} highlights these implementation details, and also shows the use of an invariant transformation of the variable components \(\bar{\vcomp}_i(x^k_i)\) that allows the use of existing code to detect solution changes by counting sign changes.
 
-\subsection{Parameter sweep strategy}
+\section{Parameter sweep strategy}
 As explained earlier, the fractional \gls{dp} update may be accompanied by a parameter sweep strategy.
 Due to the structure of the algorithm implementation, the constraint-specific upper and lower limits of the parameter sweep as described earlier are awkward to handle.
 Therefore, these are consolidated into a single parameter \(\kappa\in\left[0,1\right]\).
@@ -89,7 +93,7 @@ This upper limit is implemented in terms of a new upper limit \(\kappa_\top\) on
 In particular, \cref{fig:khappa-plot:deer} shows a full run in which \(\kappa\) is varied throughout the entire range \([0,1]\).
 As can be seen, \(\kappa\) is initially kept at 0 for a number of iterations --- attempting to find guaranteed optimal solutions if possible --- after which the parameter is increased fairly quickly until reaching \(0.7\kappa_\top\), after which it is increased more slowly.
 
-\subsubsection{Trials}
+\subsection{Trials}
 As briefly mentioned above, the optimization involves several \emph{trials}.
 Before each trial all constraints, variables and costs are reset to their original state.
 Then, the parameter sweep is performed and until the final \(\kappa\) value is reached or a feasible solution is found.

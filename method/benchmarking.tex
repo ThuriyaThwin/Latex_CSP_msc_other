@@ -1,5 +1,7 @@
-\section{Benchmarking}
+\chapter{Benchmarking}
 In order to determine the efficiency of the algorithm, and determine what problem paradigm the algorithm is most usefully applied to, extensive benchmark testing will be performed.
+This chapter will describe the settings in which the benchmark was performed, as well as introducing the problem sets used and the solvers compared against.
+
 The algorithm was tested against (part of) the large problem set used by \textcite{deGivry14}, which includes problems from the \gls{mrf}, \gls{wpms}, \gls{cfn}, Max-\gls{csp}, \gls{cp} and \gls{cvpr} domains.
 All problems in the set are available in the \textsc{wcsp} file format.
 Exact data (elapsed time and obtained solution for every solver, as well as proven optima and upper bounds for every problem) for these data sets have been obtained directly from \citeauthor{deGivry14}.
@@ -7,7 +9,7 @@ Exact data (elapsed time and obtained solution for every solver, as well as prov
 This section will describe the method used to benchmark the algorithm, including the calculation of presented data.
 It will also briefly present the problems used in the benchmark, to provide background that may explain the performance characteristics of the algorithm, as well as short introductions to other solvers with which the in-the-middle algorithm will be compared.
 
-\subsection{Benchmarking method}
+\section{Benchmarking method}
 All problem instances were limited in runtime by the upper time limit \(t_{\text{max}} = \SI{1200}{\second}\), and the benchmarks were run on a single core of an Intel~Core~i5 processor at \SI{2.3}{\giga\hertz}, with \SI{8}{\gibi\byte} RAM.
 This is comparable to the conditions of the benchmark performed by \textcite{deGivry14}, and should ensure that the comparisons are valid\footnote{In fact, brief testing with the Toulbar2 solver on the same hardware supports this --- runtimes are of the same order of magnitude as those found by \textcite{deGivry14}.}.
 Due to time constraints, data for the comparison solver used in the benchmark was not regenerated on this hardware.
@@ -25,7 +27,7 @@ This matches the parameters used by \textcite{Bastert10}.
 The stochastic tie-breaking mechanism was included in all benchmark runs, with threshold \(\epsilon=\num{0.01}\) and noise amplitude \(\zeta=1\).
 Since all constraint clauses of the problems used in the benchmark have integer costs, having \(\zeta\leq1\) ensures that the tie-breaking noise will never promote tied variables above better, non-tied solutions.
 
-\subsection{Problem sets}
+\section{Problem sets}
 % [review] Wedelin: ...it would be really interesting to look into the modelling of each problem
 The problem sets obtained from \textcite{deGivry14} belong to a number of different domains and represent different types of problems from industry, academia and random generation.
 This section will briefly review each problem set used in the benchmark, and review both problem source, interpretation and size.
@@ -39,7 +41,7 @@ It is important to note that the omissions are due to the in-the-middle implemen
 In particular, it is already clear that the algorithm has abysmal performance in the \gls{cp} and \gls{wpms} categories.
 Comparisons in the \gls{cvpr} category are valid even with the omissions, since the competing solvers show equally poor performance (\emph{i.e.} solve no problems) in the omitted sets \textcite[\pno~9]{deGivry14}.
 
-\subsubsection{Constraint Function Network (CFN)}
+\subsection{Constraint Function Network (CFN)}
 This category contains six problem sets, all from the CFLib collection mentioned by \textcite[\pno~3]{deGivry14}.
 Most of them are real-world problems or generated to approximate such problems, and all of them are readily available in the \textsc{WCSP} file format mentioned earlier.
 
@@ -84,7 +86,7 @@ Most of them are real-world problems or generated to approximate such problems, 
 
 \end{description}
 
-\subsubsection{Constraint Programming (CP)}
+\subsection{Constraint Programming (CP)}
 Two problems (one real-world problem and one academic) from this category have been included in this benchmark.
 All problems in these sets come from the MiniZinc Challenge\footnote{\url{http://www.minizinc.org/}} \parencite[\pno~5]{deGivry14}, and represent specific problems (representable as \gls{wcsp} instances) defined through \acrlong{cp} languages.
 Note that \gls{cp} problems are not generally representable as \glspl{wcsp}, which makes this category less interesting in the context of \gls{wcsp} or max-sum algorithms.
@@ -110,13 +112,13 @@ Note that \gls{cp} problems are not generally representable as \glspl{wcsp}, whi
 %	\item[VRP]
 \end{description}
 
-\subsubsection{Computer Vision and Pattern Recognition (CVPR)}
+\subsection{Computer Vision and Pattern Recognition (CVPR)}
 In this category there are nine problem sets containing \gls{mrf} instances from the OpenGM2 benchmark \parencite{Kappes13}.
 The problems have been collected from various sources \parencite[\pno~1330]{Kappes13}, but all concern various computer vision tasks performed on real-world images.
 
 The size of these problems vary, with \numrange{20}{500000} variables, \numrange{210}{2000000} constraints and variable domains reaching \num{20} for some sets.
 
-\subsubsection{Max-CSP}
+\subsection{Max-CSP}
 The seven max-\gls{csp} sets are restated binary \gls{csp} instances such that the optimal solution of each instance is the minimal number of unsatisfiable constraints in the original \gls{csp} problem.
 The instances are from the 2008 max-\gls{csp} competition\multfootnote{\url{http://www.cril.univ-artois.fr/~lecoutre/benchmarks.html};\url{http://www.cril.univ-artois.fr/CPAI08/}}.
 The problems are mostly academic and random, with a relatively small number of variables and constraints (below \num{450} and \num{6500}, respectively).
@@ -146,7 +148,7 @@ The problems are mostly academic and random, with a relatively small number of v
 		The set consists of 60 instances previously used in the 2005 \gls{csp} Solver Competition, and the general problem has previously been studied by \textcite{Gomes02}.
 \end{description}
 
-\subsubsection{Markov Random Fields (MRF)}
+\subsection{Markov Random Fields (MRF)}
 This category consists of seven sets, where the task is to estimate \gls{map} probabilities on \gls{mrf}. The sets represent different underlying problems such as image alignment, genetic linkage analysis, protein folding and other probabilistic problems.
 
 All of these problems, except those in the \emph{Linkage} set (which was used in the UAI'08 probabilistic inference evaluation and later by \textcites{Favier11}{Kishimoto13}), are from the 2011 Probabilistic Inference Challenge\footnote{\url{http://www.cs.huji.ac.il/project/PASCAL/}}.
@@ -156,7 +158,7 @@ Most problems are modest in size, with \numrange{60}{2000} variables and \numran
 Some problems have variable domains approaching \num{500}, and some have up to \num{6400} variables and \num{20000} constraints.
 Notably, the \emph{Segmentation} set contains both binary and 21-ary formulations of each problem.
 
-\subsubsection{Weighted Partial Max-SAT (WPMS)}
+\subsection{Weighted Partial Max-SAT (WPMS)}
 From the field of \gls{wpms}, only one problem set was kept.
 Problems in this field contain a very large number of (binary, for obvious reasons) variables and cost functions with very large arity --- in fact, this is the only field in which cost function arity exceeds \num{5} (most other sets have cost functions of two variables only).
 The only kept problem set, \emph{Max-Clique}, has a cost function arity of \num{2}.
@@ -178,23 +180,23 @@ The instances were used in the 8th \Gls{maxsat} Evaluation\footnote{\url{http://
 %	\item[Upgradeability]
 \end{description}
 
-\subsection{Solvers}
+\section{Solvers}
 Three solvers used by \textcite{deGivry14} are included in this benchmark.
 This section will briefly describe their original field of application, give brief pointers to the method they employ, and relate them to the in-the-middle algorithm.
 
-\subsubsection{Toulbar2}
+\subsection{Toulbar2}
 The Toulbar2 solver is an exact anytime solver for \glspl{wcsp} based on a depth-first branch-and-bound algorithm \parencite{Allouche10}.
 In addition to using a strong arc consistency property\footnote{Existential directed arc consistency, as presented by \textcite{deGivry05}.}, the solver uses a sizeable bag of tricks including variable elimination, dead-end elimination \parencite{deGivry13} and pairwise decomposition \parencite{Favier11}.
 
 The Toulbar2 solver is by far the most advanced solver in the \gls{wcsp} field, with significant amounts of theory behind it especially with respect to strong arc consistency properties (the one implicitly employed by the in-the-middle algorithm, generalized arc consistency, is quite weak in comparison).
 It is therefore an interesting benchmark \enquote{opponent}, and matching it in a benchmark (especially the \gls{mrf}, \gls{cfn} and max-\gls{csp} categories) could indicate potential for the in-the-middle algorithm in those categories.
 
-\subsubsection{CPLEX}
+\subsection{CPLEX}
 The well-known CPLEX solver, which is an exact \gls{mip} solver rather than a \gls{wcsp} solver, is also included in the benchmark.
 Using the \emph{direct} encoding described by \textcite[\pno~3]{deGivry14} of \glspl{wcsp} into 0--1 \gls{ilp} problems, CPLEX was found to have very good performance for some problem categories an therefore it is also included in this benchmark.
 CPLEX is highly optimized proprietary software, but uses the well-known simplex and barrier interior point methods to solve \gls{lp} problems.
 Even so, previous results \parencite{Mason01,Ernst05} have shown that the \gls{lp} formulation of the in-the-middle algorithm is competitive with CPLEX, and it is therefore interesting to see how the two relate in the \gls{wcsp} field.
 
-\subsubsection{MaxHS}
+\subsection{MaxHS}
 The MaxHS solver is a \gls{maxsat} and \gls{wpms} solver based on decomposing \gls{maxsat} problems into several smaller \gls{sat} instances, solving these using cooperation between an underlying \gls{sat} solver and a \gls{mip} solver \parencite{Davies11}.
 It has been found to perform well in solving non-random \gls{maxsat} instances \parencite{Davies13}, and is therefore a prime candidate for comparison in the \gls{wpms} (and to some extent max-\gls{csp}) categories.
