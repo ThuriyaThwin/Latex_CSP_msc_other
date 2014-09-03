@@ -178,7 +178,7 @@ It is mainly this last step that varies between different updates --- it is desi
 	\label{proc:dp-update}
 \end{algorithm}
 The first update considered is the \gls{dp} update (\cref{proc:dp-update,fig:itm-update}).
-It is a fairly unsophisticated update\footnote{It is also equivalent to the max-sum algorithm.}, which extracts the max-marginals along each dimension of the constraint component \(\ccomp_k\) and moves this amount into the corresponding variable component \(\vcomp_i(x_i)\) (\emph{i.e.} the new variable component value becomes \(\bar{\vcomp}'_i(x_i) = \max*[x\in x^k\setminus x_i]{h(x)}\) for every variable component \(\vcomp_i\) and value \(x_i\in D_i\)).
+It is a fairly unsophisticated update --- equivalent to the well-known max-sum algorithm \parencite[as shown by][\pno~17\psq]{Wedelin13} --- which extracts the max-marginals along each dimension of the constraint component \(\ccomp_k\) and moves this amount into the corresponding variable component \(\vcomp_i(x_i)\) (\emph{i.e.} the new variable component value becomes \(\bar{\vcomp}'_i(x_i) = \max*[x\in x^k\setminus x_i]{h(x)}\) for every variable component \(\vcomp_i\) and value \(x_i\in D_i\)).
 While this should ensure quick convergence since it in effect moves out as much as possible, the update isn't non-conflicting \parencite[\pno~105]{Wedelin08}, which means optimality cannot be guaranteed.
 
 \subsubsection{The fractional DP constraint update}
