@@ -1,10 +1,11 @@
-\section{The in-the-middle algorithm}
-This section will present the in-the-middle algorithm for max-sum problems, and the framework of \emph{variable components}, \emph{constraint components} and \emph{constraint updates} employed by the algorithm.
+\chapter{The in-the-middle algorithm}
+This chapter will present the in-the-middle algorithm for max-sum problems, and the framework of \emph{variable components}, \emph{constraint components} and \emph{constraint updates} employed by the algorithm\footnote{The algorithm will be described in theory, with practical implementation issues and considerations being discussed in the next chapter.}.
 It will provide theoretical results on the feasibility and optimality guarantees provided by the algorithm, and will present two variations of the update procedure used in the algorithm.
 Previous improvements to the \gls{lp} formulation will also be applied to the max-sum version.
+Finally, the theoretical framework surrounding the algorithm will be compared to theoretical results in a \gls{csp} context.
 First, however, the original \gls{lp} algorithm will be reviewed.
 
-\subsection{Original LP formulation}
+\section{Original LP formulation}
 To provide context for the max-sum formulation of the in-the-middle algorithm and heuristic, the original algorithm as applied to \gls{lp} problems will be briefly described, and explicit pseudo-code for the algorithm will be presented.
 Full descriptions of the \gls{lp} variant of the in-the-middle algorithm are available from \textcites{Wedelin95}{Bastert10}.
 
@@ -82,7 +83,7 @@ The (small) parameter \(\delta>0\) ensures that elements of \(\bar{c}\) are kept
 
 Note that \textcite[\pno~97]{Bastert10} provide a different but equivalent formulation of \cref{alg:itm-lp} with the approximate heuristic.
 
-\subsection{Max-sum formulation}
+\section{Max-sum formulation}
 Working from the \gls{lp} formulation of the in-the-middle algorithm, \textcite{Wedelin08} introduce a similar algorithm for max-sum problems (which they call \emph{cost propagation}).
 The formulation is examined further by \textcite[\pno~11\psqq]{Wedelin13}.
 This section will describe the max-sum formulation of the in-the-middle algorithm, reference some theoretical results, and provide explicit pseudo-code for the algorithm.
@@ -159,7 +160,7 @@ It is mainly this last step that varies between different updates --- it is desi
 	\label{fig:itm-update}
 \end{figure}
 
-\subsubsection{The DP constraint update}
+\subsection{The DP constraint update}
 \begin{algorithm}[t]
 	\SetKwFunction{UpdateConstraint}{UpdateConstraint}
 	\Fn{\UpdateConstraint{\(\ccomp_k\), \(\bar{\vcomp}^k\), \(s^k\)}}{
@@ -181,7 +182,7 @@ The first update considered is the \gls{dp} update (\cref{proc:dp-update,fig:itm
 It is a fairly unsophisticated update --- equivalent to the well-known max-sum algorithm \parencite[as shown by][\pno~17\psq]{Wedelin13} --- which extracts the max-marginals along each dimension of the constraint component \(\ccomp_k\) and moves this amount into the corresponding variable component \(\vcomp_i(x_i)\) (\emph{i.e.} the new variable component value becomes \(\bar{\vcomp}'_i(x_i) = \max*[x\in x^k\setminus x_i]{h(x)}\) for every variable component \(\vcomp_i\) and value \(x_i\in D_i\)).
 While this should ensure quick convergence since it in effect moves out as much as possible, the update isn't non-conflicting \parencite[\pno~105]{Wedelin08}, which means optimality cannot be guaranteed.
 
-\subsubsection{The fractional DP constraint update}
+\subsection{The fractional DP constraint update}
 \begin{algorithm}[t]
 	\SetKwFunction{UpdateConstraint}{UpdateConstraint}
 	\Fn{\UpdateConstraint{\(\ccomp_k\), \(\bar{\vcomp}^k\), \(s^k\)}}{
@@ -215,14 +216,14 @@ These limits are taken \emph{individually}\footnote{This is different from the \
 The upper limit is chosen to be \(\alpha_\top=1\), which corresponds to the regular \gls{dp} update\footnote{However, note that values \(\alpha>1\) are in no way prohibited by the algorithm and may prove meaningful in some situations.}.
 In subsequent runs on the same problem, the upper limit \(\alpha_\top\) may be taken to be the \(\alpha\) at which the algorithm terminated in the previous run.
 
-\subsection{Extensions and improvements}
+\section{Extensions and improvements}
 Previous work on the \gls{lp} formulation of the in-the-middle algorithm has yielded useful improvements in performance, and it is therefore interesting to apply these variants to the max-sum variant as well.
 Two such improvements are presented.
 
 First, a modification of the \gls{lp} algorithm introduced by \textcite{Bastert10} is considered.
 Then, an important addition to the algorithm designed to break ties in variables is introduced.
 
-\subsubsection{The \enquote{push} operation}
+\subsection{The \enquote{push} operation}
 In their paper examining the in-the-middle algorithm, \textcite{Bastert10} introduce a \enquote{push} operation intended to improve the quality of any non-optimal solutions found by the approximate algorithm \parencite[\pno~99\psq]{Bastert10}.
 The operation is aimed at improving the solution by modifying the reduced costs \(\bar{c}\) to make them \enquote{more similar} to \(c\), contending that the algorithm in fact optimizes with respect to the reduced costs (to which the approximate variant applies non-invariant changes).
 This is done by setting \(\bar{c}\leftarrow\bar{c}+\rho c\) (with \(\rho>0\)) and reducing the parameter \(\kappa\) of the approximate \gls{lp} formulation (\cref{alg:itm-lp}) by a set factor when a feasible solution is found (and \(\kappa>0\)).
@@ -232,7 +233,7 @@ Given the favourable results of \textcite{Bastert10}, it is interesting to bench
 Luckily, the \enquote{push} operation is easily translated to apply to the max-sum formulation of the in-the-middle algorithm.
 After encountering a feasible solution (and assuming the optimality guarantee does not apply), the modified variable components \(\bar{\vcomp}_i\) are updated as in the \gls{lp} formulation (\emph{i.e.} \(\bar{\vcomp}_i\leftarrow\bar{\vcomp}_i+\rho\vcomp_i\)), and the parameter \(\alpha\) is reduced in a similar way.
 
-\subsubsection{Tie-breaking using noise}
+\subsection{Tie-breaking using noise}
 In some problems --- especially those with few hard constraints --- there may be several solutions in a neighbourhood which have the same objective value.
 Such situations may result in the modified variables components \(\bar{\vcomp}_j\) being tied for some variables \(j\), which means the algorithm cannot determine a feasible solution (since the corresponding variable value \(\hat{x}_j\) is ambiguous).
 To address this issue, a stochastic tie-breaking mechanism is introduced.
@@ -248,7 +249,7 @@ Moving through all the variable components \(\bar{\vcomp}_j\), any element whose
 where \(u \in \mathcal{U}(-\zeta,\zeta)\) is a random variable taken from a uniform distribution.
 If noise has been added in a previous iteration, that noise is removed from the variable component first.
 
-\subsection{Interpretation in a WCSP context}
+\section{Interpretation in a WCSP context}
 The framework commonly employed in \gls{wcsp} optimization focuses on providing equivalence-preserving transformations of the problem graph, in order to obtain good upper and lower bounds which are then used in branch-and-bound strategies.
 A fairly thorough presentation of the \emph{arc consistency} notions used in this framework is given by \textcite{Cooper10}.
 
@@ -263,7 +264,7 @@ Then (as in the DP update), the max-marginals are calculated and \enquote{moved 
 The result is one variable component with mostly zero-value costs, and one variable component with (if possible) no zero-value costs.
 This fact is then used when enforcing another property, \emph{node consistency} \parencite[\pno~7]{Cooper10}, which in effect moves redundant costs from the variable components to the nullary constraint.
 
-\subsubsection{Stronger constraint component updates}
+\subsection{Stronger constraint component updates}
 Although the theory behind the in-the-middle algorithm isn't aimed at providing good upper and lower bounds, instead being concerned with providing an optimality guarantee, there is no reason to discard existing theory in the \gls{wcsp} field.
 It appears feasible to implement some of the consistency-enforcing algorithms of \textcite{deGivry05} as constraint component updates, and enforcing node consistency could be done once every few iterations independently of the updates (or in a preprocessing stage).
 This could provide lower bounds which could be employed as a secondary optimality guarantee, which could be used to measure the optimality gap in situations where potentially conflicting updates are used.

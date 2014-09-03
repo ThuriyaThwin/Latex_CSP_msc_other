@@ -1,10 +1,10 @@
-\section{Max-sum problems and constraint satisfaction}
+\chapter{Background theory}
 The formulation of the in-the-middle algorithm provided by \textcite{Wedelin08} is based on the definition of a max-sum problem.
 In order to apply this algorithm to general \gls{wcsp}, it is necessary to provide a link between the max-sum problem and problem formulations within the graphical model optimization field, where \gls{wcsp} is one of the more general formulations.
 This will be done by first introducing the max-sum problem along with some useful interpretations in other fields, followed by a similar introduction of the \gls{wcsp} family.
 Finally, a theoretical link between the two fields will be provided, along with an explicit method of translation between the formulations.
 
-\subsection{Max-sum problems}
+\section{Max-sum problems}
 The general max-sum problem is an NP-hard optimization problem with many applications in fields ranging from statistical physics to artificial intelligence and pattern recognition.
 In general, and constrained optimization problem (crucially, several variants of constraint satisfaction) may be restated as max-sum problems.
 Formally, the following definition \parencite[based on that of][\pno~11]{Wedelin13} may be used:
@@ -31,10 +31,10 @@ This will be useful in the translation between \glspl{wcsp} and max-sum problems
 There are several algorithms available for solving max-sum problems, with \textcite{Werner07} mentioning the \emph{augmented DAG algorithm}, the \emph{max-sum diffusion algorithm} and a \gls{lp} relaxation method.
 In addition to those direct methods, the relation to \gls{csp} provides many more (which will be mentioned later), and algorithms such as \emph{belief propagation} and \emph{message passing} are also applicable to some max-sum problems.
 
-\subsubsection{Markov Random Fields}
+\subsection{Markov Random Fields}
 A restricted variant of the max-sum problem called the \emph{binary max-sum labelling problem} has direct applications to artificial intelligence and pattern recognition, where the problem is known as computing the \gls{map} configuration of \acrlongpl{mrf} \parencite[\pno~1165]{Werner07}.
 
-\subsection{Weighted constraint satisfaction problems}
+\section{Weighted constraint satisfaction problems}
 \Glspl{csp} are very general decision problems, defined through a set of objects which must satisfy a set of constraints.
 Many problems in artificial intelligence and operations research (including planning and resource allocation) may be stated as \glspl{csp}, as well as several academic problems such as \gls{sat}, queens puzzles and map colouring.
 One of the corresponding combinatorial optimization problems\footnote{Both the \gls{vcsp} and \gls{scsp} frameworks may be seen as the corresponding optimization problems \parencites{Meseguer06}{Bistarelli99}, but \glspl{wcsp} may be described using either.}, the \gls{wcsp}\footnote{In some literature these problems are called \glspl{cfn}, but the definitions are in essence equivalent.}, additionally introduces \emph{weights} on the constraints, and classify these as \emph{hard} (must be satisfied) or \emph{soft}.
@@ -67,7 +67,7 @@ The attentive reader will notice the similarity between \cref{def:wcsp} and \cre
 Using this definition, \emph{feasible} solutions are assignments \(t\) for which \(\cost{t} < k\).
 One may also make a distinction between \emph{hard} constraints (\(f_V(t^V) = k\) for some assignment(s) \(t^V\)) and \emph{soft} constraints.
 
-\subsubsection{Max-CSP and (weighted) max-SAT}
+\subsection{Max-CSP and (weighted) max-SAT}
 The special case of \gls{wcsp} where all constraints have either unit or zero cost (\emph{i.e.} \(f_V : D^V \mapsto {0,1}\), regardless of choice of \(k\)) is normally referred to as max-\gls{csp} \parencite[\pno~284]{Meseguer06}.
 Here, the objective value is exactly the number of violated clauses, and as such it is the most natural formulation of existing \gls{csp} instances as optimization problems.
 
@@ -76,7 +76,7 @@ If the weights are restricted to unit or zero costs as above, the problem become
 
 This makes explicit the fact that many real-world and academic problems in satisfiability and operations research may be restated as \gls{wcsp} (and therefore max-sum) problems, and consequently that the in-the-middle algorithm may present a viable alternative to solving these problems using \gls{lp} formulations \parencites{Ansotegui13a}{Davies13} or special algorithms \parencites{Ansotegui13b}{Larrosa08}.
 
-\subsection{Translating WCSP to max-sum}
+\section{Translating WCSP to max-sum}
 The translation from \gls{wcsp} to max-sum, when using the definitions given above, is fairly straight-forward.
 In addition to the superficial similarity between \cref{def:wcsp,def:max-sum}, the two problems have deep connections and are in a sense equivalent.
 When regarding the \gls{wcsp} formulation as an instance of \gls{scsp} \parencite[\pno~285\psq]{Meseguer06}, the \gls{wcsp} has an associated ordered semiring \(\langle [0,k],+^k,\min*,\leq\rangle\) \parencite[\pno~290]{Meseguer06}.
