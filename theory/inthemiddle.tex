@@ -42,7 +42,7 @@ If no sign changes occur after visiting each constraint once, the algorithm has 
 	\Repeat{no sign changes in \(\bar{c}\)}{
 		\For{\(j=1,\dotsc,m\)}{
 			\(r \leftarrow \bar{c}^j + s^j\)\;
-			\(d \leftarrow r \cdot a_{\cdot,j}^{-1}\)\;
+			\(d \leftarrow r \cdot a_{\cdot,j}\)\;
 			\(r^+ \leftarrow b_j\text{th largest element of }d\)\;
 			\(r^- \leftarrow (b_j+1)\text{th largest element of }d\)\;
 			\(\Delta y \leftarrow (r^+_j + r^-_j)/2\) \;
