@@ -180,16 +180,17 @@ The instances were used in the 8th \Gls{maxsat} Evaluation\footnote{\url{http://
 %	\item[Upgradeability]
 \end{description}
 
+\clearpage % Fix orphan
 \section{Solvers}
 Three solvers used by \textcite{deGivry14} are included in this benchmark.
-This section will briefly describe their original field of application, give brief pointers to the method they employ, and relate them to the in-the-middle algorithm.
+This section will briefly describe their original field of application, give brief pointers to the methods they employ, and relate them to the in-the-middle algorithm.
 
 \subsection{Toulbar2}
 The Toulbar2 solver is an exact anytime solver for \glspl{wcsp} based on a depth-first branch-and-bound algorithm \parencite{Allouche10}.
 In addition to using a strong arc consistency property\footnote{Existential directed arc consistency, as presented by \textcite{deGivry05}.}, the solver uses a sizeable bag of tricks including variable elimination, dead-end elimination \parencite{deGivry13} and pairwise decomposition \parencite{Favier11}.
 
-The Toulbar2 solver is by far the most advanced solver in the \gls{wcsp} field, with significant amounts of theory behind it especially with respect to strong arc consistency properties (the one implicitly employed by the in-the-middle algorithm, generalized arc consistency, is quite weak in comparison).
-It is therefore an interesting benchmark \enquote{opponent}, and matching it in a benchmark (especially the \gls{mrf}, \gls{cfn} and max-\gls{csp} categories) could indicate potential for the in-the-middle algorithm in those categories.
+The Toulbar2 solver is by far the most advanced solver in the \gls{wcsp} field, with significant amounts of theory behind it especially with respect to strong arc consistency properties.
+It is therefore an interesting benchmark \enquote{opponent}, and matching it in a benchmark (especially in the \gls{mrf}, \gls{cfn} and max-\gls{csp} categories) could indicate potential for the in-the-middle algorithm in those categories.
 
 \subsection{CPLEX}
 The well-known CPLEX solver, which is an exact \gls{mip} solver rather than a \gls{wcsp} solver, is also included in the benchmark.
