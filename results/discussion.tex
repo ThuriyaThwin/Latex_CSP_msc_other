@@ -56,5 +56,5 @@ In theory, in-the-middle algorithm has no such issues with large cost function a
 Including these problems in the benchmark would likely require better hardware and/or a specialized implementation (specifically, simplifications can be made when solving \gls{wpms} problems due to their binary variable domains).
 
 Finally, the benchmark does not take into consideration the structure of the problems used.
-It may well be the case that some problems can be modelled or expressed in a way that makes them easier to solve (for instance, \textcite[\pno~6]{deGivry14} mention that some problem translations are not appropriate for \gls{lp} solvers because they decompose linear constraints).
+It may well be the case that some problems can be modelled or expressed in a way that makes them easier to solve (for instance, \textcite{deGivry14} mention that some problem translations are not appropriate for \gls{lp} solvers because they decompose linear constraints).
 By tailoring each problem to each solver (for instance, in-the-middle has the ability to combine linear constraints and general max-sum constraints) performance may be significantly improved.

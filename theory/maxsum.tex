@@ -71,7 +71,7 @@ One may also make a distinction between \emph{hard} constraints (\(f_V(t^V) = k\
 The special case of \gls{wcsp} where all constraints have either unit or zero cost (\emph{i.e.} \(f_V : D^V \mapsto {0,1}\), regardless of choice of \(k\)) is normally referred to as max-\gls{csp} \parencite[\pno~284]{Meseguer06}.
 Here, the objective value is exactly the number of violated clauses, and as such it is the most natural formulation of existing \gls{csp} instances as optimization problems.
 
-The special case where all constraints are clauses of a Boolean formula (and weights are unrestricted) yields the \gls{wpms} problem \parencite[\pno~2]{deGivry14}.
+The special case where all constraints are clauses of a Boolean formula (and weights are unrestricted) yields the \gls{wpms} problem \parencite{deGivry14}.
 If the weights are restricted to unit or zero costs as above, the problem becomes the well-known \gls{maxsat} problem \parencite[\pno~284]{Meseguer06}.
 
 This makes explicit the fact that many real-world and academic problems in satisfiability and operations research may be restated as \gls{wcsp} (and therefore max-sum) problems, and consequently that the in-the-middle algorithm may present a viable alternative to solving these problems using \gls{lp} formulations \parencites{Ansotegui13a}{Davies13} or special algorithms \parencites{Ansotegui13b}{Larrosa08}.
