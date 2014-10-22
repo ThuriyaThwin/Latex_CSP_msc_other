@@ -85,7 +85,7 @@ This is done by mapping \(\kappa\), individually for each constraint, from \(\le
 	\label{fig:khappa-plot}
 \end{figure}
 
-Initially, the limits on alpha are \(\alpha_\perp=n^{-1}\) and \(\alpha_\top\) as suggested by theory.
+Initially, the limits on alpha are \(\alpha_\perp=n^{-1}\) and \(\alpha_\top=1\) as suggested by theory.
 However, the implementation used will make several subsequent attempts at solving the problem; in subequent attempts (\enquote{trials}, futher explained later) the upper limit \(\alpha_\top\) is lowered to match the value at which the prevoius trial found a solution.
 This upper limit is implemented in terms of a new upper limit \(\kappa_\top\) on \(\kappa\) (exemplified by \cref{fig:khappa-plot:comp}, for which \(\kappa_\top\) will be roughly \num{0.3} in the next trial).
 

@@ -235,11 +235,11 @@ After encountering a feasible solution (and assuming the optimality guarantee do
 
 \subsection{Tie-breaking using noise}
 In some problems --- especially those with few hard constraints --- there may be several solutions in a neighbourhood which have the same objective value.
-Such situations may result in the modified variables components \(\bar{\vcomp}_j\) being tied for some variables \(j\), which means the algorithm cannot determine a feasible solution (since the corresponding variable value \(\hat{x}_j\) is ambiguous).
+Such situations may result in the modified variable components \(\bar{\vcomp}_j\) being tied for some variables \(j\), which means the algorithm cannot determine a feasible solution (since the corresponding variable value \(\hat{x}_j\) is ambiguous).
 To address this issue, a stochastic tie-breaking mechanism is introduced.
 
-The tie-breaking mechanism considers the modified variable components \(\bar{\vcomp}_j\), in which \(\argmax*[x_j]{\bar{\vcomp_j}(x_j)}\) is non-unique if variable \(x_j\) is ambiguous.
-Moving through all the variable components \(\bar{\vcomp}_j\), any element whose value \enquote{too close} (determined by a threshold value \(\epsilon\)) to the maximum value \(M = \max*[x_j]{\bar{\vcomp_j}(x_j)}\) is modified by adding uniformly distributed random noise of magnitude \(\zeta\), \emph{i.e.}
+The tie-breaking mechanism considers the modified variable components \(\bar{\vcomp}_j\), in which \(\argmax*[x_j]{\bar{\vcomp}_j(x_j)}\) is non-unique if variable \(x_j\) is ambiguous.
+Moving through all the variable components \(\bar{\vcomp}_j\), any element whose value \enquote{too close} (determined by a threshold value \(\epsilon\)) to the maximum value \(M = \max*[x_j]{\bar{\vcomp}_j(x_j)}\) is modified by adding uniformly distributed random noise of magnitude \(\zeta\), \emph{i.e.}
 \begin{equation*}
 	\bar{\vcomp}'_j(x_j) = \bar{\vcomp}_j(x_j) + \begin{cases}
 		u \sgn{\bar{\vcomp}_j(x_j) - M} \quad & \text{if \(\abs{\bar{\vcomp}_j(x_j) - M} \leq \epsilon\)} \\
@@ -255,7 +255,7 @@ A fairly thorough presentation of the \emph{arc consistency} notions used in thi
 
 The notion of \emph{generalized arc consistency} \parencite[\pno~7]{Cooper10} is in fact used by the algorithm, corresponding to the \emph{consistent} updates introduced by \parencite[\pno~101]{Wedelin08}.
 This type of arc consistency is normally not utilized in \gls{wcsp} theory, since it is rather weak.
-Stronger notions, such as \emph{(full) arc consistency} and \emph{existential arc consistency} \parencite{deGivry05}, are centred around providing very good bound on the problem by projecting costs away from constraints and moving them into the variable components or the nullary constraint, which then immediately provides an easily accessible lower bound on the optimal solution.
+Stronger notions, such as \emph{(full) arc consistency} and \emph{existential arc consistency} \parencite{deGivry05}, are centred around providing very good bounds on the problem by projecting costs away from constraints and moving them into the variable components or the nullary constraint, which then immediately provides an easily accessible lower bound on the optimal solution.
 
 Algorithms enforcing full arc consistency are in fact very similar to the \emph{non-conflicting} updates proposed by \textcite{Wedelin08}.
 \Textcite[\pno~85\psq]{deGivry05} present an algorithm enforcing this property, and the general structure of this algorithm is very similar to the DP update described above.

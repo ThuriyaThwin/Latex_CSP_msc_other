@@ -5,9 +5,9 @@ I will do this by identifying already apparent applications of the in-the-middle
 Since the performance of the algorithm varies widely between different problem sets, one cannot immediately identify any single field in which the algorithm would be decisively competitive.
 However, the good overall performance and low optimality gap of the algorithm --- especially when applied to problem sets in which other solvers struggle --- suggest that the algorithm may be a good candidate for a so-called portfolio approach, wherein several solvers are applied in parallel.
 
-The same properties, especially the good optimality gap, suggest that the algorithm may be useful in applications where good upper bounds on the solution are required.
+The same properties, especially the small optimality gap, suggest that the algorithm may be useful in applications where good upper bounds on the solution are required.
 Since the non-fractional \gls{dp} variant of the algorithm provides such upper bounds quickly, that variant of the algorithm may have applications in branch-and-bound applications.
-In combination with an exact solver, the in-the-middle algorithm may serve as an approximate anytime solver providing good approximate solutions while waiting for the exact solver to supply truly optimal solutions.
+In combination with an exact solver, the in-the-middle algorithm may serve as an approximate anytime solver providing good approximate solutions while waiting for the exact solver to supply provably optimal solutions.
 
 \section{Further research}
 The algorithm shows promise in several categories of those included in the benchmark.
@@ -15,7 +15,7 @@ In these fields it would therefore be of interest to extend the algorithm and de
 
 Previous work, mainly from \gls{inra}, has provided strong theory on graphical model optimization especially with respect to arc consistency \parencite{Cooper10,Cooper08,deGivry06,deGivry05}.
 The in-the-middle algorithm, as previously detailed, uses a relatively weak arc consistency property (general arc consistency).
-If stronger notions such as existential \parencite{deGivry05} or optimal soft \parencite{Cooper10} arc consistency can be extended to the framework used by the in-the-middle algorithm, it may increase runtime performance and solution quality.
+If stronger notions such as existential \parencite{deGivry05} or optimal soft \parencite{Cooper10} arc consistency can be extended to the framework used by the in-the-middle algorithm, it may increase performance and solution quality.
 
 Another area requiring further research is the design of the constraint updates, especially their effect on the optimality guarantee of the algorithm.
 A common situation for the algorithm is that the heuristic finds optimal solutions but cannot guarantee the optimality, which in turn means the algorithm wastes time in subsequent trials.

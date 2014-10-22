@@ -88,7 +88,7 @@ Most of them are real-world problems or generated to approximate such problems, 
 
 \subsection{Constraint Programming (CP)}
 Two problems (one real-world problem and one academic) from this category have been included in this benchmark.
-All problems in these sets come from the MiniZinc Challenge\footnote{\url{http://www.minizinc.org/}} \parencite{deGivry14}, and represent specific problems (representable as \gls{wcsp} instances) defined through \acrlong{cp} languages.
+All problems in these sets come from the Mini\-Zinc Challenge\footnote{\url{http://www.minizinc.org/}} \parencite{deGivry14}, and represent specific problems (representable as \gls{wcsp} instances) defined through \acrlong{cp} languages.
 Note that \gls{cp} problems are not generally representable as \glspl{wcsp}, which makes this category less interesting in the context of \gls{wcsp} or max-sum algorithms.
 
 \begin{description}
@@ -119,7 +119,7 @@ The problems have been collected from various sources \parencite[\pno~1330]{Kapp
 The size of these problems vary, with \numrange{20}{500000} variables, \numrange{210}{2000000} constraints and variable domains reaching \num{20} for some sets.
 
 \subsection{Max-CSP}
-The seven max-\gls{csp} sets are restated binary \gls{csp} instances such that the optimal solution of each instance is the minimal number of unsatisfiable constraints in the original \gls{csp} problem.
+The seven max-\gls{csp} sets are restated binary \gls{csp} instances such that the optimal solution of each instance is the minimum number of unsatisfiable constraints in the original \gls{csp} problem.
 The instances are from the 2008 max-\gls{csp} competition\multfootnote{\url{http://www.cril.univ-artois.fr/~lecoutre/benchmarks.html};\url{http://www.cril.univ-artois.fr/CPAI08/}}.
 The problems are mostly academic and random, with a relatively small number of variables and constraints (below \num{450} and \num{6500}, respectively).
 
@@ -129,7 +129,7 @@ The problems are mostly academic and random, with a relatively small number of v
 		The instances in this set correspond to a simplification of this solitaire game, and were used in the 2005 \gls{csp} Solver Competition.
 		\Textcite{Gent07} provide a theoretical background to the \gls{csp} formulation of this problem.
 	\item[Colouring]
-		In the well-known graph collaring (decision) problem, the objective is to decide whether a given graph is \(k\)-colourable, \emph{i.e.} whether each edge can be assigned one of \(k\) distinct colours such that no adjacent (connected) nodes have the same colour.
+		In the well-known graph colouring (decision) problem, the objective is to decide whether a given graph is \(k\)-colourable, \emph{i.e.} whether each edge can be assigned one of \(k\) distinct colours such that no adjacent (connected) nodes have the same colour.
 		As such, the instances are crafted academic problems.
 		The instances in this set originate from the \gls{dimacs}, and have been previously studied by \textcite{Benhamou07}.
 	\item[Composed]
@@ -198,5 +198,5 @@ CPLEX is highly optimized proprietary software, but uses the well-known simplex 
 Even so, previous results \parencite{Mason01,Ernst05} have shown that the \gls{lp} formulation of the in-the-middle algorithm is competitive with CPLEX, and it is therefore interesting to see how the two relate in the \gls{wcsp} field.
 
 \subsection{MaxHS}
-The MaxHS solver is a \gls{maxsat} and \gls{wpms} solver based on decomposing \gls{maxsat} problems into several smaller \gls{sat} instances, solving these using cooperation between an underlying \gls{sat} solver and a \gls{mip} solver \parencite{Davies11}.
+The MaxHS solver is a \gls{maxsat} and \gls{wpms} solver based on decomposing \gls{maxsat} problems into several smaller \gls{sat} instances and solving these using cooperation between an underlying \gls{sat} solver and a \gls{mip} solver \parencite{Davies11}.
 It has been found to perform well in solving non-random \gls{maxsat} instances \parencite{Davies13}, and is therefore a prime candidate for comparison in the \gls{wpms} (and to some extent max-\gls{csp}) categories.

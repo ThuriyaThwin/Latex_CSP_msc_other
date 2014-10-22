@@ -7,7 +7,7 @@ The current implementation represents binary variables of the problem using two 
 This could improve both memory use and runtime, making the algorithm more interesting for approximate applications in the \gls{wpms} field.
 The same variable representation issue applies to problems in the \emph{Auction} and \emph{DBN} sets.
 
-One would expect the algorithm to perform well on problems with many hard clauses (due to the sparse representation of constraint components including these implicitly, resulting in fewer clauses to operate on in the constraint update), and this is the case for those sets included in the benchmark.
+One would expect the algorithm to perform well on problems with many hard clauses (due to the sparse representation of constraint components including these implicitly, resulting in fewer clauses to operate on in the constraint update), and this is the case for such sets included in the benchmark.
 The algorithm performs well in all sets where a majority of the clauses are hard (\emph{On Call Rostering}, \emph{Parity Learning} and \emph{Pedigree}), but performs worse in sets where only \SIrange{25}{50}{\percent} of the clauses are hard (\emph{Max-Clique}, \emph{Protein Design} and \emph{Linkage}).
 
 The number of zero-value clauses does not seem to have any effect on the performance of the algorithm, suggesting that the tie-breaking method employed efficiently resolves any resulting ties.
@@ -19,8 +19,8 @@ The only sets in which CPLEX performs decisively better (those from \gls{cfn}) m
 Runtimes could potentially be improved by re-implementing the algorithm using single-precision or integer arithmetic.
 The implementation used in the benchmark uses double-precision arithmetic throughout in order to take advantage of the existing framework of the \gls{lp} formulation, for instance when considering sign changes in the modified variable components and when applying noise for tie-breaking.
 Single-precision arithmetic could probably be used with little impact on either the implementation or the solution quality achieved by the algorithm.
-The problems used in the benchmark all have integer costs (in fact, the Toulbar2 solver appears to work exclusively with integer-valued \glspl{wcsp}), so in theory it would be possible to use and integer arithmetic.
-This would however require the code detecting changed variable components to be reimplemented, potentially causing worse performance, and would also require a new tie-breaking mechanism.
+The problems used in the benchmark all have integer costs (in fact, the Toulbar2 solver appears to work exclusively with integer-valued \glspl{wcsp}), so in theory it would be possible to use integer arithmetic.
+This would however require a reimplementation of the code detecting changed variable components, potentially causing worse performance, and would also require a new tie-breaking mechanism.
 
 \subsection{Extensions and improvements}
 The performance of the two variants of the algorithms was fairly unexpected, especially with respect to the \enquote{push} operation.
@@ -41,7 +41,7 @@ This could potentially be resolved by increasing the threshold \(\epsilon\) and 
 
 With these results in mind, the non-fractional algorithm may be very useful when exact solutions aren't required.
 The non-fractional update variant may also be useful as part of a broader strategy, by for instance providing fast and good upper bounds or by providing fast unproven solutions while waiting for exact solvers.
-Another interesting direction for the non-fractional \gls{dp} update could be to run it in parallel with the standard algorithm (sharing the immutable constraint components in memory), again providing quick approximate solutions as well as good solutions.
+Another interesting direction for the non-fractional \gls{dp} update could be to run it in parallel with the standard algorithm (perhaps sharing the immutable constraint components in memory), again providing quick approximate solutions as well as good solutions.
 This would also be useful in \emph{e.g.} the \emph{Black Hole} set, where the standard algorithm performed better on easy instances and the non-fractional \gls{dp} update was better on difficult ones.
 
 \subsection{Limitations}

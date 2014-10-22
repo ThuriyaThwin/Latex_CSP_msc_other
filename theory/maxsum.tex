@@ -1,12 +1,12 @@
 \chapter{Background theory}
-The formulation of the in-the-middle algorithm provided by \textcite{Wedelin08} is based on the definition of a max-sum problem.
-In order to apply this algorithm to general \gls{wcsp}, it is necessary to provide a link between the max-sum problem and problem formulations within the graphical model optimization field, where \gls{wcsp} is one of the more general formulations.
+The formulation of the in-the-middle algorithm provided by \textcite{Wedelin08} is based on a definition of the max-sum problem.
+In order to apply this algorithm to general \glspl{wcsp}, it is necessary to provide a link between the max-sum problem and problem formulations within the graphical model optimization field, where \gls{wcsp} is one of the more general formulations.
 This will be done by first introducing the max-sum problem along with some useful interpretations in other fields, followed by a similar introduction of the \gls{wcsp} family.
 Finally, a theoretical link between the two fields will be provided, along with an explicit method of translation between the formulations.
 
 \section{Max-sum problems}
 The general max-sum problem is an NP-hard optimization problem with many applications in fields ranging from statistical physics to artificial intelligence and pattern recognition.
-In general, constrained optimization problem (crucially, several variants of constraint satisfaction) may be restated as max-sum problems.
+In general, constrained optimization problems (crucially, several variants of constraint satisfaction) may be restated as max-sum problems.
 Formally, the following definition \parencite[based on that of][\pno~11]{Wedelin13} may be used:
 \begin{definition}[Max-sum problem] \label{def:max-sum}
 	The max-sum problem is the optimization problem
@@ -31,7 +31,7 @@ This will be useful in the translation between \glspl{wcsp} and max-sum problems
 There are several algorithms available for solving max-sum problems, with \textcite{Werner07} mentioning the \emph{augmented DAG algorithm}, the \emph{max-sum diffusion algorithm} and a \gls{lp} relaxation method.
 In addition to those direct methods, the relation to \gls{csp} provides many more (which will be mentioned later), and algorithms such as \emph{belief propagation} and \emph{message passing} are also applicable to some max-sum problems.
 
-\subsection{Markov Random Fields}
+\subsection{Markov Random Fields}\citereset
 A restricted variant of the max-sum problem called the \emph{binary max-sum labelling problem} has direct applications to artificial intelligence and pattern recognition, where the problem is known as computing the \gls{map} configuration of \acrlongpl{mrf} \parencite[\pno~1165]{Werner07}.
 
 \section{Weighted constraint satisfaction problems}
@@ -68,7 +68,7 @@ Using this definition, \emph{feasible} solutions are assignments \(t\) for which
 One may also make a distinction between \emph{hard} constraints (\(f_V(t^V) = k\) for some assignment(s) \(t^V\)) and \emph{soft} constraints.
 
 \subsection{Max-CSP and (weighted) max-SAT}
-The special case of \gls{wcsp} where all constraints have either unit or zero cost (\emph{i.e.} \(f_V : D^V \mapsto {0,1}\), regardless of choice of \(k\)) is normally referred to as max-\gls{csp} \parencite[\pno~284]{Meseguer06}.
+The special case of \gls{wcsp} where all constraints have either unit or zero cost (\emph{i.e.} \(f_V : D^V \mapsto \{0,1\}\), regardless of choice of \(k\)) is normally referred to as max-\gls{csp} \parencite[\pno~284]{Meseguer06}.
 Here, the objective value is exactly the number of violated clauses, and as such it is the most natural formulation of existing \gls{csp} instances as optimization problems.
 
 The special case where all constraints are clauses of a Boolean formula (and weights are unrestricted) yields the \gls{wpms} problem \parencite{deGivry14}.
@@ -83,7 +83,7 @@ When regarding the \gls{wcsp} formulation as an instance of \gls{scsp} \parencit
 \Textcite[\pno~1167]{Werner07} noted that the max-sum problem is also associated with a similar ordered semiring structure \(\langle (-\infty,\infty),+,\max*,\geq\rangle\) (although in our case the set is \(\Rminus \cup \{-\infty\}\)).
 \Citeauthor{Werner07} additionally provides a connection between max-sum and the regular \gls{csp} through a labelling problem, of which they are both special cases.
 
-In fact, it seems that the only differences between the two problems as stated is the definition of the set included in the semiring --- while the \gls{wcsp} from \cref{def:wcsp} considers a domain \(\{0,\dotsc,k\}\), the max-sum problem according to \cref{def:max-sum} has domain \(\Rminus \cup \{-\infty\}\) --- and the fact that one is a minimization problem while the other is a maximization problem.
+In fact, it seems that the only difference between the two problems as stated is the definition of the set included in the semiring --- while the \gls{wcsp} from \cref{def:wcsp} considers a domain \(\{0,\dotsc,k\}\), the max-sum problem according to \cref{def:max-sum} has domain \(\Rminus \cup \{-\infty\}\) --- and the fact that one is a minimization problem while the other is a maximization problem.
 However, by transforming the weighted constraints of the \gls{wcsp} problem in such a way that the ordering is preserved but reversed (\emph{i.e.} by negating all costs), and additionally setting \(k=-\infty\) (and changing the costs of all hard constraints accordingly), a formulation which has a semiring \(\langle\Rminus \cup \{-\infty\},+,\max*,\geq\rangle\) is obtained, which is exactly what the max-sum problem has.
 From there, it is only a matter of translating the constraints of the \gls{wcsp} into corresponding cost functions in the max-sum formulation.
 
@@ -93,8 +93,8 @@ The translation from \gls{wcsp} to the equivalent max-sum problem may be summari
 	\item The weighted constraints \(f_V\) of \cref{def:wcsp} are replaced by new constraints \(f'_V\) defined as
 	\begin{equation*}
 		f'_V(t) = \begin{cases}
-			-\infty &\quad \text{if \(f_V(t) < k\)} \\
-			-f_V(t) &\quad \text{otherwise}
+			-f_V(t) &\quad \text{if \(f_V(t) < k\)} \\
+			-\infty &\quad \text{otherwise}
 		\end{cases}, \quad \forall t.
 	\end{equation*}
 	\item The cost functions \(g_k\) of the max-sum formulation are constructed from the new constraints, \emph{i.e.} \(g_k = f'_V\), as appropriate.
